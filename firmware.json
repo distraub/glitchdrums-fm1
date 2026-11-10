@@ -1,0 +1,10 @@
+{
+  "name": "GlitchDrums FM1",
+  "version": "0.17.6",
+  "identity": "FM-1_73",
+  "options": {
+    "usb_audio": false,
+    "trs_midi": true,
+    "midi_clock": false
+  }
+}

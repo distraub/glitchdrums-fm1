@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "card": {
+    "tag": "Glitch drum instrument",
+    "what": "Eight drum lanes with polyphonic Glitch and Analog voices, sixteen patterns, parameter locks, live Slice routing, graphical LFOs and punch-in effects.",
+    "category": "Drums",
+    "image": "art/glitchdrums-logo.png"
+  },
+  "skin": {
+    "theme": {
+      "body": "#0D0F14",
+      "key": "#262B33",
+      "knob": "#C2CCD9",
+      "led": "#00E0FF",
+      "bezel": "#050A0F"
+    }
+  },
+  "labels": {
+    "buttons": {
+      "SEL": "MUTE",
+      "ARP": "MUTATE",
+      "GLO": "GLOBAL"
+    },
+    "knobs": {
+      "SELECT": "TRACK",
+      "ALGO": "PAGE",
+      "PRESETS": "PRESETS"
+    }
+  }
+}

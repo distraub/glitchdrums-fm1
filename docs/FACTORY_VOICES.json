@@ -1,0 +1,9060 @@
+{
+  "source_sha256": {
+    "GlitchDrumsExtension/Model/DrumPadModel.swift": "354757b7cbcd5a099db309da707c2a1f8ccff3954fb4ac21ee4077d67c76b98e",
+    "GlitchDrumsExtension/Model/PadParameter.swift": "3583ada28b3fd4f0fce13d74116ad1f88ac2469374ea27bd9d51ac14dcc94761",
+    "GlitchDrumsExtension/Model/GlitchParameterDescriptor.swift": "ed9fa12884e167970961c78274d832c518f249838538d3707479823731c163ef",
+    "GlitchDrumsExtension/Model/GlitchRoutingState.swift": "ecb3644f6f7dd2316ef090a2763cc5c24c5fc4409ffb756f4e01104c9926c637",
+    "GlitchDrumsExtension/Model/VoiceEditImage.swift": "93a162004deffd5227adf2bb583c8af6b7da9bfc2541ca5862acc8d20dc793d5",
+    "GlitchDrumsExtension/Model/VoiceEditParameterCatalog.swift": "c30cbff1d2d8b8e8864a1ade09d6657b25de67a3a35e5da072745ae3cb765df6",
+    "GlitchDrumsExtension/Model/VoicePreset.swift": "46536b59c3e50d2a5ee5e0c0f956654f172ae9ba9cdff28b8acf7db90e210b79",
+    "GlitchDrumsExtension/Model/VoicePresetParameterCatalog.swift": "fb08982598b95a7ddbea14c8504f4d6a2077f738f5c0b8e9078044ecee5e8c91",
+    "GlitchDrumsExtension/Model/FactoryVoicePreset.swift": "8d0ad4a67d1494eb3cc09c6e3a14f9ffa46b5316a6eb158fb454fac806e5f3a8",
+    "GlitchDrumsExtension/Model/FactoryVoicePresetCatalog.swift": "e486e026c4867dfbd0d543f7c0c3a365540d4c53fdb6cb76c90c523817d7c627"
+  },
+  "presets": [
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "SUB FOUNDATION",
+      "level": 0.72,
+      "level_byte": 91,
+      "control_bytes": [
+        48,
+        91,
+        15,
+        10,
+        42,
+        56,
+        6,
+        127,
+        0,
+        40,
+        13,
+        14,
+        64,
+        0,
+        68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        91
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": -6,
+          "encoded": -6.0,
+          "code": 48
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.82,
+          "encoded": 0.8454195011337868,
+          "code": 91
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.12,
+          "encoded": 0.11810302734375,
+          "code": 15
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.08,
+          "encoded": 0.0787353515625,
+          "code": 10
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 24,
+          "encoded": 23.8125,
+          "code": 42
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.09,
+          "encoded": 0.089297052154195,
+          "code": 56
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 0.18,
+          "encoded": 0.18896484375,
+          "code": 6
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.05,
+          "encoded": 0.05,
+          "code": 127
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.0084,
+          "encoded": 0.008390022675736962,
+          "code": 13
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.11,
+          "encoded": 0.1099853515625,
+          "code": 14
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.061,
+          "encoded": 0.06099773242630385,
+          "code": 64
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "DEEP HOUSE",
+      "level": 0.66,
+      "level_byte": 84,
+      "control_bytes": [
+        59,
+        88,
+        32,
+        42,
+        56,
+        44,
+        14,
+        127,
+        0,
+        35,
+        13,
+        14,
+        64,
+        0,
+        68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        84
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": -2,
+          "encoded": -1.88,
+          "code": 59
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.66,
+          "encoded": 0.6616780045351474,
+          "code": 88
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.25,
+          "encoded": 0.251983642578125,
+          "code": 32
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.33,
+          "encoded": 0.329986572265625,
+          "code": 42
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 32,
+          "encoded": 31.74609375,
+          "code": 56
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.07,
+          "encoded": 0.07058956916099773,
+          "code": 44
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 0.45,
+          "encoded": 0.440948486328125,
+          "code": 14
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.05,
+          "encoded": 0.05,
+          "code": 127
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": -0.45,
+          "encoded": -0.453125,
+          "code": 35
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.0084,
+          "encoded": 0.008390022675736962,
+          "code": 13
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.11,
+          "encoded": 0.1099853515625,
+          "code": 14
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.061,
+          "encoded": 0.06099773242630385,
+          "code": 64
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "TECH HOUSE",
+      "level": 0.66,
+      "level_byte": 84,
+      "control_bytes": [
+        67,
+        87,
+        38,
+        105,
+        78,
+        127,
+        117,
+        83,
+        0,
+        40,
+        13,
+        41,
+        1,
+        78,
+        28,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        84
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 1.12,
+          "encoded": 1.14,
+          "code": 67
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.61,
+          "encoded": 0.6097732426303855,
+          "code": 87
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.3,
+          "encoded": 0.299224853515625,
+          "code": 38
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.83,
+          "encoded": 0.8267822265625,
+          "code": 105
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 44.1,
+          "encoded": 44.21875,
+          "code": 78
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.2,
+          "encoded": 0.2,
+          "code": 127
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 3.69,
+          "encoded": 3.685028076171875,
+          "code": 117
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.033,
+          "encoded": 0.032857142857142856,
+          "code": 83
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.0084,
+          "encoded": 0.008390022675736962,
+          "code": 13
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.32,
+          "encoded": 0.322845458984375,
+          "code": 41
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0012,
+          "encoded": 0.0015419501133786847,
+          "code": 1
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.049,
+          "encoded": 0.049138321995464855,
+          "code": 78
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.56,
+          "encoded": -0.5625,
+          "code": 28
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "CLUB PUNCH",
+      "level": 0.74,
+      "level_byte": 94,
+      "control_bytes": [
+        67,
+        84,
+        116,
+        99,
+        91,
+        127,
+        127,
+        127,
+        0,
+        40,
+        13,
+        14,
+        64,
+        60,
+        26,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        94
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 1.22,
+          "encoded": 1.14,
+          "code": 67
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.48,
+          "encoded": 0.4772562358276644,
+          "code": 84
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.91,
+          "encoded": 0.91339111328125,
+          "code": 116
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.78,
+          "encoded": 0.779541015625,
+          "code": 99
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 51.5,
+          "encoded": 51.58984375,
+          "code": 91
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.2,
+          "encoded": 0.2,
+          "code": 127
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.05,
+          "encoded": 0.05,
+          "code": 127
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.0084,
+          "encoded": 0.008390022675736962,
+          "code": 13
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.11,
+          "encoded": 0.1099853515625,
+          "code": 14
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.061,
+          "encoded": 0.06099773242630385,
+          "code": 64
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.038,
+          "encoded": 0.03780045351473923,
+          "code": 60
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.59,
+          "encoded": -0.59375,
+          "code": 26
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "TRANCE KNOCK",
+      "level": 0.66,
+      "level_byte": 84,
+      "control_bytes": [
+        66,
+        89,
+        97,
+        42,
+        99,
+        13,
+        70,
+        9,
+        0,
+        40,
+        13,
+        14,
+        64,
+        0,
+        68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        84
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 1,
+          "encoded": 0.9,
+          "code": 66
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.72,
+          "encoded": 0.7180045351473923,
+          "code": 89
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.76,
+          "encoded": 0.7637939453125,
+          "code": 97
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.33,
+          "encoded": 0.329986572265625,
+          "code": 42
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 56,
+          "encoded": 56.125,
+          "code": 99
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.022,
+          "encoded": 0.022267573696145123,
+          "code": 13
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 2.2,
+          "encoded": 2.2047119140625,
+          "code": 70
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.004,
+          "encoded": 0.004013605442176871,
+          "code": 9
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.0084,
+          "encoded": 0.008390022675736962,
+          "code": 13
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.11,
+          "encoded": 0.1099853515625,
+          "code": 14
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.061,
+          "encoded": 0.06099773242630385,
+          "code": 64
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "909 DRIVE",
+      "level": 0.66,
+      "level_byte": 84,
+      "control_bytes": [
+        69,
+        85,
+        74,
+        74,
+        78,
+        17,
+        127,
+        127,
+        0,
+        82,
+        13,
+        14,
+        64,
+        0,
+        68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        84
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 2,
+          "encoded": 1.9,
+          "code": 69
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 85
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 44,
+          "encoded": 44.21875,
+          "code": 78
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.028,
+          "encoded": 0.028503401360544217,
+          "code": 17
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.05,
+          "encoded": 0.05,
+          "code": 127
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": 0.28,
+          "encoded": 0.28570556640625,
+          "code": 82
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.0084,
+          "encoded": 0.008390022675736962,
+          "code": 13
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.11,
+          "encoded": 0.1099853515625,
+          "code": 14
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.061,
+          "encoded": 0.06099773242630385,
+          "code": 64
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 0,
+      "model": "kick",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "808 BLOOM",
+      "level": 0.66,
+      "level_byte": 84,
+      "control_bytes": [
+        43,
+        96,
+        10,
+        42,
+        53,
+        92,
+        3,
+        127,
+        0,
+        40,
+        29,
+        14,
+        64,
+        0,
+        68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        84
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": -8,
+          "encoded": -7.88,
+          "code": 43
+        },
+        {
+          "parameter": "decay",
+          "requested": 1.25,
+          "encoded": 1.271859410430839,
+          "code": 96
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.08,
+          "encoded": 0.0787353515625,
+          "code": 10
+        },
+        {
+          "parameter": "kickBodyDrive",
+          "requested": 0.33,
+          "encoded": 0.329986572265625,
+          "code": 42
+        },
+        {
+          "parameter": "kickPitchDrop",
+          "requested": 30,
+          "encoded": 30.046875,
+          "code": 53
+        },
+        {
+          "parameter": "kickPitchDecay",
+          "requested": 0.145,
+          "encoded": 0.1454421768707483,
+          "code": 92
+        },
+        {
+          "parameter": "kickClickLevel",
+          "requested": 0.1,
+          "encoded": 0.094482421875,
+          "code": 3
+        },
+        {
+          "parameter": "kickClickDecay",
+          "requested": 0.05,
+          "encoded": 0.05,
+          "code": 127
+        },
+        {
+          "parameter": "kickBodyDelay",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "kickBodyShape",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "kickPitchHold",
+          "requested": 0.018,
+          "encoded": 0.018276643990929705,
+          "code": 29
+        },
+        {
+          "parameter": "kickBodyPunch",
+          "requested": 0.11,
+          "encoded": 0.1099853515625,
+          "code": 14
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.061,
+          "encoded": 0.06099773242630385,
+          "code": 64
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "TIGHT WIRE",
+      "level": 0.65,
+      "level_byte": 83,
+      "control_bytes": [
+        66,
+        10,
+        69,
+        104,
+        49,
+        49,
+        25,
+        0,
+        10,
+        63,
+        63,
+        0,
+        0,
+        8,
+        24,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        83
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0.8,
+          "encoded": 0.8,
+          "code": 66
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.18,
+          "encoded": 0.1758956916099773,
+          "code": 10
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.54,
+          "encoded": 0.543304443359375,
+          "code": 69
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 0.46,
+          "encoded": 0.462982177734375,
+          "code": 49
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 1.7,
+          "encoded": 1.70001220703125,
+          "code": 49
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 0.55,
+          "encoded": 0.5452880859375,
+          "code": 10
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.62,
+          "encoded": -0.625,
+          "code": 24
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "HARD CENTER",
+      "level": 0.72,
+      "level_byte": 91,
+      "control_bytes": [
+        66,
+        17,
+        51,
+        70,
+        106,
+        49,
+        19,
+        0,
+        15,
+        63,
+        63,
+        0,
+        0,
+        8,
+        94,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        91
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0.8,
+          "encoded": 0.8,
+          "code": 66
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.28,
+          "encoded": 0.28503401360544217,
+          "code": 17
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.4,
+          "encoded": 0.401580810546875,
+          "code": 51
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.55,
+          "encoded": 0.551177978515625,
+          "code": 70
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 1,
+          "encoded": 1.0015869140625,
+          "code": 106
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 1.7,
+          "encoded": 1.70001220703125,
+          "code": 49
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 0.82,
+          "encoded": 0.81103515625,
+          "code": 19
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 0.7,
+          "encoded": 0.692901611328125,
+          "code": 15
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "BIG ROOM",
+      "level": 0.65,
+      "level_byte": 83,
+      "control_bytes": [
+        66,
+        45,
+        86,
+        117,
+        66,
+        49,
+        44,
+        0,
+        83,
+        63,
+        63,
+        0,
+        0,
+        8,
+        97,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        83
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0.8,
+          "encoded": 0.8,
+          "code": 66
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.72,
+          "encoded": 0.7215646258503401,
+          "code": 45
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.68,
+          "encoded": 0.677154541015625,
+          "code": 86
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.92,
+          "encoded": 0.9212646484375,
+          "code": 117
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 0.62,
+          "encoded": 0.623626708984375,
+          "code": 66
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 1.7,
+          "encoded": 1.70001220703125,
+          "code": 49
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 1.55,
+          "encoded": 1.549224853515625,
+          "code": 44
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 2.7,
+          "encoded": 2.700775146484375,
+          "code": 83
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.52,
+          "encoded": 0.5238037109375,
+          "code": 97
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "NOISE SLAP",
+      "level": 0.65,
+      "level_byte": 83,
+      "control_bytes": [
+        66,
+        21,
+        99,
+        127,
+        23,
+        8,
+        25,
+        0,
+        37,
+        63,
+        63,
+        109,
+        0,
+        8,
+        94,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        83
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0.8,
+          "encoded": 0.8,
+          "code": 66
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.34,
+          "encoded": 0.34739229024943313,
+          "code": 21
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.78,
+          "encoded": 0.779541015625,
+          "code": 99
+        },
+        {
+          "parameter": "noise",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 0.22,
+          "encoded": 0.217315673828125,
+          "code": 23
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 1.12,
+          "encoded": 1.113372802734375,
+          "code": 8
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 1.35,
+          "encoded": 1.342529296875,
+          "code": 37
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0.72,
+          "encoded": 0.71429443359375,
+          "code": 109
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "RIM TIGHT",
+      "level": 0.58,
+      "level_byte": 74,
+      "control_bytes": [
+        88,
+        5,
+        91,
+        36,
+        83,
+        88,
+        25,
+        0,
+        4,
+        63,
+        63,
+        0,
+        0,
+        8,
+        94,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        74
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 9,
+          "encoded": 9.14,
+          "code": 88
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.1,
+          "encoded": 0.09795918367346938,
+          "code": 5
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.72,
+          "encoded": 0.716522216796875,
+          "code": 91
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.28,
+          "encoded": 0.283477783203125,
+          "code": 36
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 0.78,
+          "encoded": 0.78424072265625,
+          "code": 83
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 2.25,
+          "encoded": 2.24725341796875,
+          "code": 88
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 0.38,
+          "encoded": 0.36810302734375,
+          "code": 4
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "909 CRACK",
+      "level": 0.65,
+      "level_byte": 83,
+      "control_bytes": [
+        67,
+        23,
+        74,
+        109,
+        76,
+        52,
+        25,
+        0,
+        36,
+        63,
+        63,
+        0,
+        0,
+        8,
+        94,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        83
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 1,
+          "encoded": 1.14,
+          "code": 67
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.38,
+          "encoded": 0.37857142857142856,
+          "code": 23
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.86,
+          "encoded": 0.8599853515625,
+          "code": 109
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 0.72,
+          "encoded": 0.718109130859375,
+          "code": 76
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 1.74,
+          "encoded": 1.73699951171875,
+          "code": 52
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 1.3,
+          "encoded": 1.31298828125,
+          "code": 36
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 1,
+      "model": "snare",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "ELECTRO BODY",
+      "level": 0.65,
+      "level_byte": 83,
+      "control_bytes": [
+        74,
+        24,
+        43,
+        48,
+        89,
+        65,
+        41,
+        0,
+        42,
+        63,
+        63,
+        0,
+        0,
+        8,
+        94,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        83
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 4,
+          "encoded": 3.81,
+          "code": 74
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.4,
+          "encoded": 0.39417233560090703,
+          "code": 24
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.34,
+          "encoded": 0.339996337890625,
+          "code": 43
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.38,
+          "encoded": 0.377960205078125,
+          "code": 48
+        },
+        {
+          "parameter": "snarePunch",
+          "requested": 0.84,
+          "encoded": 0.8409423828125,
+          "code": 89
+        },
+        {
+          "parameter": "snareRing",
+          "requested": 1.92,
+          "encoded": 1.9212646484375,
+          "code": 65
+        },
+        {
+          "parameter": "snareBodyDecay",
+          "requested": 1.45,
+          "encoded": 1.46063232421875,
+          "code": 41
+        },
+        {
+          "parameter": "snareWireAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "snareWireDecay",
+          "requested": 1.5,
+          "encoded": 1.5,
+          "code": 42
+        },
+        {
+          "parameter": "bodyTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "wireTrim",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 63
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0048,
+          "encoded": 0.004807256235827664,
+          "code": 8
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "TIGHT TICK",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        64,
+        3,
+        99,
+        43,
+        64,
+        64,
+        36,
+        2,
+        2,
+        0,
+        0,
+        64,
+        11,
+        3,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.06,
+          "encoded": 0.06678004535147393,
+          "code": 3
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.78,
+          "encoded": 0.779541015625,
+          "code": 99
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.34,
+          "encoded": 0.338592529296875,
+          "code": 43
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.28,
+          "encoded": 0.283477783203125,
+          "code": 36
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.32,
+          "encoded": 0.309051513671875,
+          "code": 2
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 0.3,
+          "encoded": 0.309051513671875,
+          "code": 2
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.011,
+          "encoded": 0.010997732426303855,
+          "code": 11
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0016,
+          "encoded": 0.0016099773242630386,
+          "code": 3
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.9,
+          "encoded": -0.90625,
+          "code": 6
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "909 CLOSED",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        64,
+        12,
+        79,
+        74,
+        64,
+        64,
+        99,
+        22,
+        15,
+        0,
+        61,
+        64,
+        11,
+        3,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.2,
+          "encoded": 0.20709750566893423,
+          "code": 12
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.78,
+          "encoded": 0.779541015625,
+          "code": 99
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.9,
+          "encoded": 0.89959716796875,
+          "code": 22
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 0.69,
+          "encoded": 0.69000244140625,
+          "code": 15
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.48,
+          "encoded": 0.480316162109375,
+          "code": 61
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.011,
+          "encoded": 0.010997732426303855,
+          "code": 11
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0016,
+          "encoded": 0.0016099773242630386,
+          "code": 3
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.44,
+          "encoded": -0.44000244140625,
+          "code": 36
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "DARK VELVET",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        64,
+        10,
+        25,
+        89,
+        64,
+        64,
+        79,
+        40,
+        15,
+        0,
+        10,
+        3,
+        11,
+        3,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.18,
+          "encoded": 0.1758956916099773,
+          "code": 10
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.2,
+          "encoded": 0.19683837890625,
+          "code": 25
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.7,
+          "encoded": 0.700775146484375,
+          "code": 89
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 1.42,
+          "encoded": 1.420013427734375,
+          "code": 40
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 0.69,
+          "encoded": 0.69000244140625,
+          "code": 15
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.08,
+          "encoded": 0.0787353515625,
+          "code": 10
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.95,
+          "encoded": -0.953125,
+          "code": 3
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.011,
+          "encoded": 0.010997732426303855,
+          "code": 11
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0016,
+          "encoded": 0.0016099773242630386,
+          "code": 3
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.44,
+          "encoded": -0.44000244140625,
+          "code": 36
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "BRIGHT SPRAY",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        64,
+        17,
+        79,
+        112,
+        64,
+        64,
+        104,
+        14,
+        29,
+        0,
+        97,
+        73,
+        1,
+        6,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.28,
+          "encoded": 0.28503401360544217,
+          "code": 17
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.88,
+          "encoded": 0.88189697265625,
+          "code": 112
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.65,
+          "encoded": 0.66339111328125,
+          "code": 14
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 1.1,
+          "encoded": 1.106292724609375,
+          "code": 29
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.76,
+          "encoded": 0.7637939453125,
+          "code": 97
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0.15,
+          "encoded": 0.142852783203125,
+          "code": 73
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0015,
+          "encoded": 0.0015419501133786847,
+          "code": 1
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.004,
+          "encoded": 0.0037868480725623582,
+          "code": 6
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "ACID TICK",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        74,
+        6,
+        104,
+        51,
+        97,
+        38,
+        100,
+        40,
+        15,
+        0,
+        117,
+        64,
+        11,
+        3,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 4,
+          "encoded": 3.81,
+          "code": 74
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.11,
+          "encoded": 0.11353741496598639,
+          "code": 6
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.4,
+          "encoded": 0.401580810546875,
+          "code": 51
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 2.1,
+          "encoded": 2.1,
+          "code": 97
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": -1.6,
+          "encoded": -1.62,
+          "code": 38
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.79,
+          "encoded": 0.790008544921875,
+          "code": 100
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 1.42,
+          "encoded": 1.420013427734375,
+          "code": 40
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 0.69,
+          "encoded": 0.69000244140625,
+          "code": 15
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.92,
+          "encoded": 0.9212646484375,
+          "code": 117
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.011,
+          "encoded": 0.010997732426303855,
+          "code": 11
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0016,
+          "encoded": 0.0016099773242630386,
+          "code": 3
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.44,
+          "encoded": -0.44000244140625,
+          "code": 36
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "HOUSE SHUFFLE",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        64,
+        17,
+        74,
+        84,
+        64,
+        64,
+        91,
+        40,
+        30,
+        0,
+        43,
+        64,
+        11,
+        3,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.28,
+          "encoded": 0.28503401360544217,
+          "code": 17
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.66,
+          "encoded": 0.661407470703125,
+          "code": 84
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.72,
+          "encoded": 0.716522216796875,
+          "code": 91
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 1.42,
+          "encoded": 1.420013427734375,
+          "code": 40
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 1.15,
+          "encoded": 1.135833740234375,
+          "code": 30
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.34,
+          "encoded": 0.338592529296875,
+          "code": 43
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.011,
+          "encoded": 0.010997732426303855,
+          "code": 11
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0016,
+          "encoded": 0.0016099773242630386,
+          "code": 3
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.44,
+          "encoded": -0.44000244140625,
+          "code": 36
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 2,
+      "model": "closedHat",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "TRAP PIN",
+      "level": 0.86,
+      "level_byte": 109,
+      "control_bytes": [
+        85,
+        1,
+        124,
+        38,
+        64,
+        64,
+        56,
+        40,
+        15,
+        0,
+        107,
+        64,
+        11,
+        0,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 8,
+          "encoded": 8.0,
+          "code": 85
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.04,
+          "encoded": 0.035600907029478455,
+          "code": 1
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.98,
+          "encoded": 0.97637939453125,
+          "code": 124
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.3,
+          "encoded": 0.299224853515625,
+          "code": 38
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.44,
+          "encoded": 0.440948486328125,
+          "code": 56
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 1.42,
+          "encoded": 1.420013427734375,
+          "code": 40
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 0.69,
+          "encoded": 0.69000244140625,
+          "code": 15
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.84,
+          "encoded": 0.842529296875,
+          "code": 107
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.011,
+          "encoded": 0.010997732426303855,
+          "code": 11
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": -0.44,
+          "encoded": -0.44000244140625,
+          "code": 36
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "909 OPEN",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        45,
+        76,
+        104,
+        64,
+        64,
+        99,
+        20,
+        42,
+        51,
+        28,
+        64,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.72,
+          "encoded": 0.7215646258503401,
+          "code": 45
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.6,
+          "encoded": 0.598419189453125,
+          "code": 76
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.78,
+          "encoded": 0.779541015625,
+          "code": 99
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.85,
+          "encoded": 0.840545654296875,
+          "code": 20
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 1.5,
+          "encoded": 1.490142822265625,
+          "code": 42
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0.08,
+          "encoded": 0.08031746031746032,
+          "code": 51
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "HOUSE OFFBEAT",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        36,
+        66,
+        122,
+        64,
+        64,
+        121,
+        4,
+        39,
+        38,
+        15,
+        64,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.58,
+          "encoded": 0.5812698412698413,
+          "code": 36
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.52,
+          "encoded": 0.519683837890625,
+          "code": 66
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.96,
+          "encoded": 0.96063232421875,
+          "code": 122
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.95,
+          "encoded": 0.9527587890625,
+          "code": 121
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.38,
+          "encoded": 0.36810302734375,
+          "code": 4
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 1.4,
+          "encoded": 1.401580810546875,
+          "code": 39
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0.06,
+          "encoded": 0.05984126984126984,
+          "code": 38
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.12,
+          "encoded": 0.11810302734375,
+          "code": 15
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "LONG AIR",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        98,
+        86,
+        127,
+        64,
+        64,
+        127,
+        0,
+        107,
+        0,
+        0,
+        64,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 1.55,
+          "encoded": 1.5478684807256236,
+          "code": 98
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.68,
+          "encoded": 0.677154541015625,
+          "code": 86
+        },
+        {
+          "parameter": "noise",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.25,
+          "encoded": 0.25,
+          "code": 0
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 3.4,
+          "encoded": 3.409454345703125,
+          "code": 107
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "DARK OPEN",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        56,
+        51,
+        23,
+        122,
+        64,
+        64,
+        119,
+        2,
+        49,
+        64,
+        0,
+        3,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": -3,
+          "encoded": -3.0,
+          "code": 56
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.82,
+          "encoded": 0.815124716553288,
+          "code": 51
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.18,
+          "encoded": 0.18109130859375,
+          "code": 23
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.96,
+          "encoded": 0.96063232421875,
+          "code": 122
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.94,
+          "encoded": 0.93701171875,
+          "code": 119
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.3,
+          "encoded": 0.309051513671875,
+          "code": 2
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 1.7,
+          "encoded": 1.69683837890625,
+          "code": 49
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0.1,
+          "encoded": 0.1007936507936508,
+          "code": 64
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.95,
+          "encoded": -0.953125,
+          "code": 3
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "BRIGHT WASH",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        76,
+        76,
+        127,
+        64,
+        64,
+        127,
+        0,
+        76,
+        0,
+        23,
+        67,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 1.2,
+          "encoded": 1.204875283446712,
+          "code": 76
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.6,
+          "encoded": 0.598419189453125,
+          "code": 76
+        },
+        {
+          "parameter": "noise",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.25,
+          "encoded": 0.25,
+          "code": 0
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 2.5,
+          "encoded": 2.49407958984375,
+          "code": 76
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.18,
+          "encoded": 0.18109130859375,
+          "code": 23
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0.05,
+          "encoded": 0.047607421875,
+          "code": 67
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "SHORT OPEN",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        18,
+        74,
+        119,
+        64,
+        64,
+        121,
+        2,
+        15,
+        22,
+        18,
+        64,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.3,
+          "encoded": 0.30063492063492064,
+          "code": 18
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.94,
+          "encoded": 0.93701171875,
+          "code": 119
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.95,
+          "encoded": 0.9527587890625,
+          "code": 121
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.3,
+          "encoded": 0.309051513671875,
+          "code": 2
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 0.7,
+          "encoded": 0.692901611328125,
+          "code": 15
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0.035,
+          "encoded": 0.03464852607709751,
+          "code": 22
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.14,
+          "encoded": 0.1417236328125,
+          "code": 18
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 3,
+      "model": "openHat",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "TRAP SIZZLE",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        85,
+        40,
+        79,
+        122,
+        64,
+        64,
+        114,
+        3,
+        42,
+        0,
+        48,
+        67,
+        4,
+        0,
+        64,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 8,
+          "encoded": 8.0,
+          "code": 85
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.65,
+          "encoded": 0.6436281179138322,
+          "code": 40
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.96,
+          "encoded": 0.96063232421875,
+          "code": 122
+        },
+        {
+          "parameter": "hatMetalA",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatMetalB",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "hatDensity",
+          "requested": 0.9,
+          "encoded": 0.89764404296875,
+          "code": 114
+        },
+        {
+          "parameter": "hatMetalDecay",
+          "requested": 0.35,
+          "encoded": 0.338592529296875,
+          "code": 3
+        },
+        {
+          "parameter": "hatNoiseDecay",
+          "requested": 1.5,
+          "encoded": 1.490142822265625,
+          "code": 42
+        },
+        {
+          "parameter": "hatChokeTime",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "hatBite",
+          "requested": 0.38,
+          "encoded": 0.377960205078125,
+          "code": 48
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0.05,
+          "encoded": 0.047607421875,
+          "code": 67
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 4
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "TIGHT CLAP",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        6,
+        74,
+        97,
+        15,
+        1,
+        10,
+        7,
+        0,
+        0,
+        0,
+        33,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.12,
+          "encoded": 0.11353741496598639,
+          "code": 6
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.76,
+          "encoded": 0.7637939453125,
+          "code": 97
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.007,
+          "encoded": 0.007074829931972789,
+          "code": 15
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 3,
+          "encoded": 3.0,
+          "code": 1
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 0.55,
+          "encoded": 0.5452880859375,
+          "code": 10
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 0.45,
+          "encoded": 0.456695556640625,
+          "code": 7
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.49,
+          "encoded": -0.489990234375,
+          "code": 33
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "909 CLAP",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        17,
+        61,
+        112,
+        34,
+        2,
+        29,
+        41,
+        0,
+        0,
+        0,
+        33,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.28,
+          "encoded": 0.28503401360544217,
+          "code": 17
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.48,
+          "encoded": 0.480316162109375,
+          "code": 61
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.88,
+          "encoded": 0.88189697265625,
+          "code": 112
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.011,
+          "encoded": 0.010952380952380953,
+          "code": 34
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 2
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 1.1,
+          "encoded": 1.106292724609375,
+          "code": 29
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 1.45,
+          "encoded": 1.46063232421875,
+          "code": 41
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.49,
+          "encoded": -0.489990234375,
+          "code": 33
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "BIG HANDS",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        64,
+        32,
+        53,
+        104,
+        68,
+        3,
+        37,
+        83,
+        109,
+        0,
+        0,
+        33,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.52,
+          "encoded": 0.5188888888888888,
+          "code": 32
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.42,
+          "encoded": 0.417327880859375,
+          "code": 53
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.018,
+          "encoded": 0.017913832199546485,
+          "code": 68
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 5,
+          "encoded": 5.0,
+          "code": 3
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 1.33,
+          "encoded": 1.329986572265625,
+          "code": 37
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 2.7,
+          "encoded": 2.700775146484375,
+          "code": 83
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0.86,
+          "encoded": 0.8582763671875,
+          "code": 109
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.49,
+          "encoded": -0.489990234375,
+          "code": 33
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "DRY SLAP",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        4,
+        66,
+        74,
+        0,
+        0,
+        37,
+        1,
+        121,
+        0,
+        0,
+        33,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.09,
+          "encoded": 0.08235827664399092,
+          "code": 4
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.52,
+          "encoded": 0.519683837890625,
+          "code": 66
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.004,
+          "encoded": 0.00399092970521542,
+          "code": 0
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 2,
+          "encoded": 2.0,
+          "code": 0
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 1.33,
+          "encoded": 1.329986572265625,
+          "code": 37
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 0.28,
+          "encoded": 0.279541015625,
+          "code": 1
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0.95,
+          "encoded": 0.9527587890625,
+          "code": 121
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.49,
+          "encoded": -0.489990234375,
+          "code": 33
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "NOISE CLOUD",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        38,
+        86,
+        127,
+        88,
+        3,
+        37,
+        100,
+        15,
+        0,
+        0,
+        33,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.62,
+          "encoded": 0.6124489795918368,
+          "code": 38
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.68,
+          "encoded": 0.677154541015625,
+          "code": 86
+        },
+        {
+          "parameter": "noise",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.022,
+          "encoded": 0.02201814058956916,
+          "code": 88
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 5,
+          "encoded": 5.0,
+          "code": 3
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 1.33,
+          "encoded": 1.329986572265625,
+          "code": 37
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 3.2,
+          "encoded": 3.2027587890625,
+          "code": 100
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0.12,
+          "encoded": 0.11810302734375,
+          "code": 15
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.49,
+          "encoded": -0.489990234375,
+          "code": 33
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "HOUSE STACK",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        21,
+        79,
+        112,
+        49,
+        2,
+        37,
+        63,
+        69,
+        0,
+        0,
+        33,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.34,
+          "encoded": 0.34739229024943313,
+          "code": 21
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.88,
+          "encoded": 0.88189697265625,
+          "code": 112
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.014,
+          "encoded": 0.014036281179138322,
+          "code": 49
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 2
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 1.35,
+          "encoded": 1.329986572265625,
+          "code": 37
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 2.1,
+          "encoded": 2.100006103515625,
+          "code": 63
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0.54,
+          "encoded": 0.543304443359375,
+          "code": 69
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.49,
+          "encoded": -0.489990234375,
+          "code": 33
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 4,
+      "model": "clap",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "DARK CROWD",
+      "level": 0.82,
+      "level_byte": 104,
+      "control_bytes": [
+        64,
+        36,
+        20,
+        117,
+        108,
+        3,
+        37,
+        63,
+        25,
+        0,
+        0,
+        3,
+        0,
+        0,
+        68,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        104
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.58,
+          "encoded": 0.5812698412698413,
+          "code": 36
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.16,
+          "encoded": 0.157470703125,
+          "code": 20
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.92,
+          "encoded": 0.9212646484375,
+          "code": 117
+        },
+        {
+          "parameter": "clapFlam",
+          "requested": 0.026,
+          "encoded": 0.026099773242630384,
+          "code": 108
+        },
+        {
+          "parameter": "clapBursts",
+          "requested": 5,
+          "encoded": 5.0,
+          "code": 3
+        },
+        {
+          "parameter": "clapBurstDecay",
+          "requested": 1.33,
+          "encoded": 1.329986572265625,
+          "code": 37
+        },
+        {
+          "parameter": "clapTailDecay",
+          "requested": 2.1,
+          "encoded": 2.100006103515625,
+          "code": 63
+        },
+        {
+          "parameter": "clapSmack",
+          "requested": 0.2,
+          "encoded": 0.19683837890625,
+          "code": 25
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "unused",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -0.95,
+          "encoded": -0.953125,
+          "code": 3
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.07,
+          "encoded": 0.07000732421875,
+          "code": 68
+        },
+        {
+          "parameter": "extraCutoff",
+          "requested": 18000,
+          "encoded": 18000.0,
+          "code": 127
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "WOOD BLOCK",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        77,
+        8,
+        33,
+        20,
+        28,
+        57,
+        127,
+        36,
+        116,
+        0,
+        25,
+        114,
+        12,
+        113,
+        94,
+        0,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 5,
+          "encoded": 4.95,
+          "code": 77
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.14,
+          "encoded": 0.14471655328798186,
+          "code": 8
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.26,
+          "encoded": 0.259857177734375,
+          "code": 33
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.16,
+          "encoded": 0.157470703125,
+          "code": 20
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.07,
+          "encoded": 1.07000732421875,
+          "code": 28
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 0.9,
+          "encoded": 0.899993896484375,
+          "code": 57
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.28,
+          "encoded": 0.279998779296875,
+          "code": 36
+        },
+        {
+          "parameter": "percDual",
+          "requested": 0.91,
+          "encoded": 0.910003662109375,
+          "code": 116
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 0.9,
+          "encoded": 0.89764404296875,
+          "code": 114
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": -0.82,
+          "encoded": -0.8125,
+          "code": 12
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.89,
+          "encoded": 0.8900146484375,
+          "code": 113
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.74,
+          "encoded": 0.740142822265625,
+          "code": 94
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "COWBELL",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        82,
+        32,
+        86,
+        10,
+        42,
+        57,
+        127,
+        91,
+        127,
+        0,
+        25,
+        127,
+        92,
+        113,
+        25,
+        0,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 7,
+          "encoded": 6.86,
+          "code": 82
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.52,
+          "encoded": 0.5188888888888888,
+          "code": 32
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.68,
+          "encoded": 0.677154541015625,
+          "code": 86
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.08,
+          "encoded": 0.0787353515625,
+          "code": 10
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.48,
+          "encoded": 1.490142822265625,
+          "code": 42
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 0.9,
+          "encoded": 0.899993896484375,
+          "code": 57
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.72,
+          "encoded": 0.716522216796875,
+          "code": 91
+        },
+        {
+          "parameter": "percDual",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": 0.44,
+          "encoded": 0.44000244140625,
+          "code": 92
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.89,
+          "encoded": 0.8900146484375,
+          "code": 113
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.2,
+          "encoded": 0.20001220703125,
+          "code": 25
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "CLAVE",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        95,
+        4,
+        71,
+        3,
+        29,
+        57,
+        127,
+        36,
+        116,
+        0,
+        25,
+        127,
+        92,
+        113,
+        104,
+        0,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 12,
+          "encoded": 11.81,
+          "code": 95
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.09,
+          "encoded": 0.08235827664399092,
+          "code": 4
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.56,
+          "encoded": 0.559051513671875,
+          "code": 71
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.02,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.1,
+          "encoded": 1.106292724609375,
+          "code": 29
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 0.9,
+          "encoded": 0.899993896484375,
+          "code": 57
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.28,
+          "encoded": 0.279998779296875,
+          "code": 36
+        },
+        {
+          "parameter": "percDual",
+          "requested": 0.91,
+          "encoded": 0.910003662109375,
+          "code": 116
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": 0.44,
+          "encoded": 0.44000244140625,
+          "code": 92
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.89,
+          "encoded": 0.8900146484375,
+          "code": 113
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "FM BELL",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        90,
+        69,
+        104,
+        5,
+        50,
+        56,
+        86,
+        36,
+        116,
+        0,
+        25,
+        127,
+        92,
+        113,
+        25,
+        0,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 10,
+          "encoded": 9.9,
+          "code": 90
+        },
+        {
+          "parameter": "decay",
+          "requested": 1.1,
+          "encoded": 1.095736961451247,
+          "code": 69
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.04,
+          "encoded": 0.03936767578125,
+          "code": 5
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.72,
+          "encoded": 1.72637939453125,
+          "code": 50
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 0.88,
+          "encoded": 0.88189697265625,
+          "code": 56
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 2.8,
+          "encoded": 2.78936767578125,
+          "code": 86
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.28,
+          "encoded": 0.279998779296875,
+          "code": 36
+        },
+        {
+          "parameter": "percDual",
+          "requested": 0.91,
+          "encoded": 0.910003662109375,
+          "code": 116
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": 0.44,
+          "encoded": 0.44000244140625,
+          "code": 92
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.89,
+          "encoded": 0.8900146484375,
+          "code": 113
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.2,
+          "encoded": 0.20001220703125,
+          "code": 25
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "METAL HIT",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        72,
+        42,
+        107,
+        36,
+        56,
+        63,
+        127,
+        119,
+        116,
+        0,
+        25,
+        127,
+        92,
+        113,
+        25,
+        0,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 3,
+          "encoded": 3.05,
+          "code": 72
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.68,
+          "encoded": 0.6748072562358277,
+          "code": 42
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.84,
+          "encoded": 0.842529296875,
+          "code": 107
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.28,
+          "encoded": 0.283477783203125,
+          "code": 36
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.91,
+          "encoded": 1.903533935546875,
+          "code": 56
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 1,
+          "encoded": 0.99212646484375,
+          "code": 63
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.94,
+          "encoded": 0.93701171875,
+          "code": 119
+        },
+        {
+          "parameter": "percDual",
+          "requested": 0.91,
+          "encoded": 0.910003662109375,
+          "code": 116
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": 0.44,
+          "encoded": 0.44000244140625,
+          "code": 92
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.89,
+          "encoded": 0.8900146484375,
+          "code": 113
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.2,
+          "encoded": 0.20001220703125,
+          "code": 25
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "SHAKER",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        74,
+        10,
+        91,
+        117,
+        28,
+        57,
+        127,
+        36,
+        116,
+        0,
+        25,
+        43,
+        122,
+        113,
+        25,
+        90,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": 4,
+          "encoded": 3.81,
+          "code": 74
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.18,
+          "encoded": 0.1758956916099773,
+          "code": 10
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.72,
+          "encoded": 0.716522216796875,
+          "code": 91
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.92,
+          "encoded": 0.9212646484375,
+          "code": 117
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.07,
+          "encoded": 1.07000732421875,
+          "code": 28
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 0.9,
+          "encoded": 0.899993896484375,
+          "code": 57
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.28,
+          "encoded": 0.279998779296875,
+          "code": 36
+        },
+        {
+          "parameter": "percDual",
+          "requested": 0.91,
+          "encoded": 0.910003662109375,
+          "code": 116
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 0.34,
+          "encoded": 0.338592529296875,
+          "code": 43
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": 0.92,
+          "encoded": 0.920623779296875,
+          "code": 122
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.89,
+          "encoded": 0.8900146484375,
+          "code": 113
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.2,
+          "encoded": 0.20001220703125,
+          "code": 25
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0.42,
+          "encoded": 0.412689208984375,
+          "code": 90
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 5,
+      "model": "percussion",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "CONGA LOW",
+      "level": 0.94,
+      "level_byte": 119,
+      "control_bytes": [
+        51,
+        30,
+        46,
+        70,
+        28,
+        57,
+        127,
+        36,
+        116,
+        55,
+        25,
+        127,
+        18,
+        81,
+        66,
+        0,
+        0,
+        13,
+        94,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        119
+      ],
+      "mapping": [
+        {
+          "parameter": "tune",
+          "requested": -5,
+          "encoded": -4.88,
+          "code": 51
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.48,
+          "encoded": 0.4877097505668934,
+          "code": 30
+        },
+        {
+          "parameter": "tone",
+          "requested": 0.36,
+          "encoded": 0.362213134765625,
+          "code": 46
+        },
+        {
+          "parameter": "noise",
+          "requested": 0.55,
+          "encoded": 0.54998779296875,
+          "code": 70
+        },
+        {
+          "parameter": "percRatio",
+          "requested": 1.07,
+          "encoded": 1.07000732421875,
+          "code": 28
+        },
+        {
+          "parameter": "percXMod",
+          "requested": 0.9,
+          "encoded": 0.899993896484375,
+          "code": 57
+        },
+        {
+          "parameter": "percXModDecay",
+          "requested": 4,
+          "encoded": 4.0,
+          "code": 127
+        },
+        {
+          "parameter": "percShape",
+          "requested": 0.28,
+          "encoded": 0.279998779296875,
+          "code": 36
+        },
+        {
+          "parameter": "percDual",
+          "requested": 0.91,
+          "encoded": 0.910003662109375,
+          "code": 116
+        },
+        {
+          "parameter": "percBend",
+          "requested": 0.52,
+          "encoded": 0.519683837890625,
+          "code": 55
+        },
+        {
+          "parameter": "percBendDecay",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 25
+        },
+        {
+          "parameter": "percStrike",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "percToneNoise",
+          "requested": -0.72,
+          "encoded": -0.71875,
+          "code": 18
+        },
+        {
+          "parameter": "percThud",
+          "requested": 0.64,
+          "encoded": 0.637786865234375,
+          "code": 81
+        },
+        {
+          "parameter": "snap",
+          "requested": 0.52,
+          "encoded": 0.519683837890625,
+          "code": 66
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": -1,
+          "encoded": -1.0,
+          "code": 0
+        },
+        {
+          "parameter": "ampAttack",
+          "requested": 0.0006,
+          "encoded": 0.0005895691609977325,
+          "code": 0
+        },
+        {
+          "parameter": "ampHold",
+          "requested": 0.0081,
+          "encoded": 0.008095238095238095,
+          "code": 13
+        },
+        {
+          "parameter": "decayCurve",
+          "requested": 0.48,
+          "encoded": 0.480010986328125,
+          "code": 94
+        },
+        {
+          "parameter": "extraDrive",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "HELD RASP",
+      "level": 1,
+      "level_byte": 127,
+      "control_bytes": [
+        0,
+        1,
+        1,
+        42,
+        82,
+        3,
+        28,
+        0,
+        0,
+        64,
+        8,
+        30,
+        119,
+        13,
+        1,
+        64,
+        59,
+        27,
+        54,
+        45,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        127
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.181640625,
+          "encoded": 0.17919921875,
+          "code": 82
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.06,
+          "encoded": 0.06298828125,
+          "code": 8
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.24,
+          "encoded": 0.2362060546875,
+          "code": 30
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 12000,
+          "encoded": 11727.0,
+          "code": 119
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.1,
+          "encoded": 0.10235595703125,
+          "code": 13
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 0.15,
+          "encoded": 0.1539909297052154,
+          "code": 59
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.003,
+          "encoded": 0.002925170068027211,
+          "code": 27
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 1.7,
+          "encoded": 1.7007936507936507,
+          "code": 54
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 0.18,
+          "encoded": 0.17741496598639456,
+          "code": 45
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "FALLING REPEATS",
+      "level": 0.95,
+      "level_byte": 121,
+      "control_bytes": [
+        0,
+        1,
+        1,
+        42,
+        82,
+        3,
+        28,
+        0,
+        0,
+        64,
+        8,
+        30,
+        119,
+        13,
+        1,
+        38,
+        72,
+        27,
+        1,
+        74,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        121
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.181640625,
+          "encoded": 0.17919921875,
+          "code": 82
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.06,
+          "encoded": 0.06298828125,
+          "code": 8
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.24,
+          "encoded": 0.2362060546875,
+          "code": 30
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 12000,
+          "encoded": 11727.0,
+          "code": 119
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.1,
+          "encoded": 0.10235595703125,
+          "code": 13
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": -0.4,
+          "encoded": -0.40625,
+          "code": 38
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 0.32,
+          "encoded": 0.32770975056689344,
+          "code": 72
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.003,
+          "encoded": 0.002925170068027211,
+          "code": 27
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 0.025,
+          "encoded": 0.03149659863945578,
+          "code": 1
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 0.85,
+          "encoded": 0.8718820861678005,
+          "code": 74
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "SLOW 80 MS",
+      "level": 1,
+      "level_byte": 127,
+      "control_bytes": [
+        0,
+        1,
+        1,
+        31,
+        109,
+        3,
+        28,
+        0,
+        0,
+        64,
+        8,
+        30,
+        119,
+        13,
+        1,
+        64,
+        59,
+        27,
+        54,
+        45,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        127
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 31.349957715000777,
+          "encoded": 31.0,
+          "code": 31
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.5,
+          "encoded": 0.50274658203125,
+          "code": 109
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.06,
+          "encoded": 0.06298828125,
+          "code": 8
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.24,
+          "encoded": 0.2362060546875,
+          "code": 30
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 12000,
+          "encoded": 11727.0,
+          "code": 119
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.1,
+          "encoded": 0.10235595703125,
+          "code": 13
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 0.15,
+          "encoded": 0.1539909297052154,
+          "code": 59
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.003,
+          "encoded": 0.002925170068027211,
+          "code": 27
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 1.7,
+          "encoded": 1.7007936507936507,
+          "code": 54
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 0.18,
+          "encoded": 0.17741496598639456,
+          "code": 45
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "SLOW 200 MS",
+      "level": 1,
+      "level_byte": 127,
+      "control_bytes": [
+        0,
+        1,
+        1,
+        15,
+        109,
+        3,
+        28,
+        0,
+        0,
+        64,
+        8,
+        30,
+        119,
+        13,
+        1,
+        64,
+        59,
+        27,
+        54,
+        45,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        127
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 15.486820576352429,
+          "encoded": 15.0,
+          "code": 15
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.5,
+          "encoded": 0.50274658203125,
+          "code": 109
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.06,
+          "encoded": 0.06298828125,
+          "code": 8
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.24,
+          "encoded": 0.2362060546875,
+          "code": 30
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 12000,
+          "encoded": 11727.0,
+          "code": 119
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.1,
+          "encoded": 0.10235595703125,
+          "code": 13
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 0.15,
+          "encoded": 0.1539909297052154,
+          "code": 59
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.003,
+          "encoded": 0.002925170068027211,
+          "code": 27
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 1.7,
+          "encoded": 1.7007936507936507,
+          "code": 54
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 0.18,
+          "encoded": 0.17741496598639456,
+          "code": 45
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "FROZEN NOISE",
+      "level": 1,
+      "level_byte": 127,
+      "control_bytes": [
+        0,
+        0,
+        0,
+        45,
+        57,
+        48,
+        41,
+        127,
+        4,
+        45,
+        15,
+        61,
+        108,
+        30,
+        3,
+        83,
+        75,
+        11,
+        1,
+        78,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        127
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 45,
+          "encoded": 45.0,
+          "code": 45
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.07,
+          "encoded": 0.068939208984375,
+          "code": 57
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.38,
+          "encoded": 0.377960205078125,
+          "code": 48
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.32,
+          "encoded": 0.322845458984375,
+          "code": 41
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0.035,
+          "encoded": 0.031494140625,
+          "code": 4
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": -0.3,
+          "encoded": -0.296875,
+          "code": 45
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.12,
+          "encoded": 0.11810302734375,
+          "code": 15
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.48,
+          "encoded": 0.480316162109375,
+          "code": 61
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 6500,
+          "encoded": 6506.0,
+          "code": 108
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.24,
+          "encoded": 0.2362060546875,
+          "code": 30
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 3,
+          "encoded": 3.0,
+          "code": 3
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": 0.3,
+          "encoded": 0.30157470703125,
+          "code": 83
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 0.4,
+          "encoded": 0.3900907029478458,
+          "code": 75
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.001,
+          "encoded": 0.0010204081632653062,
+          "code": 11
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 0.035,
+          "encoded": 0.03149659863945578,
+          "code": 1
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 1.1,
+          "encoded": 1.0859863945578232,
+          "code": 78
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "PITCHED GROWL",
+      "level": 1,
+      "level_byte": 127,
+      "control_bytes": [
+        0,
+        0,
+        0,
+        33,
+        96,
+        27,
+        70,
+        8,
+        0,
+        64,
+        46,
+        79,
+        71,
+        60,
+        3,
+        93,
+        84,
+        21,
+        1,
+        86,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        127
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 33,
+          "encoded": 33.0,
+          "code": 33
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.31,
+          "encoded": 0.305938720703125,
+          "code": 96
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.21,
+          "encoded": 0.21258544921875,
+          "code": 27
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.55,
+          "encoded": 0.551177978515625,
+          "code": 70
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 0.06,
+          "encoded": 0.06298828125,
+          "code": 8
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.36,
+          "encoded": 0.362213134765625,
+          "code": 46
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 900,
+          "encoded": 897.0,
+          "code": 71
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.47,
+          "encoded": 0.472442626953125,
+          "code": 60
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 3,
+          "encoded": 3.0,
+          "code": 3
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": 0.46,
+          "encoded": 0.4603271484375,
+          "code": 93
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 0.65,
+          "encoded": 0.6580045351473923,
+          "code": 84
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.002,
+          "encoded": 0.0019727891156462586,
+          "code": 21
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 0.04,
+          "encoded": 0.03149659863945578,
+          "code": 1
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 1.65,
+          "encoded": 1.684875283446712,
+          "code": 86
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 6,
+      "model": "glitch",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "SAW TEXTURE",
+      "level": 0.9,
+      "level_byte": 114,
+      "control_bytes": [
+        1,
+        0,
+        0,
+        33,
+        73,
+        17,
+        38,
+        19,
+        2,
+        22,
+        10,
+        28,
+        90,
+        30,
+        3,
+        31,
+        119,
+        95,
+        95,
+        114,
+        0,
+        1,
+        1,
+        42,
+        83,
+        3,
+        28,
+        0,
+        0,
+        114
+      ],
+      "mapping": [
+        {
+          "parameter": "glitchSource",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchMaterial",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchTuning",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchNote",
+          "requested": 33,
+          "encoded": 33.0,
+          "code": 33
+        },
+        {
+          "parameter": "glitchSize",
+          "requested": 0.125,
+          "encoded": 0.1270751953125,
+          "code": 73
+        },
+        {
+          "parameter": "glitchPosition",
+          "requested": 0.13,
+          "encoded": 0.13385009765625,
+          "code": 17
+        },
+        {
+          "parameter": "glitchEdge",
+          "requested": 0.3,
+          "encoded": 0.299224853515625,
+          "code": 38
+        },
+        {
+          "parameter": "glitchFrozenNoise",
+          "requested": 0.15,
+          "encoded": 0.14959716796875,
+          "code": 19
+        },
+        {
+          "parameter": "glitchFreshNoise",
+          "requested": 0.015,
+          "encoded": 0.0157470703125,
+          "code": 2
+        },
+        {
+          "parameter": "glitchNoiseColor",
+          "requested": -0.65,
+          "encoded": -0.65625,
+          "code": 22
+        },
+        {
+          "parameter": "glitchFold",
+          "requested": 0.08,
+          "encoded": 0.0787353515625,
+          "code": 10
+        },
+        {
+          "parameter": "glitchDrive",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchCutoff",
+          "requested": 2400,
+          "encoded": 2420.0,
+          "code": 90
+        },
+        {
+          "parameter": "glitchResonance",
+          "requested": 0.24,
+          "encoded": 0.2362060546875,
+          "code": 30
+        },
+        {
+          "parameter": "glitchMotionTarget",
+          "requested": 3,
+          "encoded": 3.0,
+          "code": 3
+        },
+        {
+          "parameter": "glitchMotion",
+          "requested": -0.52,
+          "encoded": -0.515625,
+          "code": 31
+        },
+        {
+          "parameter": "glitchMotionDecay",
+          "requested": 5,
+          "encoded": 5.026394557823129,
+          "code": 119
+        },
+        {
+          "parameter": "glitchAttack",
+          "requested": 0.25,
+          "encoded": 0.24741496598639456,
+          "code": 95
+        },
+        {
+          "parameter": "glitchHold",
+          "requested": 3,
+          "encoded": 2.9921315192743765,
+          "code": 95
+        },
+        {
+          "parameter": "glitchDecay",
+          "requested": 8,
+          "encoded": 7.837256235827664,
+          "code": 114
+        },
+        {
+          "parameter": "glitchSource2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchMaterial2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchTuning2",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "glitchNote2",
+          "requested": 42.232644862303005,
+          "encoded": 42.0,
+          "code": 42
+        },
+        {
+          "parameter": "glitchSize2",
+          "requested": 0.181640625,
+          "encoded": 0.186187744140625,
+          "code": 83
+        },
+        {
+          "parameter": "glitchPosition2",
+          "requested": 0.025,
+          "encoded": 0.02362060546875,
+          "code": 3
+        },
+        {
+          "parameter": "glitchEdge2",
+          "requested": 0.22,
+          "encoded": 0.220458984375,
+          "code": 28
+        },
+        {
+          "parameter": "glitchFrozenNoise2",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "glitchOscMix",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 2,
+      "source_slot": 1,
+      "name": "DFAM KICK",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        36,
+        36,
+        1,
+        0,
+        13,
+        63,
+        10,
+        116,
+        36,
+        41,
+        43,
+        109,
+        44,
+        103,
+        61,
+        0,
+        64,
+        0,
+        100,
+        96,
+        0,
+        40,
+        64,
+        18,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 36,
+          "encoded": 36.0,
+          "code": 36
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 36,
+          "encoded": 36.0,
+          "code": 36
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0.1,
+          "encoded": 0.10235595703125,
+          "code": 13
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 63
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 0.08,
+          "encoded": 0.0787353515625,
+          "code": 10
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 0.82,
+          "encoded": 0.825408935546875,
+          "code": 116
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.28,
+          "encoded": 0.283477783203125,
+          "code": 36
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 180,
+          "encoded": 180.0,
+          "code": 41
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.34,
+          "encoded": 0.338592529296875,
+          "code": 43
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.72,
+          "encoded": 0.71429443359375,
+          "code": 109
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.35,
+          "encoded": 0.346466064453125,
+          "code": 44
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": 0.62,
+          "encoded": 0.6199951171875,
+          "code": 103
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.48,
+          "encoded": 0.480316162109375,
+          "code": 61
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 6.5,
+          "encoded": 6.511810302734375,
+          "code": 100
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 96
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.3,
+          "encoded": 0.3,
+          "code": 18
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 3,
+      "source_slot": 2,
+      "name": "SUB PULSE",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        29,
+        41,
+        0,
+        0,
+        5,
+        63,
+        0,
+        99,
+        81,
+        33,
+        23,
+        77,
+        93,
+        103,
+        117,
+        0,
+        64,
+        0,
+        58,
+        96,
+        0,
+        40,
+        64,
+        18,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 29,
+          "encoded": 29.0,
+          "code": 29
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 41,
+          "encoded": 41.0,
+          "code": 41
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0.04,
+          "encoded": 0.03936767578125,
+          "code": 5
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 63
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 0.56,
+          "encoded": 0.55999755859375,
+          "code": 99
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.64,
+          "encoded": 0.6400146484375,
+          "code": 81
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 120,
+          "encoded": 117.0,
+          "code": 33
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.18,
+          "encoded": 0.18109130859375,
+          "code": 23
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.2,
+          "encoded": 0.20635986328125,
+          "code": 77
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.73,
+          "encoded": 0.730010986328125,
+          "code": 93
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": 0.62,
+          "encoded": 0.6199951171875,
+          "code": 103
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.92,
+          "encoded": 0.9212646484375,
+          "code": 117
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 4.2,
+          "encoded": 4.19683837890625,
+          "code": 58
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 96
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.3,
+          "encoded": 0.3,
+          "code": 18
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 4,
+      "source_slot": 3,
+      "name": "ACID TOM",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        43,
+        50,
+        1,
+        0,
+        23,
+        63,
+        74,
+        103,
+        58,
+        53,
+        104,
+        119,
+        86,
+        103,
+        79,
+        0,
+        64,
+        0,
+        86,
+        96,
+        0,
+        40,
+        64,
+        18,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 43,
+          "encoded": 43.0,
+          "code": 43
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 50,
+          "encoded": 50.0,
+          "code": 50
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0.18,
+          "encoded": 0.18109130859375,
+          "code": 23
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 63
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 0.58,
+          "encoded": 0.579986572265625,
+          "code": 74
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 0.62,
+          "encoded": 0.619049072265625,
+          "code": 103
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.46,
+          "encoded": 0.456695556640625,
+          "code": 58
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 340,
+          "encoded": 342.0,
+          "code": 53
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.82,
+          "encoded": 0.81890869140625,
+          "code": 104
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.88,
+          "encoded": 0.873016357421875,
+          "code": 119
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.68,
+          "encoded": 0.677154541015625,
+          "code": 86
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": 0.62,
+          "encoded": 0.6199951171875,
+          "code": 103
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.62,
+          "encoded": 0.622039794921875,
+          "code": 79
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 5.74,
+          "encoded": 5.739990234375,
+          "code": 86
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 96
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.3,
+          "encoded": 0.3,
+          "code": 18
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 5,
+      "source_slot": 4,
+      "name": "METAL FM",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        55,
+        74,
+        0,
+        1,
+        109,
+        102,
+        5,
+        69,
+        25,
+        106,
+        38,
+        75,
+        57,
+        73,
+        86,
+        0,
+        87,
+        0,
+        40,
+        64,
+        0,
+        64,
+        64,
+        24,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 55,
+          "encoded": 55.0,
+          "code": 55
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 74,
+          "encoded": 74.0,
+          "code": 74
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0.86,
+          "encoded": 0.8582763671875,
+          "code": 109
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.8,
+          "encoded": 0.80316162109375,
+          "code": 102
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 0.04,
+          "encoded": 0.03936767578125,
+          "code": 5
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 0.08,
+          "encoded": 0.079376220703125,
+          "code": 69
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.2,
+          "encoded": 0.19683837890625,
+          "code": 25
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 6000,
+          "encoded": 5845.0,
+          "code": 106
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.3,
+          "encoded": 0.299224853515625,
+          "code": 38
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.18,
+          "encoded": 0.174591064453125,
+          "code": 75
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.45,
+          "encoded": 0.448822021484375,
+          "code": 57
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": 0.15,
+          "encoded": 0.142852783203125,
+          "code": 73
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.68,
+          "encoded": 0.677154541015625,
+          "code": 86
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0.37,
+          "encoded": 0.365081787109375,
+          "code": 87
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 3.2,
+          "encoded": 3.2047119140625,
+          "code": 40
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.4,
+          "encoded": 0.39417233560090703,
+          "code": 24
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 6,
+      "source_slot": 5,
+      "name": "NOISE HIT",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        24,
+        31,
+        0,
+        0,
+        0,
+        63,
+        127,
+        64,
+        51,
+        109,
+        32,
+        83,
+        44,
+        56,
+        74,
+        0,
+        64,
+        0,
+        13,
+        64,
+        0,
+        64,
+        64,
+        31,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 24,
+          "encoded": 24.0,
+          "code": 24
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 31,
+          "encoded": 31.0,
+          "code": 31
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 63
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.4,
+          "encoded": 0.401580810546875,
+          "code": 51
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 7000,
+          "encoded": 6864.0,
+          "code": 109
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.25,
+          "encoded": 0.251983642578125,
+          "code": 32
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.3,
+          "encoded": 0.30157470703125,
+          "code": 83
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.35,
+          "encoded": 0.346466064453125,
+          "code": 44
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": -0.12,
+          "encoded": -0.125,
+          "code": 56
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.58,
+          "encoded": 0.582672119140625,
+          "code": 74
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 1.7,
+          "encoded": 1.716522216796875,
+          "code": 13
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.5,
+          "encoded": 0.5033106575963718,
+          "code": 31
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 7,
+      "source_slot": 6,
+      "name": "LASER DROP",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        48,
+        60,
+        1,
+        0,
+        15,
+        63,
+        74,
+        127,
+        112,
+        89,
+        66,
+        90,
+        93,
+        103,
+        66,
+        0,
+        64,
+        0,
+        86,
+        96,
+        0,
+        40,
+        64,
+        18,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 48,
+          "encoded": 48.0,
+          "code": 48
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 60,
+          "encoded": 60.0,
+          "code": 60
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0.12,
+          "encoded": 0.11810302734375,
+          "code": 15
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 63
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 0.58,
+          "encoded": 0.579986572265625,
+          "code": 74
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.88,
+          "encoded": 0.88189697265625,
+          "code": 112
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 2400,
+          "encoded": 2351.0,
+          "code": 89
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.52,
+          "encoded": 0.519683837890625,
+          "code": 66
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.42,
+          "encoded": 0.412689208984375,
+          "code": 90
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.73,
+          "encoded": 0.730010986328125,
+          "code": 93
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": 0.62,
+          "encoded": 0.6199951171875,
+          "code": 103
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.52,
+          "encoded": 0.519683837890625,
+          "code": 66
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 5.74,
+          "encoded": 5.739990234375,
+          "code": 86
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 96
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.3,
+          "encoded": 0.3,
+          "code": 18
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    },
+    {
+      "lane": 7,
+      "model": "analog",
+      "slot": 8,
+      "source_slot": 7,
+      "name": "RESONANT PING",
+      "level": 0.96,
+      "level_byte": 122,
+      "control_bytes": [
+        60,
+        67,
+        1,
+        0,
+        0,
+        19,
+        5,
+        99,
+        81,
+        71,
+        124,
+        112,
+        91,
+        103,
+        89,
+        0,
+        64,
+        0,
+        40,
+        96,
+        0,
+        40,
+        64,
+        18,
+        64,
+        127,
+        63,
+        0,
+        0,
+        122
+      ],
+      "mapping": [
+        {
+          "parameter": "analogVCO1Pitch",
+          "requested": 60,
+          "encoded": 60.0,
+          "code": 60
+        },
+        {
+          "parameter": "analogVCO2Pitch",
+          "requested": 67,
+          "encoded": 67.0,
+          "code": 67
+        },
+        {
+          "parameter": "analogVCO1Wave",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 1
+        },
+        {
+          "parameter": "analogVCO2Wave",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogFMAmt",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogOscMix",
+          "requested": 0.15,
+          "encoded": 0.14959716796875,
+          "code": 19
+        },
+        {
+          "parameter": "analogNoise",
+          "requested": 0.04,
+          "encoded": 0.03936767578125,
+          "code": 5
+        },
+        {
+          "parameter": "analogPitchEGAmt",
+          "requested": 0.56,
+          "encoded": 0.55999755859375,
+          "code": 99
+        },
+        {
+          "parameter": "analogPitchDecay",
+          "requested": 0.64,
+          "encoded": 0.6400146484375,
+          "code": 81
+        },
+        {
+          "parameter": "analogCutoff",
+          "requested": 880,
+          "encoded": 897.0,
+          "code": 71
+        },
+        {
+          "parameter": "analogReso",
+          "requested": 0.98,
+          "encoded": 0.97637939453125,
+          "code": 124
+        },
+        {
+          "parameter": "analogVCFEGAmt",
+          "requested": 0.76,
+          "encoded": 0.76190185546875,
+          "code": 112
+        },
+        {
+          "parameter": "analogVCFDecay",
+          "requested": 0.72,
+          "encoded": 0.716522216796875,
+          "code": 91
+        },
+        {
+          "parameter": "analogVCFMod",
+          "requested": 0.62,
+          "encoded": 0.6199951171875,
+          "code": 103
+        },
+        {
+          "parameter": "analogVCADecay",
+          "requested": 0.7,
+          "encoded": 0.700775146484375,
+          "code": 89
+        },
+        {
+          "parameter": "analogVCAAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCO2Fine",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "analogPitchToVCF",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFDrive",
+          "requested": 3.2,
+          "encoded": 3.2047119140625,
+          "code": 40
+        },
+        {
+          "parameter": "analogVCACurve",
+          "requested": 0.5,
+          "encoded": 0.5,
+          "code": 96
+        },
+        {
+          "parameter": "analogVCFAttack",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCFCurve",
+          "requested": -0.37,
+          "encoded": -0.3699951171875,
+          "code": 40
+        },
+        {
+          "parameter": "noiseColor",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "decay",
+          "requested": 0.3,
+          "encoded": 0.3,
+          "code": 18
+        },
+        {
+          "parameter": "tune",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 64
+        },
+        {
+          "parameter": "ampSustain",
+          "requested": 1,
+          "encoded": 1.0,
+          "code": 127
+        },
+        {
+          "parameter": "ampRelease",
+          "requested": 0.15,
+          "encoded": 0.15,
+          "code": 63
+        },
+        {
+          "parameter": "holdMode",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        },
+        {
+          "parameter": "analogVCOEGToNoise",
+          "requested": 0,
+          "encoded": 0.0,
+          "code": 0
+        }
+      ]
+    }
+  ]
+}
