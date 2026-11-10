@@ -6,6 +6,10 @@
 #include "fm1core.h"
 #include <stddef.h>
 
+#if !defined(GD_FIRMWARE_VERSION) || !defined(GD_FIRMWARE_NAME)
+#error "Build through tools/build_remote.py to supply firmware identity"
+#endif
+
 #ifndef GD_SOURCE_URL
 #define GD_SOURCE_URL "local-development-source"
 #endif
@@ -217,8 +221,8 @@ EXPORT(rfm1_free) void rfm1_free(void *p) {
 static const fm1core_t core = {
     .abi_version = 6,
     .id = "glitchdrums",
-    .name = "GlitchDrums FM1",
-    .version = "0.17.6",
+    .name = GD_FIRMWARE_NAME,
+    .version = GD_FIRMWARE_VERSION,
     .source_url = GD_SOURCE_URL,
     .family = "foma",
     .license = "GPL-3.0-only",

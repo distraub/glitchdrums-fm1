@@ -54,6 +54,8 @@ def main():
               '-Wl,--export-memory']
     raw = OUT / (stem + '.wasm')
     subprocess.run(common + ['-DGD_REMOTE=1', '-DGD_SOURCE_URL=' + json.dumps(source_url),
+                            '-DGD_FIRMWARE_VERSION=' + json.dumps(cfg['version']),
+                            '-DGD_FIRMWARE_NAME=' + json.dumps(cfg['name']),
                             'remote/adapter.c', 'src/main.c', '-o', str(raw)], cwd=ROOT, check=True)
     manifest = dict(rfm1=1, abi=6, id='glitchdrums', name=cfg['name'], version=cfg['version'],
                     license='GPL-3.0-only', source_url=source_url,
@@ -63,7 +65,13 @@ def main():
     data += section('rfm1.credits', (ROOT / 'LICENSING.md').read_bytes())
     data += section('rfm1.license.0', b'GPL-3.0-only\n' + (ROOT / 'LICENSE').read_bytes())
     rfm = OUT / (stem + '.rfm1')
-    rfm.write_bytes(data)
+    node = shutil.which('node')
+    if not node:
+        raise SystemExit('Node.js is required to validate the RemoteFM1 import contract')
+    pending = rfm.with_suffix('.rfm1.pending')
+    pending.write_bytes(data)
+    subprocess.run([node, 'tests/import-contract.mjs', str(pending)], cwd=ROOT, check=True)
+    pending.replace(rfm)
     site = ROOT / 'build' / 'web'
     shutil.copytree(ROOT / 'web', site, dirs_exist_ok=True)
     subprocess.run(common + ['platform/web.c', 'src/main.c', '-o', str(site / 'firmware.wasm')],

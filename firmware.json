@@ -1,6 +1,6 @@
 {
   "name": "GlitchDrums FM1",
-  "version": "0.17.8",
+  "version": "0.17.9",
   "identity": "FM-1_73",
   "options": {
     "usb_audio": false,

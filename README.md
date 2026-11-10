@@ -1,16 +1,20 @@
-# GlitchDrums FM1 — 0.17.8
+# GlitchDrums FM1 — 0.17.9
 
 By Alex Matheu.
 
 An eight-lane drum synthesizer for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
-targets foma's hardware platform. Version 0.17.8 now builds a native `.fwsc`
+targets foma's hardware platform. Version 0.17.9 now builds a native `.fwsc`
 candidate with checked memory bounds and offline update/recovery simulations.
 It has **not been tested on a physical FM-1**; CPU, USB, saving and recovery
 still need device checks. See [pre-hardware verification](docs/PREHARDWARE.md).
 
-0.17.8 adds [GlitchStep-style swing](docs/SWING.md): selectable 1/8 or 1/16,
+0.17.9 adds [GlitchStep-style swing](docs/SWING.md): selectable 1/8 or 1/16,
 normalized amount, stable beat anchors and legacy groove preservation.
+
+0.17.9 fixes iPad import rejection: the runtime descriptor and package manifest
+now share the version/name from firmware.json. Every build verifies their agreement
+before publishing the RemoteFM1 file.
 
 ## Release status and source
 
@@ -30,7 +34,7 @@ instrument does **not** require the private GlitchDrums app sources. The
 `generate_*` tools and app-comparison scripts are optional development tools;
 some require a separate parent-app checkout and are not part of the build.
 
-For RemoteFM1, install an official [WASI SDK](https://github.com/WebAssembly/wasi-sdk/releases)
+For RemoteFM1, install Node.js and an official [WASI SDK](https://github.com/WebAssembly/wasi-sdk/releases)
 and run from the repository root:
 
 ```sh
@@ -39,7 +43,7 @@ sh tests/run.sh
 node tests/remote.mjs
 ```
 
-Output: `build/test-release/glitchdrums-0.17.8.rfm1`, its source archive and
+Output: `build/test-release/glitchdrums-0.17.9.rfm1`, its source archive and
 checksums. Local builds use a local source archive URL. For a distributed build,
 set `GD_SOURCE_URL` to the public immutable source URL for the exact commit:
 
@@ -58,7 +62,7 @@ in this standalone snapshot; use the documented commands above.
 
 ## Try it
 
-File: `build/test-release/glitchdrums-0.17.8.rfm1`.
+File: `build/test-release/glitchdrums-0.17.9.rfm1`.
 
 - On https://remotefm1.com/ choose the firmware picker → **Open a file...**, select
   the `.rfm1`, then start it. Press the instrument's **PLAY** for the demo.

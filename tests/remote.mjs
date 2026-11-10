@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+execFileSync(process.execPath,[new URL('import-contract.mjs',import.meta.url).pathname,process.argv[2]||new URL('../build/test-release/glitchdrums-'+JSON.parse(fs.readFileSync(new URL('../firmware.json',import.meta.url))).version+'.rfm1',import.meta.url).pathname],{stdio:'inherit'});
 const root=new URL('../build/test-release/',import.meta.url);
 const O=JSON.parse(fs.readFileSync(new URL('fullfx-layout.json',root)));
 const effectKeys=[0,27,1,28,2,29,3,4,19,5,20,6,21,7,8,22,9,23,10,11,24,12,25,13,14,26,15];
