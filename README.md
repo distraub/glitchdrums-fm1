@@ -1,5 +1,7 @@
 # GlitchDrums FM1 — 0.17.6
 
+By Alexander Matheu.
+
 An eight-lane drum instrument for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
 targets foma's hardware platform. A hardware `.fwsc` has **not** been built or
@@ -41,8 +43,8 @@ GD_SOURCE_URL=https://github.com/distraub/glitchdrums-fm1/tree/COMMIT_SHA \
 WASI_SDK_PATH=/path/to/wasi-sdk python3 tools/build_remote.py
 ```
 
-For a native hardware package, run the **Native FM-1 package** GitHub workflow
-manually. It obtains the JieLi compiler through the Hub's shared build workflow
+For a native hardware package, enable the workflow templates in `docs/ci/`
+by placing them in `.github/workflows/`, then run **Native FM-1 package** manually. It obtains the JieLi compiler through the Hub's shared build workflow
 and runs `python3 tools/build_native.py`, including the update loader and safety
 checks. Alternatively set `JIELI_TOOLCHAIN` locally to that toolchain. Native
 builds are experimental until the checklist is complete. The legacy `./fm1`

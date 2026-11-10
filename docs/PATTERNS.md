@@ -173,7 +173,7 @@ limits. These comparisons establish no device guarantee.
 
 The earlier experimental song idle overload remains unreproduced in clean
 host tests, and that arrangement engine stays isolated at `b2d2f3f` on
-`codex/fm1-song-experiment`. Chaining here uses the smaller immutable-bank
+the archived song-mode experiment. Chaining here uses the smaller immutable-bank
 design described above.
 
 ## Step cursor — 0.15.2

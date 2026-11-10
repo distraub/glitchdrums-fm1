@@ -1,6 +1,6 @@
 {
   "what": "An eight-track drum machine with polyphonic Glitch and Analog voices, sixteen patterns, parameter locks, pattern chaining, live Slice routing, graphical LFOs and punch-in effects.",
-  "author": "GlitchDrums",
+  "author": "Alexander Matheu",
   "kinds": [
     "drums"
   ],
