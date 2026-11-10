@@ -111,6 +111,18 @@ console.log('PASS: corrupt packed voice rejection with clean startup recovery');
 const mutation=boot(dense),beforeMutation=readPattern(save(mutation),0);combo(mutation,7,10);const changed=readPattern(save(mutation),0);assert.notDeepEqual(changed,beforeMutation);combo(mutation,4,10);assert.deepEqual(readPattern(save(mutation),0),beforeMutation);combo(mutation,4,10);assert.deepEqual(readPattern(save(mutation),0),changed);
 console.log('PASS: sixteen-step whole-pattern mutation, undo and redo preserve chord/p-lock metadata');
 
+// Exercise the actual Global knob -> audio-command route, not a preloaded
+// swing byte. Step 2 is the offbeat sixteenth; step 3 is an eighth-note boundary.
+for(const [step,moves] of [[1,true],[2,false]])for(const swing of [0,25,50]){
+ const f=empty.slice(),p=readPattern(f,0);p.lane[0].step[step].velocity=127;writePattern(f,0,p);
+ const h=boot(f);button(h,7);turn(h,3,swing);render(h);button(h,9);
+ assert.equal(flash(h)[8+8],swing,'Global KN2 stores the edited swing amount');
+ button(h,12);const base=5512,onset=step*base+(moves?Math.floor(base*swing/100):0);
+ let n=onset;while(n){const count=Math.min(n,128);h.x.rfm1_audio(h.ptr,count);assert(new Int16Array(h.x.memory.buffer,h.ptr,count*2).every(v=>v===0),'no hit before swung boundary');n-=count;}
+ h.x.rfm1_audio(h.ptr,128);assert(new Int16Array(h.x.memory.buffer,h.ptr,256).some(v=>v!==0),'hit starts at the exact swung boundary');
+}
+console.log('PASS: Global swing knob changes offbeat-sixteenth audio timing while keeping eighth-note boundaries straight');
+
 // A mid-step double tap must retain both swing countdown and bar position.
 // B's step zero is a poison trigger for any accidental restart; step five is
 // the next legitimate hit. Returning to A must still use the original wrap.
