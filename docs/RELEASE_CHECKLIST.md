@@ -10,6 +10,20 @@ Do not describe a successful native build as hardware validation.
 - Native package workflow with the upstream package, loader and MMIO safety checks.
 - Native engine regression tests and RemoteFM1 build instructions.
 
+## Native build findings (10 November 2026)
+
+The GitHub native workflow is enabled. The first build exposed missing bare-metal
+64-bit integer division helpers; these now have a portable integer-only runtime
+and randomized/boundary regression tests. Emulator sound formulas are unchanged.
+
+The next build reaches linking but fails the native RAM layout: `.bss` exceeds
+the 96 KiB RAM region by 90,996 bytes and overlaps the separately assigned pool.
+The pool has spare capacity, but moving state must account for total RAM as well
+as placement. No hardware package has been produced. This needs a measured RAM
+allocation pass; do not weaken linker bounds or flash safety checks to bypass it.
+
+Failure log: https://github.com/distraub/glitchdrums-fm1/actions/runs/42829846697
+
 ## Before submitting
 
 - [ ] Native workflow passes; inspect linker RAM/flash report and package checks.
