@@ -1275,10 +1275,10 @@ static void draw_controls(void) {
       else if(fx_selected==29&&k==3)format_int(value,(32768+v*774)*100/65536);
       else if(!c.max)string_copy(value,"--");
     }
-    if (view == V_GLOBAL && page%2==0 && k == 0)
+    if (view == V_GLOBAL && page==1 && k == 2)
       string_copy(value, theme()->name);
     if(view==V_GLOBAL&&page%2&&k==0){static const char *const quality[3]={"BAL 2X","HIGH 4X","ECO 1X"};string_copy(value,quality[v%3]);}
-    if(view==V_GLOBAL&&page%2&&k>1)string_copy(value,"--");
+    if(view==V_GLOBAL&&page%2&&k>2)string_copy(value,"--");
     if (view == V_STEP && k == 0)
       format_int(value, v - 64);
     if (view == V_FX && page % 3 == 0 && k == 1) {
