@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only
  * Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments */
 /* Adapted from zvenson/dinghy ea1b6bf5973b11f9b4b806d08155602aaa0b505e.
- * Only include paths changed for the GlitchDrums platform layout. */
+ * Adapted include paths; added damaged loader-body rejection. */
 /* Host test of firmware/src/ota.c: a fake M-UPGRADE serves a real .fwsc over
  * the SysEx protocol (pack7, cmd 0x30 reads, 0xE0000000 -> "success") and a
  * simulated NOR plays the flash.
@@ -231,6 +231,12 @@ int main(int argc, char **argv)
     /* boot cleanup erases it */
     bad += check("boot cleanup erases the area", ota_boot_cleanup() == 1 && area_erased());
     bad += check("second boot: nothing to do", ota_boot_cleanup() == 0);
+
+    /* A valid wire checksum cannot hide a corrupted loader body. */
+    reset_dev();
+    corrupt_at = logical + ota_body_off() + 1024;
+    rc = ota_session();
+    bad += check("damaged loader body -> no commit, area clean", rc == -11 && !committed && area_erased());
 
     /* host disappears in the middle */
     reset_dev();

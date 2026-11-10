@@ -1,3 +1,5 @@
+> Historical development notes. For current hardware packaging status, see [PREHARDWARE.md](PREHARDWARE.md) and [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md).
+
 # Firmware research and development
 
 ## References examined

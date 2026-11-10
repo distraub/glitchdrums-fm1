@@ -1,6 +1,6 @@
 # Firmware Hub release checklist
 
-Status: emulator-tested development firmware; no physical FM-1 tests yet.
+Status: native 0.17.7 candidate built and offline-tested; no physical FM-1 tests yet.
 Do not describe a successful native build as hardware validation.
 
 ## Prepared
@@ -16,18 +16,23 @@ The GitHub native workflow is enabled. The first build exposed missing bare-meta
 64-bit integer division helpers; these now have a portable integer-only runtime
 and randomized/boundary regression tests. Emulator sound formulas are unchanged.
 
-The next build reaches linking but fails the native RAM layout: `.bss` exceeds
-the 96 KiB RAM region by 90,996 bytes and overlaps the separately assigned pool.
-The pool has spare capacity, but moving state must account for total RAM as well
-as placement. No hardware package has been produced. This needs a measured RAM
-allocation pass; do not weaken linker bounds or flash safety checks to bypass it.
+The RAM blocker is resolved without changing the linker layout: remove unused
+signature effect buffers, right-size modulation-delay rings and place tape and
+pattern buffers in the existing pool. Audio regression output remains bit-exact.
+The native compiler's ROM-window immediates are avoided by separating division
+from clipping and retaining a positive UI scaling divisor; refusal gates remain
+active and have their own regression tests.
 
-Failure log: https://github.com/distraub/glitchdrums-fm1/actions/runs/42829846697
+Successful native candidate run:
+https://github.com/distraub/glitchdrums-fm1/actions/runs/42834570562
+
+Measured build: code 372/567 KiB, main RAM 89/96 KiB, pool 334/336 KiB.
+See [the verification record and first-device plan](PREHARDWARE.md).
 
 ## Before submitting
 
-- [ ] Native workflow passes; inspect linker RAM/flash report and package checks.
-- [ ] Check the actual product identity from firmware.json/build output at
+- [x] Native workflow passes; inspect linker RAM/flash report and package checks.
+- [x] Check the actual product identity from firmware.json/build output at
       https://thefirmwarehub.com/submit/#check; resolve any collision before flashing.
       The current build appends the minor version digit to FM-1_73 (currently FM-1_737).
 - [ ] Install the candidate .fwsc on a real FM-1 starting from stock V15.

@@ -4,8 +4,10 @@ By Alex Matheu.
 
 An eight-lane drum synthesizer for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
-targets foma's hardware platform. A hardware `.fwsc` has **not** been built or
-validated yet; CPU, flash revisions, USB and recovery still need device checks.
+targets foma's hardware platform. Version 0.17.7 now builds a native `.fwsc`
+candidate with checked memory bounds and offline update/recovery simulations.
+It has **not been tested on a physical FM-1**; CPU, USB, saving and recovery
+still need device checks. See [pre-hardware verification](docs/PREHARDWARE.md).
 
 ## Release status and source
 
@@ -460,9 +462,10 @@ control and stress LFO/FX bounds. The module tests cover MIDI, live controls,
 38 themes, save/reload and corrupt saved data. A four-second `demo.wav` is
 rendered from the actual `.rfm1`.
 
-For a future hardware package, install/start Docker Desktop, then `./fm1 build`.
-That route remains unverified here. Assign a unique hardware identity before
-publishing; the config still carries the template's development identity.
+For a hardware candidate, use the **Native FM-1 package** GitHub workflow.
+The successful run exposes a `packages` artifact containing the `.fwsc` and
+SHA256SUMS. The current product identity is `FM-1_737`; this is a development
+candidate until physical installation and recovery tests pass.
 
 Generated tables/themes ship in the source. To regenerate them from the parent
 GlitchDrums checkout: `python3 tools/generate_assets.py`. The `.rfm1` includes a
@@ -471,11 +474,12 @@ release needs an accessible pinned source URL.
 
 ## Next milestones
 
-See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for research and remaining work:
-hardware packaging/profiling, external clock, multiple patterns/song mode,
-multiple simultaneous step locks, automation, deeper modulation routing,
-per-lane sends/reverb, undo, and richer voice presets. This is a playable 0.1
-instrument, not feature parity with the iOS app.
+The immediate milestone is physical FM-1 validation: install/leave, save after
+power cycling, MIDI/USB, audio load and recovery. Follow the
+[release checklist](docs/RELEASE_CHECKLIST.md). Longer-term work includes external
+clock, multiple simultaneous step locks and deeper modulation routing. Earlier
+architecture notes in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) are historical;
+the current instrument is documented above.
 
 ## Upstream and licensing
 
