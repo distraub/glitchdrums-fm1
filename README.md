@@ -2,7 +2,7 @@
 
 By Alex Matheu.
 
-An eight-lane drum instrument for the M-VAVE FM-1, currently testable as a
+An eight-lane drum synthesizer for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
 targets foma's hardware platform. A hardware `.fwsc` has **not** been built or
 validated yet; CPU, flash revisions, USB and recovery still need device checks.
