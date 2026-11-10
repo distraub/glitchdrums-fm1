@@ -89,7 +89,7 @@ static inline int32_t gda_render(GDAcoustic *a,int32_t white){
   int metal=gda_mul(aa,bb);
   if(a->texture){
    int bank=aa+bb;for(unsigned n=2;n<6;++n)bank+=gda_osc(a,n,a->inc[n])>=0?32768:-32768;
-   bank=gd_clamp(bank*33/120,-32768,32768);a->metal_filter+=gda_mul(bank-a->metal_filter,(int)a->coef[5]);
+   bank=gd_limit(bank*33/120,32768);a->metal_filter+=gda_mul(bank-a->metal_filter,(int)a->coef[5]);
    int hashed=gd_clamp((bank-a->metal_filter)*19/10,-32768,32768);metal+=gda_mul(hashed-metal,a->texture);
   }
   signal=gda_env(gda_mul(metal,a->metal_gain),a->env[1])+gda_env(gda_mul(high,a->noise_gain),a->env[2]);

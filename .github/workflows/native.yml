@@ -13,4 +13,5 @@ jobs:
     with:
       build: python3 tools/build_native.py
       packages: build/*.fwsc
+      test: sh tests/run.sh && sh tests/run-update.sh build/*.fwsc
       sdk: false

@@ -59,7 +59,12 @@ static inline int gd_clamp(int x, int lo, int hi) {
 }
 /* Pattern span follows the longest lane; each lane can retain its own length. */
 static inline unsigned gd_pattern_length(const GDProject *p){unsigned length=1;for(unsigned lane=0;lane<8;++lane)if(p->track[lane].length>length)length=p->track[lane].length;return (unsigned)gd_clamp((int)length,1,16);}
-static inline int32_t gd_sat(int32_t x) { return gd_clamp(x, -30000, 30000); }
+/* Keep division and clipping separate: pi32v2 otherwise folds a negative
+ * threshold into the protected chip-ROM constant window. Same integer result. */
+static __attribute__((noinline,unused)) int32_t gd_limit(int32_t x,int32_t bound) {
+  return x < -bound ? -bound : x > bound ? bound : x;
+}
+static inline int32_t gd_sat(int32_t x) { return gd_limit(x, 30000); }
 static inline uint32_t gd_random(uint32_t *s) {
   if (!*s)
     *s = 0x1234567u;

@@ -294,9 +294,9 @@ def check(img, syms, dis, rt):
     errors.append(f".ram_text contains calls: {rt_calls[:3]}")
   fn = "?"
   for ln in dis.splitlines():  # nothing may call or load an address in the chip ROM
-    h = re.match(r"^[0-9a-f]+ <([^>]+)>:", ln)
+    h = re.match(r"^(?:[0-9a-f]+ <([^>]+)>|([A-Za-z_.$][\w.$]*)):$", ln)
     if h:
-      fn = h.group(1)
+      fn = h.group(1) or h.group(2)
       continue
     mm = LINE.match(ln)
     if not mm:
@@ -304,7 +304,7 @@ def check(img, syms, dis, rt):
     for v in re.findall(r"= (-?\d+) <|call -?\d+ <[^:>]*: ([0-9a-f]+) >", mm.group(3)):
       val = (int(v[0]) & 0xFFFFFFFF) if v[0] else int(v[1], 16) & 0xFFFFFFFF
       if 0xFFC00000 <= val < 0xFFD00000:
-        errors.append(f"{fn}: a constant {val:#010x} lies in the chip ROM (a call there bricks the FM-1): change the arithmetic so it never appears")
+        errors.append(f"{fn}: a constant {val:#010x} lies in the chip ROM (a call there bricks the FM-1): change the arithmetic so it never appears ({mm.group(3).strip()})")
   if len(img) > APP_SLOT:
     errors.append(f"image {len(img)} B exceeds the app slot ({APP_SLOT} B)")
 

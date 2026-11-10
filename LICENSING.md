@@ -54,3 +54,9 @@ parent GlitchDrums source. This firmware adaptation is GPL-3.0-only.
 
 `remote/fm1core.h` is Quixotic7/FM1VST
 (commit 177e27a7643284833f06b37435faf7a611ecf065), GPL-3.0-only.
+
+## Offline update tests
+
+`tests/ldr-test.c` and `tests/ota-test.c` are adapted from zvenson/dinghy
+(commit ea1b6bf5973b11f9b4b806d08155602aaa0b505e), GPL-3.0-only,
+Copyright (C) 2026 Leo Kuroshita, Hügelton Instruments. Their notices are retained.

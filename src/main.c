@@ -1105,6 +1105,8 @@ static uint16_t visual_blend(uint16_t color,uint16_t bg,unsigned amount){
  return (uint16_t)((r<<11)|(g<<5)|b);
 }
 static void draw_lfo_visual(void){
+ /* Positive runtime divisor avoids a pi32v2 ROM-window immediate. */
+ volatile int lfo_depth_scale=32768*127;
  static int16_t history[96];static unsigned history_write,last_lane=99,last_lfo=99;
  static uint32_t orbit_history[2][12];static unsigned orbit_write,orbit_lane=99,last_mode=99;
  const GDTheme *t=theme();const GDLFO *m=&ui.track[selected].lfo[lfo];
@@ -1149,12 +1151,12 @@ static void draw_lfo_visual(void){
   else if(m->shape==2)y=(ph>>31)?-32767:32767;
   else if(m->shape==3)y=(int)(ph>>16)-32768;
   else y=history[(history_write+x*95/223)%96];
-  int ref=117-y*22/32768,depth=117-y*(int)m->depth*22/(32768*127);
+  int ref=117-y*22/32768,depth=117-y*(int)m->depth*22/lfo_depth_scale;
   if(x){if(m->shape!=4)line(7+(int)x,reference,8+(int)x,ref,t->chrome);line(7+(int)x,previous,8+(int)x,depth,t->accent);}
   reference=ref;previous=depth;
  }
  int cursor=m->shape==4?231:8+(int)(((uint64_t)phase*223)>>32);
- int y=117-value*(int)m->depth*22/(32768*127);
+ int y=117-value*(int)m->depth*22/lfo_depth_scale;
  if(m->shape!=4)line(cursor,93,cursor,141,t->alt);
  rect(cursor-2,y-2,5,5,t->text);
 }
