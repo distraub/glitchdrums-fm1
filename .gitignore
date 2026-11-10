@@ -1,2 +1,5 @@
 build/
 __pycache__/
+
+# Local migration backup; never publish app history or build archives.
+.local-archive/
