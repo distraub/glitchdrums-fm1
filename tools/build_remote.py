@@ -57,7 +57,7 @@ def main():
                             'remote/adapter.c', 'src/main.c', '-o', str(raw)], cwd=ROOT, check=True)
     manifest = dict(rfm1=1, abi=6, id='glitchdrums', name=cfg['name'], version=cfg['version'],
                     license='GPL-3.0-only', source_url=source_url,
-                    authors=['Alexander Matheu'], memory_mib=8,
+                    authors=['Alex Matheu'], memory_mib=8,
                     built_by='tools/build_remote.py / WASI SDK')
     data = raw.read_bytes() + section('rfm1', json.dumps(manifest).encode())
     data += section('rfm1.credits', (ROOT / 'LICENSING.md').read_bytes())

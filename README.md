@@ -1,6 +1,6 @@
 # GlitchDrums FM1 — 0.17.6
 
-By Alexander Matheu.
+By Alex Matheu.
 
 An eight-lane drum instrument for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
