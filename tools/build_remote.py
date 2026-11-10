@@ -35,7 +35,7 @@ def main():
     stem = 'glitchdrums-' + cfg['version']
     source = OUT / (stem + '-source.tar.gz')
     files = sorted(p for p in ROOT.rglob('*') if p.is_file() and
-                   not any(s in {'build', '__pycache__', '.git'} for s in p.relative_to(ROOT).parts))
+                   not any(s in {'build', '__pycache__', '.git', '.local-archive', '.DS_Store'} for s in p.relative_to(ROOT).parts))
     with tarfile.open(source, 'w:gz') as tar:
         for p in files:
             tar.add(p, arcname='glitchdrums-fm1/' + p.relative_to(ROOT).as_posix())

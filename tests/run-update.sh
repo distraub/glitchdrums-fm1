@@ -11,10 +11,10 @@ clang -O1 -g -fsanitize=address,undefined -Wno-unused-function -Wno-unused-varia
 clang -O1 -g -fsanitize=address,undefined -Wno-unused-function tests/ota-test.c -o build/native/ota-test
 # Upstream harnesses allocate their simulated NOR for process lifetime.
 export ASAN_OPTIONS=detect_leaks=0
-build/native/ldr-test build/native/old.fwsc build/native/candidate.fwsc
-build/native/ota-test build/native/candidate.fwsc
+build/native/ldr-test build/native/old.test-package build/native/candidate.test-package
+build/native/ota-test build/native/candidate.test-package
 # Also exercise the exact native package when supplied by the packaging workflow.
 if [ "$#" -gt 0 ]; then
-  build/native/ldr-test build/native/old.fwsc "$1"
+  build/native/ldr-test build/native/old.test-package "$1"
   build/native/ota-test "$1"
 fi

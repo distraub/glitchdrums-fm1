@@ -15,4 +15,4 @@ pattern = bytes(rng.randrange(256) for _ in range(2048))
 image = (bytes.fromhex('04818000') + b'FELUCCA-LOADER-1\0' + pattern * 4)[:8192]
 loader = build.ldr_wrap(image)
 for name, data in [('old', b'OLD-FIRMWARE' * 1000), ('candidate', b'NEW-FIRMWARE' * 2000)]:
-    (out / (name + '.fwsc')).write_bytes(pkg.ufw(pkg.flash_image(data, pkg.KEY), loader, 'FM-1_737'))
+    (out / (name + '.test-package')).write_bytes(pkg.ufw(pkg.flash_image(data, pkg.KEY), loader, 'FM-1_737'))
