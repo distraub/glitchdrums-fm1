@@ -32,7 +32,7 @@ int main(void){
  write_bytes("build/test-release/dense16.bin",&save,sizeof save);
  printf("Fixed bank save: %zu / %u bytes, pattern %zu RAM / %u stored\n",sizeof save,SETTINGS_MAX,sizeof(GDPattern),GD_PATTERN_BYTES);
  printf("Offsets: project=%zu voices=%zu kit=%zu scene=%zu used=%zu bind=%zu patterns=%zu\n",offsetof(GDStoredSave,project),offsetof(GDStoredSave,voice),offsetof(GDStoredSave,kit),offsetof(GDStoredSave,scene),offsetof(GDStoredSave,voice_used),offsetof(GDStoredSave,voice_bind),offsetof(GDStoredSave,pattern));
- old.prefix.magic=GD_SAVE_MAGIC;old.prefix.version=4;old.prefix.project_size=sizeof(GDOldProject);memcpy(&old.prefix.project,&project,sizeof(GDOldProject));old.prefix.project.version=8;
+ old.prefix.magic=GD_SAVE_MAGIC;old.prefix.version=4;old.prefix.project_size=sizeof(GDOldProject);memcpy(&old.prefix.project,&project,sizeof(GDOldProject));old.prefix.project.version=8;old.prefix.project.swing=0;
  old.prefix.bank.voice_used[0]=128;old.prefix.bank.voice[0][7]=gd_factory_sound(0,7);
  old.prefix.project.pages=2;old.prefix.project.track[0].step[16]=99;old.prefix.project.track[0].length=64;
  static GD64Pattern prior;unsigned at=0;

@@ -37,8 +37,8 @@ function bank(h){button(h,11);button(h,11);button(h,11);}
 function screenshot(h,name){h.tick+=2000;h.x.rfm1_tick(h.tick);h.x.rfm1_frame();fs.writeFileSync(new URL(name,root),new Uint8Array(h.x.memory.buffer,h.at(11),240*240*2));}
 const fresh=boot();render(fresh);assert(new Int16Array(fresh.x.memory.buffer,fresh.ptr,256).every(v=>v===0));
 const baseline=save(fresh);assert.equal(payload(baseline).length,12268);assert.equal(active(baseline),0);
-button(fresh,7);turn(fresh,2,1);const themed=save(fresh);assert.notEqual(themed[15],baseline[15]);assert.equal(save(boot(themed))[15],themed[15]);
-turn(fresh,2,1);fresh.x.rfm1_flash_sync();assert.equal(flash(fresh)[15],themed[15]);
+button(fresh,7);button(fresh,7);turn(fresh,4,1);const themed=save(fresh);assert.notEqual(themed[15],baseline[15]);assert.equal(save(boot(themed))[15],themed[15]);
+turn(fresh,4,1);fresh.x.rfm1_flash_sync();assert.equal(flash(fresh)[15],themed[15]);
 button(fresh,12);render(fresh);button(fresh,9);const liveSave=flash(fresh);assert.equal(payload(liveSave).length,12268);assert.deepEqual(payload(save(boot(liveSave))),payload(liveSave));
 console.log('PASS: ABI6 fixed 8MiB, silent boot, explicit live SAVE, fresh-instance restore and unsaved-edit semantics');
 
@@ -111,23 +111,29 @@ console.log('PASS: corrupt packed voice rejection with clean startup recovery');
 const mutation=boot(dense),beforeMutation=readPattern(save(mutation),0);combo(mutation,7,10);const changed=readPattern(save(mutation),0);assert.notDeepEqual(changed,beforeMutation);combo(mutation,4,10);assert.deepEqual(readPattern(save(mutation),0),beforeMutation);combo(mutation,4,10);assert.deepEqual(readPattern(save(mutation),0),changed);
 console.log('PASS: sixteen-step whole-pattern mutation, undo and redo preserve chord/p-lock metadata');
 
-// Exercise the actual Global knob -> audio-command route, not a preloaded
-// swing byte. Step 2 is the offbeat sixteenth; step 3 is an eighth-note boundary.
-for(const [step,moves] of [[1,true],[2,false]])for(const swing of [0,25,50]){
+// The actual Global knob route, both bases, normalized GlitchStep amount.
+for(const eighth of [false,true])for(const step of [1,2,3,4])for(const swing of [0,50,100]){
  const f=empty.slice(),p=readPattern(f,0);p.lane[0].step[step].velocity=127;writePattern(f,0,p);
- const h=boot(f);button(h,7);turn(h,3,swing);render(h);button(h,9);
- assert.equal(flash(h)[8+8],swing,'Global KN2 stores the edited swing amount');
- button(h,12);const base=5512,onset=step*base+(moves?Math.floor(base*swing/100):0);
+ const h=boot(f);button(h,7);if(eighth)turn(h,2,1);turn(h,3,swing);render(h);button(h,9);
+ assert.equal(flash(h)[8+8],(eighth?128:0)|swing,'Global knobs store amount and basis');
+ button(h,12);const base=5512,phase=step%4,delay=eighth&&phase===2?Math.floor(base*swing/100):(phase&1)?Math.floor(base*swing/200):0,onset=step*base+delay;
  let n=onset;while(n){const count=Math.min(n,128);h.x.rfm1_audio(h.ptr,count);assert(new Int16Array(h.x.memory.buffer,h.ptr,count*2).every(v=>v===0),'no hit before swung boundary');n-=count;}
- h.x.rfm1_audio(h.ptr,128);assert(new Int16Array(h.x.memory.buffer,h.ptr,256).some(v=>v!==0),'hit starts at the exact swung boundary');
+ h.x.rfm1_audio(h.ptr,128);assert(new Int16Array(h.x.memory.buffer,h.ptr,256).some(v=>v!==0),'hit starts at exact GlitchStep boundary');
+ const restored=boot(flash(h));assert.equal(save(restored)[16],(eighth?128:0)|swing,'amount and basis survive reload');
 }
-console.log('PASS: Global swing knob changes offbeat-sixteenth audio timing while keeping eighth-note boundaries straight');
+assert.equal(baseline[16],128,'fresh grooves default to eighth-note swing');
+for(const prior of [0,17,37,50]){
+ const f=empty.slice();new DataView(f.buffer).setUint16(8+4,7,true);f[16]=prior;
+ const migrated=save(boot(f));assert.equal(migrated[16],prior*2,'legacy sixteenth offset preserved at normalized amount');
+ assert.equal(new DataView(migrated.buffer).getUint16(8+4,true),8);
+}
+console.log('PASS: both swing bases match GlitchStep timing, survive reload and preserve legacy grooves');
 
 // A mid-step double tap must retain both swing countdown and bar position.
 // B's step zero is a poison trigger for any accidental restart; step five is
 // the next legitimate hit. Returning to A must still use the original wrap.
 for(const swing of [0,37]){
- const f=empty.slice();f[8+8]=swing;const p=readPattern(f,1);p.lane[0].step[0].velocity=p.lane[0].step[5].velocity=127;writePattern(f,1,p);
+ const f=empty.slice();f[8+8]=swing*2;const p=readPattern(f,1);p.lane[0].step[0].velocity=p.lane[0].step[5].velocity=127;writePattern(f,1,p);
  const h=boot(f);bank(h);button(h,12);const base=5512,delta=Math.floor(base*swing/100),duration=base+delta;
  render(h,4*base+123);tap(h,2);render(h,128);tap(h,2);
  let peak=0,n=duration-123-128;

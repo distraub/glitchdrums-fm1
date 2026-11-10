@@ -1,13 +1,16 @@
-# GlitchDrums FM1 — 0.17.7
+# GlitchDrums FM1 — 0.17.8
 
 By Alex Matheu.
 
 An eight-lane drum synthesizer for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
-targets foma's hardware platform. Version 0.17.7 now builds a native `.fwsc`
+targets foma's hardware platform. Version 0.17.8 now builds a native `.fwsc`
 candidate with checked memory bounds and offline update/recovery simulations.
 It has **not been tested on a physical FM-1**; CPU, USB, saving and recovery
 still need device checks. See [pre-hardware verification](docs/PREHARDWARE.md).
+
+0.17.8 adds [GlitchStep-style swing](docs/SWING.md): selectable 1/8 or 1/16,
+normalized amount, stable beat anchors and legacy groove preservation.
 
 ## Release status and source
 
@@ -36,7 +39,7 @@ sh tests/run.sh
 node tests/remote.mjs
 ```
 
-Output: `build/test-release/glitchdrums-0.17.7.rfm1`, its source archive and
+Output: `build/test-release/glitchdrums-0.17.8.rfm1`, its source archive and
 checksums. Local builds use a local source archive URL. For a distributed build,
 set `GD_SOURCE_URL` to the public immutable source URL for the exact commit:
 
@@ -55,7 +58,7 @@ in this standalone snapshot; use the documented commands above.
 
 ## Try it
 
-File: `build/test-release/glitchdrums-0.17.7.rfm1`.
+File: `build/test-release/glitchdrums-0.17.8.rfm1`.
 
 - On https://remotefm1.com/ choose the firmware picker → **Open a file...**, select
   the `.rfm1`, then start it. Press the instrument's **PLAY** for the demo.
@@ -314,7 +317,7 @@ Navigation position and held performance gates are transient.
 | FX | Open FX; press again or turn ALGORITHM for its three pages |
 | HOME | Eight-lane mixer; press again to toggle LEVELS / TRACK controls |
 | SEL | Tap: mute/unmute; hold 400 ms: solo selected lane / restore mix |
-| GLO | Cycle GLOBAL (theme/swing/bars/tempo) and PERFORMANCE (quality/polyphony) |
+| GLO | Cycle GLOBAL (swing grid/amount/steps/tempo), PERFORMANCE (quality/polyphony/theme), MIDI Learn |
 | SEQ | Step editor; turn keys into step/track controls |
 | OCT− / OCT+ | Live keys: transpose ±1 octave (−3…+3); SEQ: previous/next 16-step editing page |
 | REC | Toggle quantized live note recording while playing |

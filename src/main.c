@@ -66,6 +66,7 @@ static uint32_t playing, recording, sequence_mode, selected, page, edit_page,
 static int keyboard_octave;
 static int8_t held_pitch[27];static uint8_t held_lane[27],held_note[27];
 static uint8_t delay_send[8];
+static unsigned old_swing_format=1;
 static unsigned roll_ui,old_roll_format,glitch_key_ui,glitch_prepared,glitch_base=1;
 static int glitch_offset;
 static uint32_t glitch_key_stamp[16],glitch_key_serial;
@@ -287,10 +288,11 @@ static void process_commands(void) {
       live.fx[i] = (uint8_t)v;
     if (kind == C_GLOBAL) {
       if(i==4)live.reserved=(uint8_t)v;
+      if(i==5)live.swing=(uint8_t)((live.swing&127u)|(v?128u:0u));
       if (i == 0)
         live.theme = (uint8_t)v;
       if (i == 1)
-        live.swing = (uint8_t)v;
+        live.swing = (uint8_t)((live.swing&128u)|v);
       if (i == 2)for(unsigned lane=0;lane<8;++lane)live.track[lane].length=(uint8_t)gd_clamp((int)v,1,16);
       if (i == 3)
         live.bpm = v;
@@ -357,7 +359,7 @@ int gd_flush_pending_save(void) {
   finish_chain_switch();finish_pattern_switch();
   if(import_overflow){pending_save=0;message("OLD BANK >16 BARS: NO SAVE");return 0;}
   if(!chain_running)gd_pattern_get(&pattern_bank[active_pattern],&ui);
-  save_scratch.current=(GDFullSave){0};pattern_save.magic=GD16_SAVE_MAGIC;pattern_save.version=7;
+  save_scratch.current=(GDFullSave){0};pattern_save.magic=GD16_SAVE_MAGIC;pattern_save.version=8;
   pattern_save.active=(uint8_t)active_pattern;pattern_save.theme=ui.theme;pattern_save.swing=ui.swing;pattern_save.quality=ui.reserved;pattern_save.bpm=(uint16_t)ui.bpm;
   GDKit kit=gd_get_kit(&ui);pattern_save.project=gd_pack_full_kit(&kit);
   for(unsigned l=0;l<8;++l){pattern_save.voice_used[l]=preset_bank.voice_used[l]&3;for(unsigned n=0;n<2;++n){pattern_save.voice[l][n]=gd_pack_sound(&preset_bank.voice[l][n]);pattern_save.voice_bind[l][n]=voice_bind[l][n];}}
@@ -400,7 +402,7 @@ static void sequence_hit(unsigned lane,unsigned velocity,int pitch,int lock,unsi
  if(lane>=6)for(unsigned n=0;n<live_chord_count[lane-6][step];++n)sequence_note(lane,velocity,live_chord_pitch[lane-6][step][n],lock,value);
 }
 void audio(int32_t *out, uint32_t frames) {
-  static uint32_t running, remaining, ordinal, quiet_blocks;
+  static uint32_t running, remaining, ordinal, quiet_blocks, clock_ordinal, swing_delay;
   static uint32_t repeat_wait[8], repeat_left[8], repeat_gap[8], repeat_step[8];
   process_commands();
   if(pattern_immediate){
@@ -412,7 +414,7 @@ void audio(int32_t *out, uint32_t frames) {
     }
   }
   if (audio_running && !running) {
-    remaining = ordinal = 0;
+    remaining = ordinal = clock_ordinal = swing_delay = 0;
     for(unsigned slot=0;slot<14;++slot)for(unsigned k=0;k<2;++k)engine.voices[slot].lfo_phase[k]=0;
     for (unsigned l = 0; l < 8; ++l) {
       repeat_left[l] = 0;
@@ -434,9 +436,8 @@ void audio(int32_t *out, uint32_t frames) {
         if(event==1)apply_chain_audio();
       }
       if(!ordinal&&pattern_armed)apply_pattern_audio();
-      uint32_t base = 44100u * 60u / (live.bpm * 4u),
-               swing = base * live.swing / 100u;
-      remaining = (ordinal & 1) ? base - swing : base + swing;
+      uint32_t base = 44100u * 60u / (live.bpm * 4u);
+      remaining = gd_swing_interval(base,clock_ordinal++,live.swing,&swing_delay);
       clockhead=ordinal;unsigned source=gd_remix_source(&remix_audio,ordinal,gd_pattern_length(&live));
       playhead = source;
       gd_gate_boundary(&punch_gate);
@@ -565,6 +566,7 @@ static void format_hundredths(char *out,int value){
  format_int(out+n,value/100);while(out[n])++n;out[n++]='.';out[n++]=(char)('0'+value/10%10);out[n++]=(char)('0'+value%10);out[n]=0;
 }
 static void format_value(char *out, GDControl c, int v) {
+  if(c.format==F_SWING_GRID){string_copy(out,v?"1/8":"1/16");return;}
   if(c.format>=F_AN&&c.format<F_AN+29){unsigned index=c.format-F_AN;int physical=gd_an_units[index][v];
     if(index==0||index==1||index==24)format_hundredths(out,physical);
     else if(index==9)format_int(out,physical);
@@ -718,12 +720,12 @@ static void control_info(unsigned k, GDControl *c, int *value) {
     return;
   }
   if (view == V_GLOBAL) {
-    if(page%2){static const char *const names[4]={"GL QUALITY","GL VOICES","",""};*c=(GDControl){names[k],k==0?2:k==1?4:0,F_NUMBER};*value=k==0?ui.reserved&3:k==1?(ui.reserved>>2?ui.reserved>>2:4):0;return;}
-    static const char *const name[4] = {"THEME", "SWING %", "STEPS", "BPM"};
-    static const uint8_t max[4] = {37, 50, 16, 240};
-    *c = (GDControl){name[k], max[k], F_NUMBER};
-    *value = k == 0   ? ui.theme
-             : k == 1 ? ui.swing
+    if(page%2){static const char *const names[4]={"GL QUALITY","GL VOICES","THEME",""};*c=(GDControl){names[k],k==0?2:k==1?4:k==2?37:0,F_NUMBER};*value=k==0?ui.reserved&3:k==1?(ui.reserved>>2?ui.reserved>>2:4):k==2?(int)ui.theme:0;return;}
+    static const char *const name[4] = {"SW GRID", "SWING %", "STEPS", "BPM"};
+    static const uint8_t max[4] = {1, 100, 16, 240};
+    *c = (GDControl){name[k], max[k], k==0?F_SWING_GRID:F_NUMBER};
+    *value = k == 0   ? (int)gd_swing_eighth(ui.swing)
+             : k == 1 ? (int)gd_swing_amount(ui.swing)
              : k == 2 ? (int)gd_pattern_length(&ui)
                       : (int)ui.bpm;
     return;
@@ -750,7 +752,7 @@ static GDControl midi_control(GDMidiTarget t,int *value,int *minimum,unsigned *s
  if(t.kind==M_MASTER){c=gd_fxctrl[t.index];*value=ui.fx[t.index];}
  if(t.kind==M_EFFECT){unsigned effect=t.index/4,k=t.index%4;c=effect_control(effect,k);*step=effect_step(effect,k);*value=ui.effect[effect][k]/(int)*step;}
  if(t.kind==M_PUNCH){static const char *const name[3]={"MIX","QUANT","FADE"};c=(GDControl){name[t.index],t.index==1?1:127,F_NUMBER};*value=ui.punch[t.index];}
- if(t.kind==M_GLOBAL){c=(GDControl){t.index?"BPM":"SWING",t.index?240:50,F_NUMBER};*value=t.index?(int)ui.bpm:ui.swing;*minimum=t.index?40:0;}
+ if(t.kind==M_GLOBAL){c=(GDControl){t.index?"BPM":"SWING",t.index?240:100,F_NUMBER};*value=t.index?(int)ui.bpm:(int)gd_swing_amount(ui.swing);*minimum=t.index?40:0;}
  if(t.kind==M_MUTE){c=(GDControl){"MUTE",1,F_NUMBER};*value=ui.track[t.index].mute;}
  if(t.kind==M_SEND){c=(GDControl){"DLY SEND",127,F_PERCENT};*value=delay_send[t.index];}
  if(t.kind==M_LENGTH){c=(GDControl){"LENGTH",16,F_NUMBER};*value=ui.track[t.index].length;*minimum=1;}
@@ -802,7 +804,7 @@ static void midi_apply(GDMidiTarget t,unsigned incoming){
  if(t.kind==M_MASTER){if(!send(C_FX,0,t.index,value))return;ui.fx[t.index]=(uint8_t)value;if(t.index==9)glitch_offset=gd_clamp((int)value-(int)glitch_base,-126,126);if(t.index==10)glitch_prepared=1;}
  if(t.kind==M_EFFECT){unsigned effect=t.index/4;if(!send(C_EFFECT,0,effect*4+t.index%4,value*step))return;ui.effect[effect][t.index%4]=(uint8_t)(value*step);}
  if(t.kind==M_PUNCH){if(!send(C_PUNCH,0,t.index,value))return;ui.punch[t.index]=(uint8_t)value;}
- if(t.kind==M_GLOBAL){if(!send(C_GLOBAL,0,t.index?3:1,value))return;if(t.index)ui.bpm=value;else ui.swing=(uint8_t)value;}
+ if(t.kind==M_GLOBAL){if(!send(C_GLOBAL,0,t.index?3:1,value))return;if(t.index)ui.bpm=value;else ui.swing=(uint8_t)((ui.swing&128u)|(unsigned)value);}
  if(t.kind==M_MUTE){if(!send(C_MUTE,t.index,0,value))return;ui.track[t.index].mute=(uint8_t)value;}
  if(t.kind==M_SEND){if(!send(C_SEND,t.index,0,value))return;delay_send[t.index]=(uint8_t)value;}
  if(t.kind==M_LENGTH){if(!send(C_LENGTH,t.index,0,value))return;ui.track[t.index].length=(uint8_t)value;}
@@ -1342,7 +1344,7 @@ static void redraw(void) {
 static int project_valid(const GDProject *p) {
   if((p->reserved&3)>2||p->reserved>15)return 0;
   if (p->magic != 0x47444631u || p->version != 9 || p->bpm < 40 ||
-      p->bpm > 240 || p->pages != 1 || p->swing > 50 ||
+      p->bpm > 240 || p->pages != 1 || gd_swing_amount(p->swing) > 100 ||
       p->theme >= 38)
     return 0;
   for (unsigned l = 0; l < 8; ++l) {
@@ -1382,8 +1384,9 @@ static int bindings_valid(void){
  return (!preset_bank.kit_used||kit_bind<5)&&(!preset_bank.scene_used||scene_bind<5);
 }
 static int restore_current(void){
- int latest=settings_load(&save_scratch.current,sizeof save_scratch.current)==0&&pattern_save.magic==GD16_SAVE_MAGIC&&(pattern_save.version==5||pattern_save.version==6||pattern_save.version==7);
+ int latest=settings_load(&save_scratch.current,sizeof save_scratch.current)==0&&pattern_save.magic==GD16_SAVE_MAGIC&&(pattern_save.version==5||pattern_save.version==6||pattern_save.version==7||pattern_save.version==8);
  if(!latest&&(settings_load(&save_scratch.current,12260)||pattern_save.magic!=GD16_SAVE_MAGIC||pattern_save.version!=4))return 0;
+ old_swing_format=pattern_save.version<8;
  old_roll_format=pattern_save.version<6?1:pattern_save.version==6?2:0;
  if(pattern_save.active>=16)return 0;
  if(latest)for(unsigned lane=0;lane<8;++lane){if(save_scratch.current.delay_send[lane]>127)return 0;delay_send[lane]=save_scratch.current.delay_send[lane];}
@@ -1398,6 +1401,7 @@ static int restore_current(void){
  return project_valid(&ui)&&gd_bank_valid(&preset_bank)&&bindings_valid();
 }
 static int restore_four(void){
+ old_swing_format=1;
  old_roll_format=1;
   int learned=settings_load(&save_scratch.four,sizeof save_scratch.four)==0&&save_scratch.four.base.base.magic==GD16_SAVE_MAGIC&&save_scratch.four.base.base.version==3;
  int chained=learned;
@@ -1427,6 +1431,7 @@ static void import_old_pattern(unsigned slot,const GD64Pattern *old,unsigned *ex
  }
 }
 static int restore_legacy(void){
+ old_swing_format=1;
  old_roll_format=1;
  unsigned kind=0;
  if(settings_load(&save_scratch.eight,sizeof save_scratch.eight)==0&&save_scratch.eight.prefix.version==4)kind=4;
@@ -1461,6 +1466,7 @@ void setup(void){
  for(unsigned slot=0;slot<16;++slot)gd_pattern_blank(&pattern_bank[slot]);
  for(unsigned l=0;l<8;++l){voice_bind[l][0]=8;voice_bind[l][1]=9;}
  int restored=restore_current();if(!restored)restored=restore_four();if(!restored)restored=restore_legacy();
+ if(restored&&old_swing_format){if(ui.swing>50)restored=0;else ui.swing=(uint8_t)(ui.swing*2u);}
  if(restored&&old_roll_format){ui.fx[9]=(uint8_t)(old_roll_format==1?gd_old_roll_rate(ui.fx[9],ui.bpm):gd_previous_glitch_rate(ui.fx[9],ui.bpm));for(unsigned n=0;n<4;++n){if(preset_bank.kit_used&(1u<<n))preset_bank.kit[n].scene.fx[9]=(uint8_t)(old_roll_format==1?gd_old_roll_rate(preset_bank.kit[n].scene.fx[9],ui.bpm):gd_previous_glitch_rate(preset_bank.kit[n].scene.fx[9],ui.bpm));if(preset_bank.scene_used&(1u<<n))preset_bank.scene[n].fx[9]=(uint8_t)(old_roll_format==1?gd_old_roll_rate(preset_bank.scene[n].fx[9],ui.bpm):gd_previous_glitch_rate(preset_bank.scene[n].fx[9],ui.bpm));}}
  if(!restored){for(unsigned lane=0;lane<8;++lane)delay_send[lane]=127;for(unsigned n=0;n<16;++n)midi_map[n]=(GDMidiMap){0};gd_chain_defaults(&chain_ui);storage=(GDSave){0};gd_defaults(&ui);active_pattern=0;import_overflow=import_split=0;for(unsigned slot=0;slot<16;++slot)gd_pattern_blank(&pattern_bank[slot]);gd_pattern_get(&pattern_bank[0],&ui);}
  for(unsigned lane=0;lane<8;++lane)engine.delay_send[lane]=delay_send[lane];
@@ -1539,6 +1545,8 @@ static void edit_control(unsigned k, int delta) {
   int v = gd_clamp(old + delta, min, c.max);
   if (v == old)
     return;
+  if(view==V_GLOBAL&&page==0&&k==0){if(send(C_GLOBAL,0,5,(unsigned)v))ui.swing=(uint8_t)((ui.swing&127u)|(v?128u:0u));need_header=need_controls=1;return;}
+  if(view==V_GLOBAL&&page==1&&k==2){if(send(C_GLOBAL,0,0,(unsigned)v))ui.theme=(uint8_t)v;need_full=1;return;}
   if(view==V_GLOBAL&&page%2){unsigned value=k==0?(ui.reserved&12u)|(unsigned)v:(ui.reserved&3u)|((v==4?0u:(unsigned)v)<<2);if(send(C_GLOBAL,0,4,value))ui.reserved=(uint8_t)value;need_header=need_controls=1;return;}
   if((view==V_MIX||view==V_HOME)&&mix_mode!=1){
     unsigned lane=mix_bank*4+k;
@@ -1589,7 +1597,7 @@ static void edit_control(unsigned k, int delta) {
         need_full = 1;
       }
       if (k == 1)
-        ui.swing = (uint8_t)v;
+        ui.swing = (uint8_t)((ui.swing&128u)|(unsigned)v);
       if (k == 2){for(unsigned lane=0;lane<8;++lane)ui.track[lane].length=(uint8_t)v;need_grid=1;}
       if (k == 3)
         ui.bpm = (unsigned)v;

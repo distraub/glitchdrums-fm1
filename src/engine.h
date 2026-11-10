@@ -4,6 +4,7 @@
 #ifndef GD_ENGINE_H
 #define GD_ENGINE_H
 #include "tables.h"
+#include "swing.h"
 #include "drum_character.h"
 #include "kick_dsp.h"
 #include "acoustic_state.h"
@@ -131,6 +132,7 @@ static inline void gd_defaults(GDProject *p) {
   p->magic = 0x47444631u;
   p->version = 9;
   p->bpm = 120;
+  p->swing = 128; /* Fresh grooves swing eighths; amount starts straight. */
   p->pages = 1;
   p->reserved=8; /* Balanced 2x, two Glitch notes; configurable up to four. */
   for (unsigned l = 0; l < 8; ++l) {

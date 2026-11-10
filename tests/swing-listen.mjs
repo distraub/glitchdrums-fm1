@@ -26,6 +26,6 @@ wav('default-AB-0-50-0-50.wav',Buffer.concat([straight.subarray(0,bar*8),swung.s
 wav('drums-only-swing-0.wav',drums0);wav('drums-only-swing-50.wav',drums50);
 let a=0,b=0,diff=0,cross=0,peakA=0,peakB=0;
 for(let i=0;i<straight.length;i+=2){const x=straight.readInt16LE(i),y=swung.readInt16LE(i);a+=x*x;b+=y*y;diff+=(x-y)**2;cross+=x*y;peakA=Math.max(peakA,Math.abs(x));peakB=Math.max(peakB,Math.abs(y));}
-const report={firmware:version,tempo:120,bars:4,seconds:bar*4/rate,AB:'two bars at 0, two bars at 50, repeat',fullMixIdentical:straight.equals(swung),drumsOnlyIdentical:drums0.equals(drums50),correlation:cross/Math.sqrt(a*b),differenceRmsRelativeToStraight:Math.sqrt(diff/a),peakA,peakB};
-assert(report.drumsOnlyIdentical,'Default acoustic drum hits all lie on straight eighth-note boundaries');
+const report={firmware:version,tempo:120,bars:4,seconds:bar*4/rate,AB:'two bars at 0, two bars at 50, repeat',fullMixIdentical:straight.equals(swung),swingBasis:'1/8',drumsOnlyIdentical:drums0.equals(drums50),correlation:cross/Math.sqrt(a*b),differenceRmsRelativeToStraight:Math.sqrt(diff/a),peakA,peakB};
+assert(!report.drumsOnlyIdentical,'Eighth-note swing must change the default acoustic drum groove');
 fs.writeFileSync(path.join(out,'comparison.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));console.log(out);

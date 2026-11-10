@@ -21,6 +21,7 @@ enum {
   F_PERCENT,
   F_TRANSPOSE,
   F_WIDTH,
+  F_SWING_GRID,
   F_KICK=64,
   F_AC=96,
   F_AN=128,
