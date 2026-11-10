@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 const root=new URL('../build/test-release/',import.meta.url);
 const O=JSON.parse(fs.readFileSync(new URL('fullfx-layout.json',root)));
 const effectKeys=[0,27,1,28,2,29,3,4,19,5,20,6,21,7,8,22,9,23,10,11,24,12,25,13,14,26,15];
-const module=new WebAssembly.Module(fs.readFileSync(process.argv[2]||new URL('glitchdrums-0.17.6.rfm1',root)));
+const module=new WebAssembly.Module(fs.readFileSync(process.argv[2]||new URL('glitchdrums-'+JSON.parse(fs.readFileSync(new URL('../firmware.json',import.meta.url))).version+'.rfm1',root)));
 assert.deepEqual(WebAssembly.Module.imports(module),[]);
 const manifest=JSON.parse(new TextDecoder().decode(WebAssembly.Module.customSections(module,'rfm1')[0]));assert.equal(manifest.abi,6);assert.equal(manifest.id,'glitchdrums');
 function boot(flash){const x=new WebAssembly.Instance(module).exports,m=new DataView(x.memory.buffer),d=x.rfm1_get(6),panel=m.getUint32(d+x.rfm1_layout(30),true),h={x,m,at:i=>panel+x.rfm1_layout(i),tick:0};

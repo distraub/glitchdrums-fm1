@@ -16,7 +16,6 @@ typedef struct {
  uint32_t epoch, countdown, serial, rng, reflection_write, control_tick;
  uint32_t length,rate,span,interval;
  int normalization,smooth_coeff,gain_target,wet_dc_in[2],wet_dc_out[2],wash[2];
- int16_t reflection[2048];
  int32_t low, smooth, dc_input, dc_output, bloom, input_env, wet_env, gain;
 } GDSignatureVoice;
 typedef struct {
@@ -26,7 +25,9 @@ typedef struct {
  uint32_t write,pending_down,shape_tick;
  int shape_drive,shape_norm,shape_amount,shape_tone,shape_quantum,shape_low[2],shape_dc_in[2],shape_dc_out[2],transient_env,capture_hp;
  int capture_low,dry_low[2],target_delta[2],smooth_delta[2];
- GDSignatureVoice voice[3];
+ /* Only AntiVerb and Grain Cloud use grain state. Glitchstortion is immediate. */
+ GDSignatureVoice voice[2];
+ int16_t reflection[2048]; /* AntiVerb alone owns the reflection tank. */
 } GDSignature;
 static inline int gd_signature_bound(int x){
  unsigned mag=x<0?0u-(unsigned)x:(unsigned)x;
@@ -85,9 +86,9 @@ static inline void gd_signature_controls(GDSignature *s,uint32_t mask,uint32_t d
   if(effect==1)continue;
   unsigned depth=controls[effect][0],density=controls[effect][1],texture=controls[effect][2],tail=controls[effect][3];
   uint32_t bit=1u<<(27+effect);if(!(mask&bit))continue;
-  GDSignatureVoice *v=&s->voice[effect];
+  GDSignatureVoice *v=&s->voice[effect>>1];
   if(down&bit){
-   *v=(GDSignatureVoice){0};v->epoch=s->write;v->rng=0x731a23u+effect*173;v->gain=v->gain_target=32767;
+   *v=(GDSignatureVoice){0};if(effect==0)for(unsigned n=0;n<2048;++n)s->reflection[n]=0;v->epoch=s->write;v->rng=0x731a23u+effect*173;v->gain=v->gain_target=32767;
   }
   /* Read span stays under ring size even for double-speed grains. */
   if(!(v->control_tick++&15u)){
@@ -135,10 +136,10 @@ static inline void gd_signature_controls(GDSignature *s,uint32_t mask,uint32_t d
   int l=(int)((int64_t)sumL*v->normalization>>15),r=(int)((int64_t)sumR*v->normalization>>15);
   if(effect==0){
    unsigned delay=(311u+tail*7u)/2;
-   int tap=v->reflection[(v->reflection_write-delay)&2047];
+   int tap=s->reflection[(v->reflection_write-delay)&2047];
    v->low+=(tap-v->low)*7/16;
    int tank=gd_signature_bound((l+r)/2+(int)((int64_t)v->low*(12000+texture*60+tail*60)/32768));
-   v->reflection[v->reflection_write++&2047]=(int16_t)tank;
+   s->reflection[v->reflection_write++&2047]=(int16_t)tank;
    l=(l+tap)/2;r=(r+v->low)/2;
   }
   if(effect!=1){

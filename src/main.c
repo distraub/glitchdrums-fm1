@@ -23,7 +23,7 @@ static GDSave storage;
 static union {GDFullSave current;GDMidiSave four;GDChainSave chain;GDOldSave prefix;GDOldABSave ab;GDOldEightSave eight;GDOldSongSave song;} save_scratch;
 #define chain_save save_scratch.current.base
 #define pattern_save chain_save.base
-static GDPattern pattern_bank[16],pattern_mailbox;
+static GDPattern pattern_bank[16] POOL,pattern_mailbox POOL;
 static uint8_t live_chord_count[2][16];
 static int8_t live_chord_pitch[2][16][3];
 static uint8_t voice_bind[8][2],kit_bind=4,scene_bind=4;

@@ -6,9 +6,8 @@
 #include "engine.h"
 #include "signature.h"
 #include "performance.h"
-/* Main RAM, not POOL: LCD + delay + roll already occupy ~241 KiB of pool.
- * Hardware map/CPU checks remain required before a .fwsc release. */
-static int16_t gd_punch_tape[32768];
+/* The native pool holds LCD, delay/Glitch capture, punch tape and pattern bank. */
+static int16_t gd_punch_tape[32768] POOL;
 static const char *const gd_punch_names[30]={
  "LOOP 1/4","LOOP 1/8","LOOP 1/16","LOOP 1/32","TRIP STUT","REVERSE","TAPE STOP","HALF SPEED",
  "LP SWEEP","HP SWEEP","PHONE","CRUSH","ALIAS","GATE 1/16","ECHO THROW","WOBBLE",

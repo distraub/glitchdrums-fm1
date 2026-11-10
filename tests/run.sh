@@ -6,6 +6,8 @@ clang -std=c11 -Wall -Wextra -Werror -I platform tests/flash-ids.c -o build/nati
 build/native/flash-ids-test
 clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined,address tests/integer-runtime.c -o build/native/integer-runtime-test
 build/native/integer-runtime-test
+clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -DFOMA_MVAVE=1 -I platform -I src tests/memory-parity.c -o build/native/memory-parity-test
+build/native/memory-parity-test
 clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined,address -DFOMA_MVAVE=1 -I platform -I src tests/core.c -lm -o build/native/core-test
 build/native/core-test
 clang -std=c11 -Wall -Wextra -Werror -DFOMA_MVAVE=1 -I platform -I src -fsyntax-only src/main.c

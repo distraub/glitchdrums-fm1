@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 #pragma once
 #include "engine.h"
-typedef struct {uint32_t write,phase,age;int16_t data[2][2048];int low[2];} GDModDelay;
+/* At maximum width, flanger reads at most 779 frames back (wobble: 169).
+ * 1024 frames leave room for both interpolation taps at every legal setting. */
+typedef struct {uint32_t write,phase,age;int16_t data[2][1024];int low[2];} GDModDelay;
 static inline int gd_performance_curve(int t,unsigned curve){
  int square=t*t/32768;
  return curve>=64?t+(square-t)*(int)(curve-64)/63:t+(t-square)*(int)(64-curve)/64;
@@ -18,9 +20,9 @@ static inline void gd_mod_delay(GDModDelay *s,const uint8_t q[4],int wobble,int 
  for(unsigned k=0;k<2;++k){
   unsigned sine=(unsigned)(gd_sine(s->phase+(k?0x40000000u:0))+32768);
   unsigned position=base*256u+sine*span/256u,delay=position>>8,frac=position&255u;
-  int wet=0;if(s->age>delay+1){int a=s->data[k][(s->write-delay)&2047],b=s->data[k][(s->write-delay-1)&2047];wet=a+(b-a)*(int)frac/256;}
+  int wet=0;if(s->age>delay+1){int a=s->data[k][(s->write-delay)&1023],b=s->data[k][(s->write-delay-1)&1023];wet=a+(b-a)*(int)frac/256;}
   s->low[k]=(s->low[k]*3+wet)/4;
-  s->data[k][s->write&2047]=(int16_t)gd_sat(source[k]+s->low[k]*(int)q[2]/170);
+  s->data[k][s->write&1023]=(int16_t)gd_sat(source[k]+s->low[k]*(int)q[2]/170);
   source[k]+=(wet-source[k])*(int)q[3]/127;
  }
  ++s->write;if(s->age<4096)++s->age;*l=source[0];*r=source[1];

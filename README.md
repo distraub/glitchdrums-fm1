@@ -1,4 +1,4 @@
-# GlitchDrums FM1 — 0.17.6
+# GlitchDrums FM1 — 0.17.7
 
 By Alex Matheu.
 
@@ -34,7 +34,7 @@ sh tests/run.sh
 node tests/remote.mjs
 ```
 
-Output: `build/test-release/glitchdrums-0.17.6.rfm1`, its source archive and
+Output: `build/test-release/glitchdrums-0.17.7.rfm1`, its source archive and
 checksums. Local builds use a local source archive URL. For a distributed build,
 set `GD_SOURCE_URL` to the public immutable source URL for the exact commit:
 
@@ -53,7 +53,7 @@ in this standalone snapshot; use the documented commands above.
 
 ## Try it
 
-File: `build/test-release/glitchdrums-0.17.6.rfm1`.
+File: `build/test-release/glitchdrums-0.17.7.rfm1`.
 
 - On https://remotefm1.com/ choose the firmware picker → **Open a file...**, select
   the `.rfm1`, then start it. Press the instrument's **PLAY** for the demo.
