@@ -1,0 +1,38 @@
+name: Native build diagnostics
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Exact source commit to symbolize
+        required: true
+        default: dc0ea6f7f29f8f4e9e964359868dc7579e3a35ce
+permissions:
+  contents: read
+jobs:
+  symbols:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Native toolchain and checked build
+        run: |
+          mkdir -p ~/.jieli
+          curl -fL --retry 3 https://pkgman.jieliapp.com/s/linux-toolchain | tar -xJ -C ~/.jieli
+          TC="$(ls -d ~/.jieli/jieli-linux-toolchains-* | sort | tail -1)"
+          export JIELI_TOOLCHAIN="$TC"
+          python3 tools/build_native.py
+          sha256sum build/*.fwsc > build/fm1/package-sha256.txt
+          "$TC/common/bin/objdump" -t build/fm1/firmware.elf > build/fm1/symbols.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-symbols
+          path: |
+            build/fm1/firmware.elf
+            build/fm1/firmware.dis
+            build/fm1/symbols.txt
+            build/fm1/package-sha256.txt
