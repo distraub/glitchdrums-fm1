@@ -89,3 +89,21 @@ record or measured deadline result is available yet.
 -O2 rather than -Os, retaining all stack, RAM, ROM-window and flash checks.
 Timing telemetry counts over-budget blocks, not exact hardware dropouts; peak
 and late-block counts are cumulative since boot.
+
+Alex further isolated 0.17.10: the pattern runs with PRC, Glitch and Analog
+steps removed; PRC slows it, and Glitch/Analog cause severe degradation even
+when played individually. Other drum voices sound okay. This supports an
+audio workload problem but does not establish measured CPU usage.
+
+0.17.11 source 89d00f1 additionally uses normalized base-65536 quotient
+estimation for 64/32 divisions whose quotient fits 32 bits. This removes the
+long bitwise quotient loop from common synth ladder calculations; all results
+remain integer-exact. One million additional randomized cases exercise this
+path, alongside signed, unsigned, Q-format and edge-case tests.
+Native CI 43645305423 passes with the stack-limit negative probe. Symbols
+run 43645308409 reproduces the same package. Conservative direct-call review:
+setup 7,688 bytes, loop 10,928 bytes, audio IRQ 3,184 bytes, timer 340 bytes.
+These are estimates with per-frame allowances, not runtime high-water marks.
+Hardware performance must be measured after loading; no claim of a resolved
+audio deadline is made before that test.
+Candidate SHA-256: fd02d4a1c9cde3063811e63657fdcd428f63ae9a400de0b79fc28e7e706f511d.

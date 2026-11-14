@@ -32,7 +32,9 @@ for l in (root/'build/fm1/firmware.dis').read_text().splitlines():
  if re.search(r'\b(?:call|goto) r\d',code):ind.append((f,code))
 # RAM flash entry points are reached through relocated function pointers.
 for caller, targets in {'st_read':['fl_read_ram'], 'fl_write':['fl_prog_ram'],
-                        'settings_save':['fl_erase4k_ram'],
+                        'settings_load':['fl_read_ram'],
+                        'settings_save':['fl_erase4k_ram','fl_prog_ram'],
+                        'ota_session':['fl_read_ram','fl_prog_ram','fl_erase4k_ram'],
                         'ota_erase':['fl_erase4k_ram']}.items():
  edges.setdefault(caller,set()).update(targets)
 def walk(f,seen=()):
