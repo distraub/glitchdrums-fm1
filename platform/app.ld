@@ -24,8 +24,8 @@ SECTIONS
          * callees in the first 12 KiB of XIP, opposite DSP at RAM +12 KiB.
          * New out-of-range calls are linker errors, never unchecked jumps. */
         *(.text.__udivdi3 .text.__divdi3 .text.__umoddi3 .text.__moddi3)
-        *(.text.gd_prepare .text.gd_render_voice .text.gda_config .text.gds_config)
-        *(.text.gds_material .text.gds_ladder .text.gd_limit)
+        *(.text.gda_config .text.gds_config)
+        *(.text.gds_material .text.gds_ladder .text.gd_limit .text.gd_sat)
         _dsp_helpers_end = .;
         *(.text*) *(.rodata*) . = ALIGN(4); _etext = .;
     } > XIP
