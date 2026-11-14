@@ -11,6 +11,8 @@ typedef struct {
   uint32_t write, roll_write, roll_read, roll_start, hold_count, was_roll, roll_gate;
   uint32_t roll_length,roll_target,roll_rate,roll_bpm;
   int32_t damp, low[2], held[2];
+  uint32_t delay_bpm,delay_division,delay_distance,filter_cutoff;
+  int32_t filter_a;
 } GDFX;
 /* Fold long divisions by octaves to stay on-grid within the fixed delay RAM. */
 static inline uint32_t gd_delay_frames(unsigned bpm, unsigned division, unsigned *folds) {
@@ -29,19 +31,27 @@ static inline void gd_fx_send(GDFX *f, const GDProject *p, int32_t *left,
                          int32_t *right, int32_t send) {
   const uint8_t *q = p->fx;
   int32_t l = *left, r = *right;
-  uint32_t distance = gd_delay_frames(p->bpm,q[1],0);
+  if(f->delay_bpm!=p->bpm||f->delay_division!=q[1]){
+    f->delay_bpm=p->bpm;f->delay_division=q[1];
+    f->delay_distance=gd_delay_frames(p->bpm,q[1],0);
+  }
+  uint32_t distance=f->delay_distance;
   int32_t echo = gd_delay[(f->write - distance) & 32767];
   f->damp += (echo - f->damp) * (128 - (int)q[3]) / 128;
   gd_delay[f->write & 32767] =
       (int16_t)gd_sat(send + f->damp * (int)q[2] / 128);
   ++f->write;
-  l += f->damp * (int)q[0] / 127;
-  r += gd_delay[(f->write - distance / 2u) & 32767] * (int)q[0] / 127;
+  if(q[0]){
+    l+=f->damp*(int)q[0]/127;
+    r+=gd_delay[(f->write-distance/2u)&32767]*(int)q[0]/127;
+  }
   l = gd_sat(l * (128 + (int)q[4] * 3) / 128);
   r = gd_sat(r * (128 + (int)q[4] * 3) / 128);
-  uint32_t quantum = 1u << (q[5] > 12 ? 12 : q[5]);
-  l = l / (int32_t)quantum * (int32_t)quantum;
-  r = r / (int32_t)quantum * (int32_t)quantum;
+  if(q[5]){
+    uint32_t quantum=1u<<(q[5]>12?12:q[5]);
+    l=l/(int32_t)quantum*(int32_t)quantum;
+    r=r/(int32_t)quantum*(int32_t)quantum;
+  }
   if (!f->hold_count) {
     f->held[0] = l;
     f->held[1] = r;
@@ -51,8 +61,11 @@ static inline void gd_fx_send(GDFX *f, const GDProject *p, int32_t *left,
   l = f->held[0];
   r = f->held[1];
   if (q[7] < 127) {
-    unsigned hz = gd_cutoff_hz[q[7]];
-    int a = (int)(hz * 32768u / (hz + 7020u));
+    if(!f->filter_a||f->filter_cutoff!=q[7]){
+      unsigned hz=gd_cutoff_hz[q[7]];f->filter_cutoff=q[7];
+      f->filter_a=(int)(hz*32768u/(hz+7020u));
+    }
+    int a=f->filter_a;
     int32_t x[2] = {l, r};
     for (unsigned k = 0; k < 2; ++k) {
       int32_t v = gd_sat(x[k] - f->low[k] * (int)q[8] / 256);

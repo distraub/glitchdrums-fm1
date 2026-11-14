@@ -55,3 +55,8 @@ clang -O2 -std=c11 -fsanitize=undefined,address -I src tests/render-parity.c -o 
 build/native/render-parity-test > build/native/render-parity.txt
 cmp tests/render-parity.txt build/native/render-parity.txt
 echo "PASS: cached synthesis matches 32 pre-optimization PCM vectors"
+
+clang -O2 -std=c11 -fsanitize=undefined,address -DFOMA_MVAVE=1 -I platform -I src tests/fx-cache-vectors.c -o build/native/fx-cache-vectors
+build/native/fx-cache-vectors > build/native/fx-cache-vectors.txt
+cmp tests/fx-cache-vectors.txt build/native/fx-cache-vectors.txt
+echo "PASS: cached global effects preserve PCM across live tempo/control changes"

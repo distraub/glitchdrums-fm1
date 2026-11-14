@@ -55,6 +55,8 @@ typedef struct {
   GDAcoustic acoustic[6];
   GDSynth synth[8];
   uint32_t counter, trigger_serial, solo_mask;
+  uint32_t lfo_bpm,lfo_increment[8][2];
+  uint8_t lfo_rate[8][2];
 } GDEngine;
 static inline int gd_clamp(int x, int lo, int hi) {
   return x < lo ? lo : x > hi ? hi : x;
@@ -286,6 +288,17 @@ static inline void gd_release(GDEngine *d,unsigned lane,int pitch){
 /* Coefficients and two tempo-synced LFOs are updated in audio every 32 frames.
  */
 static inline void gd_prepare(GDEngine *d, const GDProject *p) {
+  static const uint16_t periods[12]={256,128,64,32,16,8,4,2,1,12,6,3};
+  unsigned tempo_changed=d->lfo_bpm!=p->bpm;
+  for(unsigned l=0;l<8;++l)for(unsigned k=0;k<2;++k){
+    unsigned rate=p->track[l].lfo[k].rate%12;
+    if(tempo_changed||d->lfo_rate[l][k]!=rate){
+      uint32_t n=(44100u*60u/(p->bpm*4u))*periods[rate]/4u;
+      d->lfo_increment[l][k]=(0xffffffffu/(n?n:1))*32u;
+      d->lfo_rate[l][k]=(uint8_t)rate;
+    }
+  }
+  d->lfo_bpm=p->bpm;
   for (unsigned slot = 0; slot < 14; ++slot) {
     unsigned l=slot<8?slot:6+(slot-8)/3;
     GDVoice *v = &d->voices[slot];
@@ -298,11 +311,8 @@ static inline void gd_prepare(GDEngine *d, const GDProject *p) {
       v->p[v->lock_id] = (uint8_t)v->lock_value;
     for (unsigned k = 0; k < 2; ++k) {
       const GDLFO *m = &t->lfo[k];
-      static const uint16_t periods[12] = {256, 128, 64, 32, 16, 8,
-                                           4,   2,   1,  12, 6,  3};
-      uint32_t n = (44100u * 60u / (p->bpm * 4u)) * periods[m->rate % 12] / 4u,
-               before = v->lfo_phase[k];
-      v->lfo_phase[k] += (0xffffffffu / (n ? n : 1)) * 32u;
+      uint32_t before=v->lfo_phase[k];
+      v->lfo_phase[k]+=d->lfo_increment[l][k];
       int32_t x = gd_sine(v->lfo_phase[k]);
       if (m->shape == 1)
         x = gd_wave(v->lfo_phase[k], 0);
@@ -357,6 +367,7 @@ static inline void gd_prepare(GDEngine *d, const GDProject *p) {
     uint8_t *q = v->p;
     int transpose=((int)q[31]-64)*24/63;
     v->pan=q[30];v->gain=l==0?gd_kick_level[q[29]]:l==5?gd_perc_level[q[29]]:l<6?gd_ac_level[l-1][q[29]]:gd_synth_level[l-6][q[29]];
+    if(v->env<=1&&l>=1)continue; /* Hits configure these voices before sounding. */
     if(l>=1&&l<=5){gda_config(&d->acoustic[l],l,q,v->pitch_offset+transpose);continue;}
     if(l>=6){gds_config(&d->synth[slot-6],l,q,v->pitch_offset+transpose);continue;}
     uint32_t root=(uint32_t)((uint64_t)gd_kick_root_inc[q[0]]*gd_note_inc[gd_clamp(60+v->pitch_offset+transpose,0,120)]/gd_note_inc[60]);

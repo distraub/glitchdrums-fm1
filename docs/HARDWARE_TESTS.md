@@ -131,3 +131,23 @@ reports foreground maximum 10,928 bytes, audio IRQ 3,232 bytes and timer
 340 bytes. Exact-package updater fault tests and RemoteFM1 regression tests
 pass. Package SHA-256: `a4b3f9cde6ba1ca80740b538c956fbcac71d5100ae14fad0c7e3f211633118e7`. Ready for a hardware measurement trial; playback
 headroom remains unconfirmed.
+
+## First measured 0.17.12 audio load
+
+Alex read the on-device meter: stopped 32%, reduced pattern without PRC,
+Glitch or Analog 64–88%, and adding one Analog hit on step 1 reaches 113%.
+These confirm render deadlines are exceeded; improvements claimed only from
+host tests would not establish native headroom.
+
+0.17.13 caches tempo/rate LFO increments per track while preserving individual
+voice phases and modulation, skips inactive acoustic/synth preparation (hits
+initialize these voices), and caches global delay/filter coefficients. Delay
+feedback, capture recording and tails still advance. Zero delay mix skips only
+inaudible wet contributions; disabled bit reduction skips divide-by-one work.
+32 synth PCM vectors and 8 global-FX vectors from 0.17.12 verify output.
+The FX vectors include live tempo/filter/mix changes, hold and Glitch captures.
+
+Skiff v2.2's `firmware/hal/fm1_clk.h` and startup were inspected: its optional
+clock switch reduces the V15 boot clock from 360 to 320 MHz. No clock-register
+changes are included here. No native performance gain is claimed until the
+new package is measured on the physical unit.
