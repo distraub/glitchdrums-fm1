@@ -123,3 +123,11 @@ Global page 2 now displays native audio rendering time as AUDIO/CPU percent
 in its unused fourth cell, refreshed at 5 Hz, without USB access. KN4 is
 read-only there. Native render timing remains distinct from total system CPU.
 No claim of hardware deadline success until measured on the unit.
+
+0.17.12 candidate validation: native CI 43646618185 and symbols run
+43646620533 pass and produce identical packages. Code 401/567 KiB,
+RAM 90/96 KiB, pool 334/336 KiB; guards unchanged. Conservative stack review
+reports foreground maximum 10,928 bytes, audio IRQ 3,232 bytes and timer
+340 bytes. Exact-package updater fault tests and RemoteFM1 regression tests
+pass. Package SHA-256: `a4b3f9cde6ba1ca80740b538c956fbcac71d5100ae14fad0c7e3f211633118e7`. Ready for a hardware measurement trial; playback
+headroom remains unconfirmed.
