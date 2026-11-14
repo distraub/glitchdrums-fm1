@@ -7,5 +7,6 @@ import build
 if __name__ == "__main__":
     cfg = build.config()
     build.build_site()
+    build.check_stack_frame_limit()
     notes = build.build_fm1(cfg)
     print("Native package built:", "; ".join(notes))

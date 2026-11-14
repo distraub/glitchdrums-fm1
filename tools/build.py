@@ -43,6 +43,7 @@ APP_XIP = 0x02000120  # app.bin offset 0 in the XIP map; the SPL jumps here
 APP_SLOT = fm1pkg_make.APP_SLOT
 LOADER_LOAD = 0x01C0A800
 LOADER_NAME = b"usb_hid_ota.bin"  # the file name the SPL looks for
+STACK_CFLAGS = ["-Wframe-larger-than=8192", "-Werror=frame-larger-than"]
 CFLAGS = ["-Os", "-ffunction-sections", "-fno-builtin", "-Wall", "-Wno-unused-function"]
 INCLUDES = ["-Iplatform", "-Iplatform/hal", "-Iplatform/src", "-Iplatform/gen"]
 LINE = re.compile(r"^\s*([0-9a-f]+):\s+((?:[0-9a-f]{2} )+)\s*\t(.*)$")
@@ -207,9 +208,24 @@ def build_loader():
 # ---- the app
 
 
+def check_stack_frame_limit():
+  """Prove this target compiler enforces the production limit, rather than
+  silently ignoring a warning option. The 9 KB probe is never linked."""
+  FW.mkdir(parents=True, exist_ok=True)
+  try:
+    tc("cc", *CFLAGS, *STACK_CFLAGS, "-c", ROOT / "tests/stack-frame-probe.c",
+       "-o", FW / "stack-frame-probe.o")
+  except BuildError as e:
+    if re.search(r"(?:frame size|stack frame|frame .*exceeds)", str(e), re.I):
+      print("stack-frame guard: oversized 9000-byte probe correctly refused")
+      return
+    raise
+  raise BuildError("the native compiler did not enforce the 8192-byte frame limit")
+
+
 def build_app(cfg):
   FW.mkdir(parents=True, exist_ok=True)
-  flags = [*CFLAGS, "-Wframe-larger-than=8192", "-Werror=frame-larger-than", *INCLUDES, f'-DAPP_NAME="{cfg["name"]}"', f'-DAPP_VER="{cfg["version"]}"', f'-DFELUCCA_ID="{cfg["product"]}"', *cfg["defines"]]
+  flags = [*CFLAGS, *STACK_CFLAGS, *INCLUDES, f'-DAPP_NAME="{cfg["name"]}"', f'-DAPP_VER="{cfg["version"]}"', f'-DFELUCCA_ID="{cfg["product"]}"', *cfg["defines"]]
   objs, cmds = [], []
   for s in [PLAT / "crt0.S", PLAT / "hal/fm1_vec.S", PLAT / "hal/fm1_isr.S"]:
     objs.append(FW / (s.stem + ".o"))
