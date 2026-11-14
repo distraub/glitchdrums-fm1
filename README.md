@@ -1,6 +1,9 @@
-# GlitchDrums FM1 — 0.17.9
+# GlitchDrums FM1 — 0.17.10
 
 By Alex Matheu.
+
+**Hardware blocker:** 0.17.8 fails its startup stack guard on the first real unit.
+USB rescue responds. A fix is under verification; see [hardware test findings](docs/HARDWARE_TESTS.md).
 
 An eight-lane drum synthesizer for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code

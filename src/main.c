@@ -19,6 +19,7 @@ _Static_assert(sizeof(GDSave) <= SETTINGS_MAX,
  * contract orders each cell before its index, without libatomic dependencies.
  * RemoteFM1 serializes all entry points; this is not a multi-core queue.
  */
+static volatile uint32_t instrument_ready;
 static GDSave storage;
 static union {GDFullSave current;GDMidiSave four;GDChainSave chain;GDOldSave prefix;GDOldABSave ab;GDOldEightSave eight;GDOldSongSave song;} save_scratch;
 #define chain_save save_scratch.current.base
@@ -359,7 +360,7 @@ int gd_flush_pending_save(void) {
   finish_chain_switch();finish_pattern_switch();
   if(import_overflow){pending_save=0;message("OLD BANK >16 BARS: NO SAVE");return 0;}
   if(!chain_running)gd_pattern_get(&pattern_bank[active_pattern],&ui);
-  save_scratch.current=(GDFullSave){0};pattern_save.magic=GD16_SAVE_MAGIC;pattern_save.version=8;
+  gd_clear(&save_scratch.current,sizeof save_scratch.current);pattern_save.magic=GD16_SAVE_MAGIC;pattern_save.version=8;
   pattern_save.active=(uint8_t)active_pattern;pattern_save.theme=ui.theme;pattern_save.swing=ui.swing;pattern_save.quality=ui.reserved;pattern_save.bpm=(uint16_t)ui.bpm;
   GDKit kit=gd_get_kit(&ui);pattern_save.project=gd_pack_full_kit(&kit);
   for(unsigned l=0;l<8;++l){pattern_save.voice_used[l]=preset_bank.voice_used[l]&3;for(unsigned n=0;n<2;++n){pattern_save.voice[l][n]=gd_pack_sound(&preset_bank.voice[l][n]);pattern_save.voice_bind[l][n]=voice_bind[l][n];}}
@@ -402,6 +403,8 @@ static void sequence_hit(unsigned lane,unsigned velocity,int pitch,int lock,unsi
  if(lane>=6)for(unsigned n=0;n<live_chord_count[lane-6][step];++n)sequence_note(lane,velocity,live_chord_pitch[lane-6][step][n],lock,value);
 }
 void audio(int32_t *out, uint32_t frames) {
+ /* Native IRQs run while setup restores state and draws the first screen. */
+ if(!instrument_ready){for(uint32_t i=0;i<frames*2u;++i)out[i]=0;return;}
   static uint32_t running, remaining, ordinal, quiet_blocks, clock_ordinal, swing_delay;
   static uint32_t repeat_wait[8], repeat_left[8], repeat_gap[8], repeat_step[8];
   process_commands();
@@ -1383,14 +1386,14 @@ static int bindings_valid(void){
  }
  return (!preset_bank.kit_used||kit_bind<5)&&(!preset_bank.scene_used||scene_bind<5);
 }
-static int restore_current(void){
+static __attribute__((noinline)) int restore_current(void){
  int latest=settings_load(&save_scratch.current,sizeof save_scratch.current)==0&&pattern_save.magic==GD16_SAVE_MAGIC&&(pattern_save.version==5||pattern_save.version==6||pattern_save.version==7||pattern_save.version==8);
  if(!latest&&(settings_load(&save_scratch.current,12260)||pattern_save.magic!=GD16_SAVE_MAGIC||pattern_save.version!=4))return 0;
  old_swing_format=pattern_save.version<8;
  old_roll_format=pattern_save.version<6?1:pattern_save.version==6?2:0;
  if(pattern_save.active>=16)return 0;
  if(latest)for(unsigned lane=0;lane<8;++lane){if(save_scratch.current.delay_send[lane]>127)return 0;delay_send[lane]=save_scratch.current.delay_send[lane];}
- storage=(GDSave){0};gd_defaults(&ui);GDKit kit=gd_unpack_full_kit(&pattern_save.project);gd_apply_preset(&ui,&kit,1,0);
+ gd_clear(&storage,sizeof storage);gd_defaults(&ui);GDKit kit=gd_unpack_full_kit(&pattern_save.project);gd_apply_preset(&ui,&kit,1,0);
  ui.theme=pattern_save.theme;ui.swing=pattern_save.swing;ui.reserved=pattern_save.quality;ui.bpm=pattern_save.bpm;
  for(unsigned l=0;l<8;++l){preset_bank.voice_used[l]=pattern_save.voice_used[l];if(preset_bank.voice_used[l]>3)return 0;for(unsigned n=0;n<2;++n){preset_bank.voice[l][n]=gd_unpack_sound(&pattern_save.voice[l][n]);voice_bind[l][n]=pattern_save.voice_bind[l][n];}}
  preset_bank.kit_used=pattern_save.kit_used;preset_bank.scene_used=pattern_save.scene_used;if(preset_bank.kit_used>1||preset_bank.scene_used>1)return 0;
@@ -1400,7 +1403,7 @@ static int restore_current(void){
  for(unsigned n=0;n<16;++n){GDMidiMap *m=&save_scratch.current.map[n];if((m->cc&128)&&gd_midi_map_valid(m))gd_midi_bind(midi_map,m->route&15,m->cc&127,(GDMidiTarget){m->route>>4,m->index});}
  return project_valid(&ui)&&gd_bank_valid(&preset_bank)&&bindings_valid();
 }
-static int restore_four(void){
+static __attribute__((noinline)) int restore_four(void){
  old_swing_format=1;
  old_roll_format=1;
   int learned=settings_load(&save_scratch.four,sizeof save_scratch.four)==0&&save_scratch.four.base.base.magic==GD16_SAVE_MAGIC&&save_scratch.four.base.base.version==3;
@@ -1410,7 +1413,7 @@ static int restore_four(void){
  if(save_scratch.four.base.base.active>=16)return 0;
  if(chained&&gd_chain_valid(&save_scratch.four.base.chain))chain_ui=save_scratch.four.base.chain;
 
- storage=(GDSave){0};gd_defaults(&ui);GDKit kit=gd_restore_kit(&save_scratch.four.base.base.project);gd_apply_preset(&ui,&kit,1,0);
+ gd_clear(&storage,sizeof storage);gd_defaults(&ui);GDKit kit=gd_restore_kit(&save_scratch.four.base.base.project);gd_apply_preset(&ui,&kit,1,0);
  ui.theme=save_scratch.four.base.base.theme;ui.swing=save_scratch.four.base.base.swing;ui.reserved=save_scratch.four.base.base.quality;ui.bpm=save_scratch.four.base.base.bpm;
  for(unsigned l=0;l<8;++l){preset_bank.voice_used[l]=save_scratch.four.base.base.voice_used[l];if(preset_bank.voice_used[l]>3)return 0;for(unsigned n=0;n<2;++n){preset_bank.voice[l][n]=save_scratch.four.base.base.voice[l][n];voice_bind[l][n]=save_scratch.four.base.base.voice_bind[l][n];}}
  preset_bank.kit_used=save_scratch.four.base.base.kit_used;preset_bank.scene_used=save_scratch.four.base.base.scene_used;if(preset_bank.kit_used>1||preset_bank.scene_used>1)return 0;
@@ -1430,7 +1433,7 @@ static void import_old_pattern(unsigned slot,const GD64Pattern *old,unsigned *ex
   if(*extra<16)gd_import_bar(&pattern_bank[(*extra)++],old,bar);else import_overflow=1;import_split=1;
  }
 }
-static int restore_legacy(void){
+static __attribute__((noinline)) int restore_legacy(void){
  old_swing_format=1;
  old_roll_format=1;
  unsigned kind=0;
@@ -1461,6 +1464,7 @@ static int restore_legacy(void){
  return project_valid(&ui)&&gd_bank_valid(&preset_bank);
 }
 void setup(void){
+ instrument_ready=0;
  for(unsigned lane=0;lane<8;++lane)delay_send[lane]=127;
  gd_chain_defaults(&chain_ui);
  for(unsigned slot=0;slot<16;++slot)gd_pattern_blank(&pattern_bank[slot]);
@@ -1468,13 +1472,14 @@ void setup(void){
  int restored=restore_current();if(!restored)restored=restore_four();if(!restored)restored=restore_legacy();
  if(restored&&old_swing_format){if(ui.swing>50)restored=0;else ui.swing=(uint8_t)(ui.swing*2u);}
  if(restored&&old_roll_format){ui.fx[9]=(uint8_t)(old_roll_format==1?gd_old_roll_rate(ui.fx[9],ui.bpm):gd_previous_glitch_rate(ui.fx[9],ui.bpm));for(unsigned n=0;n<4;++n){if(preset_bank.kit_used&(1u<<n))preset_bank.kit[n].scene.fx[9]=(uint8_t)(old_roll_format==1?gd_old_roll_rate(preset_bank.kit[n].scene.fx[9],ui.bpm):gd_previous_glitch_rate(preset_bank.kit[n].scene.fx[9],ui.bpm));if(preset_bank.scene_used&(1u<<n))preset_bank.scene[n].fx[9]=(uint8_t)(old_roll_format==1?gd_old_roll_rate(preset_bank.scene[n].fx[9],ui.bpm):gd_previous_glitch_rate(preset_bank.scene[n].fx[9],ui.bpm));}}
- if(!restored){for(unsigned lane=0;lane<8;++lane)delay_send[lane]=127;for(unsigned n=0;n<16;++n)midi_map[n]=(GDMidiMap){0};gd_chain_defaults(&chain_ui);storage=(GDSave){0};gd_defaults(&ui);active_pattern=0;import_overflow=import_split=0;for(unsigned slot=0;slot<16;++slot)gd_pattern_blank(&pattern_bank[slot]);gd_pattern_get(&pattern_bank[0],&ui);}
+ if(!restored){for(unsigned lane=0;lane<8;++lane)delay_send[lane]=127;for(unsigned n=0;n<16;++n)midi_map[n]=(GDMidiMap){0};gd_chain_defaults(&chain_ui);gd_clear(&storage,sizeof storage);gd_defaults(&ui);active_pattern=0;import_overflow=import_split=0;for(unsigned slot=0;slot<16;++slot)gd_pattern_blank(&pattern_bank[slot]);gd_pattern_get(&pattern_bank[0],&ui);}
  for(unsigned lane=0;lane<8;++lane)engine.delay_send[lane]=delay_send[lane];
  storage.magic=GD_SAVE_MAGIC;storage.version=1;storage.project_size=sizeof(GDProject);
  pattern_cursor=active_pattern;live=ui;
  for(unsigned l=0;l<2;++l)for(unsigned s=0;s<16;++s){live_chord_count[l][s]=pattern_bank[active_pattern].chord_count[l][s];for(unsigned n=0;n<3;++n)live_chord_pitch[l][s][n]=pattern_bank[active_pattern].chord_pitch[l][s][n];}
  selected=0;mix_bank=0;display_lane=0;view=V_HOME;fx_slot=3;fx_selected=gd_keyboard_effect(fx_slot);need_full=1;
  if(import_overflow)message("OLD BANK >16 BARS: NO SAVE");else if(import_split)message("LONG PATTERNS SPLIT I-P");redraw();
+ __asm__ volatile("" ::: "memory");instrument_ready=1;
 }
 static void set_step(unsigned s, unsigned v) {
   if (send(C_STEP, selected, s, v)) {

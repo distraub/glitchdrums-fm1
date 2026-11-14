@@ -37,6 +37,10 @@ function scene(f){const read=bits(f.subarray(8+12+264,8+12+373)),s={fx:[],punch:
 const whites=[0,2,4,6,7,9,11,12,14,16,18,19,21,23,24,26];
 function bank(h){button(h,11);button(h,11);button(h,11);}
 function screenshot(h,name){h.tick+=2000;h.x.rfm1_tick(h.tick);h.x.rfm1_frame();fs.writeFileSync(new URL(name,root),new Uint8Array(h.x.memory.buffer,h.at(11),240*240*2));}
+// Native audio IRQs can preempt setup. Before publication, rendering must be
+// silent and must not touch the uninitialized project's zero tempo or state.
+{const x=new WebAssembly.Instance(module).exports,ptr=x.rfm1_alloc(512);new Int16Array(x.memory.buffer,ptr,256).fill(1234);x.rfm1_audio(ptr,128);assert(new Int16Array(x.memory.buffer,ptr,256).every(v=>v===0));}
+console.log('PASS: audio before setup is silent without reading uninitialized state');
 const fresh=boot();render(fresh);assert(new Int16Array(fresh.x.memory.buffer,fresh.ptr,256).every(v=>v===0));
 const baseline=save(fresh);assert.equal(payload(baseline).length,12268);assert.equal(active(baseline),0);
 button(fresh,7);button(fresh,7);turn(fresh,4,1);const themed=save(fresh);assert.notEqual(themed[15],baseline[15]);assert.equal(save(boot(themed))[15],themed[15]);

@@ -48,7 +48,7 @@ static inline void gd_import_scene(GDScene *d,const GDOldScene *s){
 }
 static inline void gd_import_prefix(GDSave *d,const GDOldSave *s){
  gd_defaults(&d->project);const uint8_t *src=(const uint8_t*)&s->project;uint8_t *dst=(uint8_t*)&d->project;for(unsigned n=0;n<sizeof(GDOldProject);++n)dst[n]=src[n];
- d->magic=GD_SAVE_MAGIC;d->version=1;d->project_size=sizeof(GDProject);d->bank=(GDPresetBank){0};
+ d->magic=GD_SAVE_MAGIC;d->version=1;d->project_size=sizeof(GDProject);gd_clear(&d->bank,sizeof d->bank);
  for(unsigned l=0;l<8;++l){unsigned out=0;for(unsigned n=0;n<8&&out<2;++n)if(s->bank.voice_used[l]&(1u<<n)){d->bank.voice[l][out]=s->bank.voice[l][n];d->bank.voice_used[l]|=(uint8_t)(1u<<out);++out;}}
  for(unsigned n=0;n<4;++n)if(s->bank.kit_used&(1u<<n)){
   d->bank.kit_used=1;for(unsigned l=0;l<8;++l){d->bank.kit[0].sound[l]=s->bank.kit[n].sound[l];d->bank.kit[0].mute[l]=s->bank.kit[n].mute[l];}gd_import_scene(&d->bank.kit[0].scene,&s->bank.kit[n].scene);break;

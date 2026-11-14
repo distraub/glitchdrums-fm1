@@ -8,7 +8,7 @@
 typedef struct {uint8_t step[16],chance[16],ratchet[16];int8_t pitch[16];uint8_t lock_id[16],lock_value[16],length;} GDPatternLane;
 typedef struct {GDPatternLane lane[8];uint8_t pages,chord_count[2][16];int8_t chord_pitch[2][16][3];} GDPattern;
 static inline void gd_pattern_blank(GDPattern *p){
- *p=(GDPattern){0};p->pages=1;
+ gd_clear(p,sizeof *p);p->pages=1;
  for(unsigned l=0;l<8;++l){p->lane[l].length=16;for(unsigned s=0;s<16;++s){p->lane[l].chance[s]=100;p->lane[l].ratchet[s]=1;p->lane[l].lock_id[s]=255;}}
 }
 static inline void gd_pattern_get(GDPattern *p,const GDProject *project){

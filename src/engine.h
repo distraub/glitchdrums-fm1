@@ -4,6 +4,7 @@
 #ifndef GD_ENGINE_H
 #define GD_ENGINE_H
 #include "tables.h"
+#include "memory.h"
 #include "swing.h"
 #include "drum_character.h"
 #include "kick_dsp.h"
@@ -127,8 +128,8 @@ static inline void gd_extended_effect_defaults(uint8_t e[30][4]){
  for(unsigned effect=16;effect<=18;++effect){e[effect][0]=127;e[effect][1]=64;e[effect][2]=effect==17?64:0;e[effect][3]=85;}
  e[19][2]=64;e[19][3]=127;e[23][3]=127;
 }
-static inline void gd_defaults(GDProject *p) {
-  *p = (GDProject){0};
+static __attribute__((noinline,unused)) void gd_defaults(GDProject *p) {
+  gd_clear(p,sizeof *p);
   p->magic = 0x47444631u;
   p->version = 9;
   p->bpm = 120;
