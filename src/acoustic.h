@@ -72,7 +72,7 @@ static inline void gda_hit(GDAcoustic *a,unsigned lane,const uint8_t *q,int pitc
  *a=(GDAcoustic){0};gda_config(a,lane,q,pitch);a->active=1;a->bursts=1;a->next_burst=a->interval;
  for(unsigned n=0;n<8;++n)a->env[n]=1073741824;
 }
-static inline int32_t gda_render(GDAcoustic *a,int32_t white){
+static GD_DSP_CODE int32_t gda_render(GDAcoustic *a,int32_t white){
  int *c=a->c;unsigned m=a->model;int color=c[m==4?15:11],noise=white;
  if(color){a->color+=gda_mul(white-a->color,GD_KICK_COLOR_COEFF);int target=color<0?a->color*27/20:(white-a->color)*19/20;noise+=gda_mul(target-white,color<0?-color:color);}
  a->filter+=gda_mul(noise-a->filter,(int)a->coef[5]);

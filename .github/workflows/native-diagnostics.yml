@@ -41,9 +41,11 @@ jobs:
           sha256sum build/*.fwsc > build/fm1/package-sha256.txt
           "$TC/common/bin/objdump" -t build/fm1/firmware.elf > build/fm1/symbols.txt
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: native-symbols
           path: |
+            build/fm1/firmware.map
             build/fm1/firmware.elf
             build/fm1/firmware.dis
             build/fm1/symbols.txt

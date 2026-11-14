@@ -236,7 +236,7 @@ def build_app(cfg):
   tc_all(*cmds)
   elf = FW / "firmware.elf"
   try:
-    tc("ld", "--gc-sections", "-e", "_start", "-T", PLAT / "app.ld", *objs, "-o", elf)
+    tc("ld", "--gc-sections", "-e", "_start", "-T", PLAT / "app.ld", "-Map", FW / "firmware.map", *objs, "-o", elf)
   except BuildError as e:
     raise BuildError(explain_link(str(e))) from None
   for sect in ("text.bin", "data.bin", "ramtext.bin", "ramdsp.bin"):

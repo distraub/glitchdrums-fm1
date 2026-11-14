@@ -75,7 +75,7 @@ static inline int32_t gds_attack(unsigned age,unsigned frames,int curve){
  int shaped=curve>=0?gda_mul(x,x):32768-gda_mul(32768-x,32768-x);
  return x+gda_mul(shaped-x,curve<0?-curve:curve);
 }
-static inline int32_t gds_analog(GDSynth *a,uint32_t *rng){
+static GD_DSP_CODE int32_t gds_analog(GDSynth *a,uint32_t *rng){
  int *c=a->c;const uint8_t *q=a->q;
  a->env[0]=gda_env(a->env[0],(int)a->coef[0]);
  for(unsigned n=1;n<3;++n){unsigned frame=a->attack[n-1];int curve=c[n==1?21:19];
@@ -123,7 +123,7 @@ static inline int32_t gds_loop(unsigned table,uint32_t phase,uint32_t position,u
  int end=gds_material(table,position+(uint32_t)offset+span*2u,frozen,color),start=gds_material(table,position+(uint32_t)offset,frozen,color);
  return gda_mul(end,32768-smooth)+gda_mul(start,smooth);
 }
-static inline int32_t gds_glitch(GDSynth *a,uint32_t *rng){
+static GD_DSP_CODE int32_t gds_glitch(GDSynth *a,uint32_t *rng){
  int *c=a->c;const uint8_t *q=a->q;int amount=gda_env(c[15],a->env[1]);
  int size_motion=q[14]==1?amount*5:0,pitch_motion=q[14]==0?amount*4:0;
  uint32_t span[2],inc[2],pos[2];
