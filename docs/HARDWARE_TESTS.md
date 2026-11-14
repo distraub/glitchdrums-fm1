@@ -158,3 +158,18 @@ Conservative stack estimates: foreground 10,928 bytes, audio IRQ 3,200 bytes,
 timer 340 bytes; target guards remain enabled. All native tests, PCM vectors
 and exact-package updater fault tests pass. Candidate SHA-256: `a9de1e22b698ea4a8ee68d6056f580c9f18f53ba2854ec85f85f94e857a679c8`.
 Hardware load reduction remains unmeasured.
+
+## Measured 0.17.13 result
+
+Alex reports stopped load 28%, reduced pattern plus one Analog hit 109%,
+and stock sequence approximately 200%. The cache pass improves baseline
+by four points but does not solve sustained playback.
+
+Clock handoff investigation: exact installed m-bootloader commit 395e6cc
+`src/platform.c` hal_clock_a establishes the normal 360 MHz boot contract;
+hal_clock_b describes a 96 MHz updater/ROM-loader context. These source
+paths do not establish which clock is running on this unit. A full power-off
+and repeat meter reading was requested before any clock or voice-quality
+changes. No clock-register writes or further hardware packages were made.
+Sources: https://github.com/jvitkauskas/m-bootloader/tree/395e6cc
+and https://github.com/illuminus5/skiff/blob/v2.2/firmware/hal/fm1_clk.h .
