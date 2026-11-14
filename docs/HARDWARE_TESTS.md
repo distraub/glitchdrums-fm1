@@ -151,3 +151,10 @@ Skiff v2.2's `firmware/hal/fm1_clk.h` and startup were inspected: its optional
 clock switch reduces the V15 boot clock from 360 to 320 MHz. No clock-register
 changes are included here. No native performance gain is claimed until the
 new package is measured on the physical unit.
+
+0.17.13 native CI 43648361540 and symbol run 43648365049 pass and reproduce
+identical package bytes. Code 401/567 KiB, RAM 90/96 KiB, pool 334/336 KiB.
+Conservative stack estimates: foreground 10,928 bytes, audio IRQ 3,200 bytes,
+timer 340 bytes; target guards remain enabled. All native tests, PCM vectors
+and exact-package updater fault tests pass. Candidate SHA-256: `a9de1e22b698ea4a8ee68d6056f580c9f18f53ba2854ec85f85f94e857a679c8`.
+Hardware load reduction remains unmeasured.
