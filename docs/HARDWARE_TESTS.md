@@ -226,3 +226,12 @@ operations. All instructions, including DSP, remain subject to ROM-window
 refusal checks. New tests refuse overlaps, code-RAM overflow and a renderer
 placed outside its copied section. No DSP algorithm or quality setting is
 changed. Hardware performance gain remains unmeasured.
+
+The target's 4 MiB direct-call range also requires an indirect XIP entry into
+DSP RAM. The model/sample loops live at RAM +8 KiB; their small XIP math
+helpers are linked below XIP +8 KiB, with an explicit linker assertion.
+Control preparation uses an indirect call. Direct-call range failures remain
+link errors. Native checks caught intermediate layout and HAL-boundary errors;
+none of those failed packages was delivered. Startup instruction sync stays
+in the HAL. CI now compares all ELF load sections to decrypted package bytes
+and simulates the word-aligned copies into bounded executable RAM.

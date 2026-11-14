@@ -251,6 +251,7 @@ def build_app(cfg):
     ("objdump", "-d", "-j", ".ram_text", elf),
   )
   (FW / "firmware.dis").write_text(dis)
+  (FW / "symbols.txt").write_text(syms)
 
   def symv(name):
     return int(re.search(r"^([0-9a-f]+) .*\s" + name + r"$", syms, re.M).group(1), 16)
