@@ -18,10 +18,21 @@ MEMORY
 }
 SECTIONS
 {
-    .text : { KEEP(*(.text.crt0)) *(.text*) *(.rodata*) . = ALIGN(4); _etext = .; } > XIP
+    .text : {
+        KEEP(*(.text.crt0))
+        /* RAM DSP direct calls have a 4 MiB reach. Keep its math/control
+         * callees in the first 12 KiB of XIP, opposite DSP at RAM +12 KiB.
+         * New out-of-range calls are linker errors, never unchecked jumps. */
+        *(.text.__udivdi3 .text.__divdi3 .text.__umoddi3 .text.__moddi3)
+        *(.text.gd_prepare .text.gd_render_voice .text.gda_config .text.gds_config)
+        *(.text.gds_material .text.gds_ladder .text.gd_limit)
+        _dsp_helpers_end = .;
+        *(.text*) *(.rodata*) . = ALIGN(4); _etext = .;
+    } > XIP
+    ASSERT(_dsp_helpers_end <= 0x02003000, "DSP XIP helpers exceed direct-call reach")
     .ram_text : { _rt_start = .; KEEP(*(.ram_text*)) . = ALIGN(4); _rt_end = .; } > RAMTEXT AT > XIP
     _rt_load = LOADADDR(.ram_text);
-    .ram_dsp : { . = ALIGN(4); _dsp_start = .; KEEP(*(.ram_dsp*)) . = ALIGN(4); _dsp_end = .; } > RAMTEXT AT > XIP
+    .ram_dsp 0x01C03000 : { . = ALIGN(4); _dsp_start = .; KEEP(*(.ram_dsp*)) . = ALIGN(4); _dsp_end = .; } > RAMTEXT AT > XIP
     _dsp_load = LOADADDR(.ram_dsp);
     .data : { . = ALIGN(4); _data_start = .; *(.data*) *(.sdata*) . = ALIGN(4); _data_end = .; } > RAM AT > XIP
     _data_load = LOADADDR(.data);
