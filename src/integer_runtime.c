@@ -18,6 +18,26 @@ static unsigned gd_bits64(uint64_t x) {
   uint32_t hi=(uint32_t)(x>>32);
   return hi?32u+gd_bits32(hi):gd_bits32((uint32_t)x);
 }
+/* Two base-65536 quotient digits for a 64/32 divide whose quotient fits
+ * 32 bits. Normalization bounds each estimate correction to at most two.
+ * All divides below are 32-bit, handled directly by the target CPU. */
+static uint32_t gd_div64_32(uint64_t n,uint32_t divisor) {
+  unsigned shift=32u-gd_bits32(divisor);
+  uint32_t v=divisor<<shift,v1=v>>16,v0=v&65535u;
+  uint64_t normalized=n<<shift;
+  uint32_t top=(uint32_t)(normalized>>32);
+  uint32_t mid=(uint32_t)(normalized>>16)&65535u,low=(uint32_t)normalized&65535u;
+  uint32_t q1=top/v1,r=top-q1*v1;
+  while(q1>=65536u||(uint64_t)q1*v0>((uint64_t)r<<16)+mid){
+    --q1;r+=v1;if(r>=65536u)break;
+  }
+  uint32_t rest=(uint32_t)(((uint64_t)top<<16)+mid-(uint64_t)q1*v);
+  uint32_t q0=rest/v1;r=rest-q0*v1;
+  while(q0>=65536u||(uint64_t)q0*v0>((uint64_t)r<<16)+low){
+    --q0;r+=v1;if(r>=65536u)break;
+  }
+  return (q1<<16)+q0;
+}
 uint64_t __udivdi3(uint64_t n, uint64_t d) {
   if (!d) return 0;
   /* floor(n/(odd*2^k)) == floor((n>>k)/odd). Fixed-point audio
@@ -29,6 +49,8 @@ uint64_t __udivdi3(uint64_t n, uint64_t d) {
   if ((n >> 32) == 0 && (d >> 32) == 0)
     return (uint32_t)n / (uint32_t)d;
   if (n < d) return 0;
+  if(!(d>>32)&&(uint32_t)(n>>32)<(uint32_t)d)
+    return gd_div64_32(n,(uint32_t)d);
   unsigned bits=gd_bits64(d);
   /* Q-format divisors are common in audio: no restoring-division loop. */
   if (!(d & (d-1u))) return n>>(bits-1u);

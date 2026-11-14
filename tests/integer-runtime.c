@@ -25,6 +25,11 @@ int main(void){
     b=(next()&0xffffu)|1u;assert(__udivdi3(a,b)==a/b);
     b=(next()&0xffffffffu)|1u;assert(__udivdi3(a,b)==a/b);
   }
+  for(unsigned i=0;i<1000000;++i){
+    uint32_t b=(uint32_t)next()|1u;
+    uint64_t a=((next()%b)<<32)|(uint32_t)next();
+    assert(__udivdi3(a,b)==a/b);
+  }
   assert(__divdi3(INT64_MIN,1)==INT64_MIN);
   assert(__divdi3(INT64_MIN,-1)==INT64_MIN);
   assert(__udivdi3(123,0)==0);
