@@ -14,6 +14,16 @@ int main(void){
     int64_t x=(int64_t)a,y=(int64_t)b;if(x==INT64_MIN&&y==-1)continue;
     assert(__divdi3(x,y)==x/y);assert(__moddi3(x,y)==x%y);
   }
+  /* DSP-shaped numerators and fixed-point divisors exercise fast paths. */
+  for(unsigned k=0;k<64;++k)for(unsigned i=0;i<1000;++i){
+    uint64_t a=next(),b=1ULL<<k;
+    assert(__udivdi3(a,b)==a/b);
+    assert(__umoddi3(a,b)==a%b);
+    int64_t x=(int64_t)a;
+    if(k<63){assert(__divdi3(x,(int64_t)b)==x/(int64_t)b);assert(__divdi3(x,-(int64_t)b)==x/-(int64_t)b);}
+    b=(next()&0xffffu)|1u;assert(__udivdi3(a,b)==a/b);
+    b=(next()&0xffffffffu)|1u;assert(__udivdi3(a,b)==a/b);
+  }
   assert(__divdi3(INT64_MIN,1)==INT64_MIN);
   assert(__divdi3(INT64_MIN,-1)==INT64_MIN);
   assert(__udivdi3(123,0)==0);

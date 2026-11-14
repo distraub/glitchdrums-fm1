@@ -89,6 +89,7 @@ static int st_read(uint32_t off, void *dst, uint32_t n) {
 
 static uint8_t recovery_active;
 #define OTA_IDENTITY (recovery_active ? "FM-1_000" : FELUCCA_ID)
+static volatile uint32_t audio_last_ticks,audio_peak_ticks,audio_blocks,audio_late;
 static void platform_frame(uint32_t cmd, const uint8_t *b, uint32_t n);
 #define OTA_MORE platform_frame
 #include "ota.c"
@@ -146,6 +147,15 @@ static void ota_commit(const uint8_t *parm) {
  * stop, the crash's uptime_ms, etm[0]. With Bluetooth: 0x14 [k], the radio records the last start used (bt.c
  * bt_rf_kept) from k * 32; 0x15, the link (bt.c bt_report); 0x16 [i], device i of the scan; 0x19, our address */
 static void platform_frame(uint32_t cmd, const uint8_t *b, uint32_t n) {
+  if(cmd==0x1au&&!n){
+    uint32_t w[8],key=irq_save();
+    w[0]=0x50455246u;w[1]=audio_last_ticks;w[2]=audio_peak_ticks;
+    w[3]=audio_blocks;w[4]=audio_late;irq_restore(key);
+    w[5]=(HALF_FRAMES*1000000u/44100u)*FM1_TICKS_PER_US;
+    w[6]=FM1_TICKS_PER_US;w[7]=fm1_ms;
+    uint8_t o[32];for(unsigned i=0;i<32;++i)o[i]=(uint8_t)(w[i/4]>>(8*(i&3)));
+    ota_send_msg(cmd,o,sizeof o);return;
+  }
   if ((cmd == 0x12u || cmd == 0x13u) && !n) {
     uint32_t w[8] = {0}, step = 0;
     uint8_t o[32];
@@ -408,6 +418,7 @@ void fm1_alnk0_irq(void) { /* via isr_alnk0 (hal/fm1_isr.S) */
   p = fm1_audio_pending();
   fm1_audio_ack_aux(p);
   if (p & FM1_AUDIO_HALF) {
+    uint32_t render_start=fm1_ticks();
     int32_t *o = &abuf[fm1_audio_free_half() * HALF_WORDS];
     {
       uint32_t m, t;
@@ -431,6 +442,9 @@ void fm1_alnk0_irq(void) { /* via isr_alnk0 (hal/fm1_isr.S) */
     for (i = 0; i < HALF_WORDS; i+=2)
       gd_output_frame(&gd_output_state,&o[i],&o[i+1],(uint32_t)master_q12);
     for (i = 0; i < HALF_WORDS; i++) o[i] *= 256; /* PCM16 to Q23 */
+    uint32_t elapsed=fm1_ticks()-render_start;
+    audio_last_ticks=elapsed;if(elapsed>audio_peak_ticks)audio_peak_ticks=elapsed;
+    ++audio_blocks;if(elapsed>(HALF_FRAMES*1000000u/44100u)*FM1_TICKS_PER_US)++audio_late;
     fm1_audio_ack_half();
   }
   in_audio = 0;

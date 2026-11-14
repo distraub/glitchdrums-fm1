@@ -500,6 +500,17 @@ def main():
     for k, ident, nm in up.find(every=True):
       print(f"{k}: {ident} (on {nm})")
     return
+  if args == ["--performance"]:
+    dev=up.find()
+    if not dev: raise SystemExit("flash: no FM-1 found")
+    link=dev[0];link.drain();link.send(frame(0x1a));end=time.monotonic()+3;w=None
+    while time.monotonic()<end:
+      packet=link.read(end-time.monotonic());w=packet and words(packet,0x1a)
+      if w:break
+    up.midi.close()
+    if not w or w[0]!=0x50455246:raise SystemExit("No performance report (requires 0.17.11 or later)")
+    print(f"Audio time: last {100*w[1]/max(w[5],1):.1f}%, peak {100*w[2]/max(w[5],1):.1f}%; {w[4]} over-budget blocks / {w[3]}; uptime {w[7]} ms")
+    return
   if args == ["--crash"]:
     dev = up.find()
     if not dev:

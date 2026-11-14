@@ -75,3 +75,17 @@ no successful attestation verification is claimed for this candidate.
 
 Ready for a supervised hardware trial, not yet hardware validated. First test
 boot and a short playback before testing saves or sustained effects load.
+
+## First 0.17.10 device playback
+
+Alex confirmed that 0.17.10 boots and individual instruments sound. The default
+pattern plays briefly, then slows and glitches without punch effects. Thus the
+startup fix is confirmed, but sustained playback remains blocked. No new crash
+record or measured deadline result is available yet.
+
+0.17.11 investigation adds native audio render-time/peak/late-block counters
+(read-only `python3 tools/flash.py --performance`) and optimizes exact unsigned
+64-bit division alignment and power-of-two divisors. Native compilation uses
+-O2 rather than -Os, retaining all stack, RAM, ROM-window and flash checks.
+Timing telemetry counts over-budget blocks, not exact hardware dropouts; peak
+and late-block counts are cumulative since boot.
