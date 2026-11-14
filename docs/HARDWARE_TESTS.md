@@ -235,3 +235,18 @@ link errors. Native checks caught intermediate layout and HAL-boundary errors;
 none of those failed packages was delivered. Startup instruction sync stays
 in the HAL. CI now compares all ELF load sections to decrypted package bytes
 and simulates the word-aligned copies into bounded executable RAM.
+
+0.17.15 final validation: production CI 43652337359 and diagnostic
+43652340290 pass and reproduce package SHA-256 `7fdec707a6f811480a33826d793616bcf21100f051b5d7e5ac5c2ec3812c4169`.
+Sample loops gds_analog/gds_glitch/gda_render/gd_render_voice/gd_render_block
+are linked inside .ram_dsp at 0x01C02000–0x01C038EB (6,380 bytes), with
+XIP helpers below 0x02000D7A. The occupied executable-RAM extent is
+14/24 KiB; normal RAM 90/96 KiB and pool 334/336 KiB remain within bounds.
+Code is 399/567 KiB. Stack estimates explicitly include the indirect block
+and control-preparation calls: audio IRQ maximum 3,400 bytes plus timer
+340 bytes and context allowance, below 7,936 bytes. Foreground 10,928 bytes.
+Native regression/golden PCM tests, exact ELF/package/copy-map verification
+and updater fault tests pass, including local checks against the downloaded
+package. Delivered to iCloud Firmware for a hardware trial; speedup remains
+unmeasured. Compare ECO 1X with the same stock drums, no PRC/Glitch and one
+Analog note on step 1 (previously 101%, idle 18%).

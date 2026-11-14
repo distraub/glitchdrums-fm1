@@ -37,6 +37,10 @@ for caller, targets in {'st_read':['fl_read_ram'], 'fl_write':['fl_prog_ram'],
                         'ota_session':['fl_read_ram','fl_prog_ram','fl_erase4k_ram'],
                         'ota_erase':['fl_erase4k_ram']}.items():
  edges.setdefault(caller,set()).update(targets)
+# Known volatile function-pointer entries used to cross XIP/RAM call reach.
+for caller,target in [('audio','gd_render_block'),('gd_render_block','gd_prepare')]:
+ if caller in {x[2] for x in syms} and target in {x[2] for x in syms}:
+  edges.setdefault(caller,set()).add(target)
 def walk(f,seen=()):
  if f in seen:raise ValueError('recursive path '+str((*seen,f)))
  opts=[walk(c,(*seen,f)) for c in edges.get(f,())];b,p=max(opts,default=(0,[]),key=lambda x:x[0]);return frames.get(f,128)+b,[f]+p
