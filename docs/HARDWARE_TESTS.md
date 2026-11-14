@@ -45,3 +45,33 @@ These are individual frame measurements, not complete interrupt or nested
 call-chain bounds. Production build 43643343532 passed the target frame
 limit check and its deliberate oversized-frame negative probe.
 The replacement remains untested on physical hardware.
+
+## 0.17.10 candidate review
+
+`tools/review_stack.py build/stack-review-01710` uses ELF function extents
+(including compiler jump-table labels), direct/tail/relative calls and target
+compiler frame measurements. It adds 64 bytes per measured frame and 128
+bytes for unreported/assembly frames, and includes relocated RAM flash calls.
+No recursive call paths were found from the reviewed roots. Results:
+
+- Setup: 8,300 bytes, through redraw/factory construction.
+- Loop: 14,080 bytes, through redraw/factory construction.
+- Audio IRQ: 3,332 bytes, through note triggering and integer division.
+- Timer IRQ: 540 bytes, conservatively including USB polling.
+
+Adding the caller frame to foreground paths remains below the 24,320-byte
+user stack. Adding both IRQ paths and 256 bytes for wrappers/context gives
+4,128 bytes, below the 7,936-byte supervisor stack. Boot dispatch pointers
+were inspected separately; these estimates are not a guarantee of all runtime
+behavior. Target stack/write/bus/PC guards remain enabled.
+
+Exact candidate SHA-256:
+`eedfb3d85b670301e2988b2a39f9b28ee2df6a13911cfdd68ab32949158762e8`.
+Production and symbolized builds reproduce the same package bytes. Native
+CI engine and updater tests pass; local updater fault tests also pass against
+this exact package. Source commit: 919a357eed000f9b1c8d136e456d43c4fb3b5c33.
+GitHub attestation verification could not complete (issuer verification error);
+no successful attestation verification is claimed for this candidate.
+
+Ready for a supervised hardware trial, not yet hardware validated. First test
+boot and a short playback before testing saves or sustained effects load.
