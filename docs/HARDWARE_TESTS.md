@@ -29,3 +29,19 @@ IRQs begin before setup returns. Existing stack/memory/flash guards stay enabled
 
 No replacement should be called hardware-validated until it boots on the unit,
 plays within its deadline, saves across a power cycle and can be left again.
+
+## Recovery confirmed
+
+Alex restored the 16:05 stock V15 backup through M-Flasher on 14 November
+2026 and confirmed the unit is back to stock. The review listed only application
+sectors 0x04000–0x92FFF (143 sectors); the installed bootloader was preserved.
+
+## Replacement target measurements
+
+The 0.17.10 diagnostic build (GitHub run 43643528831) reports a largest
+individual frame of 5,848 bytes (`loop`), with `audio` at 616 bytes. Large
+project construction helpers now use separate frames of at most 3,880 bytes.
+These are individual frame measurements, not complete interrupt or nested
+call-chain bounds. Production build 43643343532 passed the target frame
+limit check and its deliberate oversized-frame negative probe.
+The replacement remains untested on physical hardware.
