@@ -433,12 +433,12 @@ void audio(int32_t *out, uint32_t frames) {
   gd_gate_input(&punch_gate,punch_request,live.punch[1]&&running);
   int32_t peak = 0;
   uint32_t lane_peak[8]={0};
-  for (uint32_t f = 0; f < frames; ++f) {
+  for (uint32_t f = 0; f < frames;) {
     if (running && remaining == 0) {
       ordinal%=gd_pattern_length(&live);
       if(!ordinal&&chain_running){
         unsigned event=gd_chain_boundary(&chain_clock,&chain_audio);chain_row=chain_clock.row;chain_pass=chain_clock.pass;
-        if(event==2){chain_running=audio_running=running=0;chain_finished=1;gd_gate_stop(&punch_gate);for(unsigned l=0;l<8;++l)repeat_left[l]=0;for(unsigned s=0;s<8;++s)if(engine.synth[s].kind==7&&engine.synth[s].held)engine.synth[s].releasing=1;goto render_sample;}
+        if(event==2){chain_running=audio_running=running=0;chain_finished=1;gd_gate_stop(&punch_gate);for(unsigned l=0;l<8;++l)repeat_left[l]=0;for(unsigned s=0;s<8;++s)if(engine.synth[s].kind==7&&engine.synth[s].held)engine.synth[s].releasing=1;goto render_block;}
         if(event==1)apply_chain_audio();
       }
       if(!ordinal&&pattern_armed)apply_pattern_audio();
@@ -466,26 +466,27 @@ void audio(int32_t *out, uint32_t frames) {
       }
       ordinal = (ordinal + 1u) % gd_pattern_length(&live);
     }
-    for (unsigned l = 0; l < 8; ++l)
-      if (running && repeat_left[l]) {
-        if (repeat_wait[l])
-          --repeat_wait[l];
-        else {
-          const GDTrack *t = &live.track[l];
-          unsigned s = repeat_step[l];
-          sequence_hit(l, t->step[s], t->pitch[s], t->lock_id[s],
-                 t->lock_value[s],s);
-          --repeat_left[l];
-          repeat_wait[l] = repeat_gap[l];
-        }
-      }
-    if (running)
-      --remaining;
-render_sample:;
-    int32_t left, right;
-    gd_render_sample(&engine, &live, &left, &right);
-    gd_fx_send(&effects, &live, &left, &right,engine.delay_input);
-    gd_punch(&punch,&live,punch_gate.active,effects.write,&left,&right);
+    for(unsigned l=0;l<8;++l)if(running&&repeat_left[l]&&!repeat_wait[l]){
+      const GDTrack *t=&live.track[l];unsigned step=repeat_step[l];
+      sequence_hit(l,t->step[step],t->pitch[step],t->lock_id[step],t->lock_value[step],step);
+      --repeat_left[l];repeat_wait[l]=repeat_gap[l]+1u;
+    }
+render_block:;
+    unsigned count=frames-f;
+    if(running&&remaining<count)count=remaining;
+    for(unsigned l=0;l<8;++l)if(running&&repeat_left[l]&&repeat_wait[l]<count)count=repeat_wait[l];
+    GDRenderBlock block;
+    count=gd_render_block(&engine,&live,&block,count);
+    if(running)remaining-=count;
+    for(unsigned l=0;l<8;++l)if(running&&repeat_left[l])repeat_wait[l]-=count;
+    for(unsigned i=0;i<count;++i){
+      int32_t left=block.left[i],right=block.right[i];
+      gd_fx_send(&effects,&live,&left,&right,block.send[i]);
+      gd_punch(&punch,&live,punch_gate.active,effects.write,&left,&right);
+      out[(f+i)*2]+=left;out[(f+i)*2+1]+=right;
+      int32_t a=left<0?-left:left,b=right<0?-right:right;
+      if(a>peak)peak=a;if(b>peak)peak=b;
+    }
     if((engine.counter&15u)==0){
       int32_t lane_sample[8]={0};
       for(unsigned slot=0;slot<14;++slot){unsigned lane=slot<8?slot:6+(slot-8)/3;lane_sample[lane]+=engine.voices[slot].last_sample;}
@@ -496,13 +497,7 @@ render_sample:;
       }
       uint32_t at=scope_write;scope_monitor[at&127]=(int16_t)gd_sat(lane_sample[display_lane&7]);scope_write=at+1;
     }
-    out[f * 2] += left;
-    out[f * 2 + 1] += right;
-    int32_t a = left < 0 ? -left : left, b = right < 0 ? -right : right;
-    if (a > peak)
-      peak = a;
-    if (b > peak)
-      peak = b;
+    f+=count;
   }
   quiet_blocks = peak < 8 ? quiet_blocks + 1 : 0;
   audio_quiet = quiet_blocks > 8;

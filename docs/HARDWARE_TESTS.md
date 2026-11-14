@@ -173,3 +173,27 @@ and repeat meter reading was requested before any clock or voice-quality
 changes. No clock-register writes or further hardware packages were made.
 Sources: https://github.com/jvitkauskas/m-bootloader/tree/395e6cc
 and https://github.com/illuminus5/skiff/blob/v2.2/firmware/hal/fm1_clk.h .
+
+## 0.17.14 voice-major rendering trial
+
+Alex cold-power-cycled and still measured roughly 200% on the default
+sequence. ECO 1X measures 106–174%, and omitting PRC/Glitch/Analog still
+reaches 84%. Oversampling or a simple post-flash cold start cannot resolve
+this workload. No clock registers or bootloader changes are included.
+
+The next change renders up to sixteen consecutive samples of one voice
+before switching models, then processes the global effects in sample order.
+This addresses repeated model/code switching from XIP; a speedup remains a
+hypothesis until the unit is measured. Chunk boundaries honor every note,
+ratchet, pattern/chain change, and 32-frame modulation update. Meter/scope
+frames retain their original 16-frame positions. The fixed scratch buffer is
+192 bytes on the audio stack; there is no render allocation or lock.
+
+Tests compare block output and complete engine state to the sample renderer
+across legal triggers, p-locks, tempo/LFO changes, mutes and sends. Existing
+32 voice and 8 global-effect PCM vectors pass. `tests/block-audio-parity.mjs`
+also compares actual old/new RemoteFM1 executables, using varying 1–128-frame
+callback lengths and mid-playback tempo/STOP changes. All PCM bytes match for
+stock, 1/16 swing ratchets, 1/8 swing ratchets, dense chords/locks and punch FX.
+The full RemoteFM1 sequencer/chain/Slice/FX/MIDI/save regression suite passes.
+No sample rate, voice model, oversampling or polyphony reduction is included.

@@ -60,3 +60,6 @@ clang -O2 -std=c11 -fsanitize=undefined,address -DFOMA_MVAVE=1 -I platform -I sr
 build/native/fx-cache-vectors > build/native/fx-cache-vectors.txt
 cmp tests/fx-cache-vectors.txt build/native/fx-cache-vectors.txt
 echo "PASS: cached global effects preserve PCM across live tempo/control changes"
+
+clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -I src tests/block-render.c -o build/native/block-render-test
+build/native/block-render-test

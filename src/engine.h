@@ -377,17 +377,15 @@ static inline void gd_prepare(GDEngine *d, const GDProject *p) {
     v->inc[1]=(uint32_t)(punch<7791324?7791324:punch>38956619?38956619:punch);
   }
 }
-static inline void gd_render_sample(GDEngine *d, const GDProject *p,
-                                    int32_t *left, int32_t *right) {
-  if ((d->counter++ & 31u) == 0)
-    gd_prepare(d, p);
-  int32_t L = 0, R = 0;d->delay_input=0;
-  for (unsigned slot = 0; slot < 14; ++slot) {
+/* A voice advances independently between control/trigger boundaries. Keep
+ * one voice hot across a short block instead of thrashing the XIP cache by
+ * switching all models every single sample. */
+static inline int32_t gd_render_voice(GDEngine *d,unsigned slot){
     unsigned l=slot<8?slot:6+(slot-8)/3;
     GDVoice *v = &d->voices[slot];
     v->last_sample=0;
     if (v->env <= 1)
-      continue;
+      return 0;
     const uint8_t *q = v->p;
     if(l>=6){
       GDSynth *synth=&d->synth[slot-6];int sample=l==7?gds_analog(synth,&v->rng):gds_glitch(synth,&v->rng);
@@ -396,18 +394,14 @@ static inline void gd_render_sample(GDEngine *d, const GDProject *p,
       sample=(int32_t)((int64_t)sample*v->gain>>15)/3;
       int amplitude=synth->env[l==7?2:0];if(l==7&&synth->releasing)amplitude=gda_env(amplitude,synth->release_gain);
       v->age=synth->age;v->env=synth->active?gd_clamp(amplitude,2,1073741824):0;v->last_sample=(int16_t)sample;
-      if(d->solo_mask?!(d->solo_mask&(1u<<l)):p->track[l].mute)continue;
-      d->delay_input+=sample*d->delay_send[l]/127;
-      L+=sample*(127-v->pan)/127;R+=sample*v->pan/127;continue;
+      return sample;
     }
     if(l>=1&&l<=5){
       GDAcoustic *ac=&d->acoustic[l];int raw=gda_render(ac,(int32_t)gd_random(&v->rng)>>16);
       int sample=gd_kick_tanh((int32_t)((int64_t)raw*v->velocity*7/(32768*5)));
       sample=(int32_t)((int64_t)sample*v->gain>>15)/3;
       v->age=ac->age;v->env=ac->active?1073741824:0;v->last_sample=(int16_t)sample;
-      if(d->solo_mask?!(d->solo_mask&(1u<<l)):p->track[l].mute)continue;
-      d->delay_input+=sample*d->delay_send[l]/127;
-      L+=sample*(127-v->pan)/127;R+=sample*v->pan/127;continue;
+      return sample;
     }
     uint32_t random=gd_random(&v->rng);
     int32_t noise = l==0?(int32_t)random>>16:(int32_t)(random&65535)-32768,s=0;
@@ -490,14 +484,39 @@ static inline void gd_render_sample(GDEngine *d, const GDProject *p,
     }
     s/=3;
     v->last_sample=(int16_t)s;
-    if (d->solo_mask ? !(d->solo_mask&(1u<<l)) : p->track[l].mute)
-      continue;
-    d->delay_input+=s*d->delay_send[l]/127;
-    L += s * (127 - v->pan) / 127;
-    R += s * v->pan / 127;
-  }
-  d->delay_input=gd_sat(d->delay_input/2);
-  *left = gd_sat(L);
-  *right = gd_sat(R);
+    return s;
 }
+static inline void gd_render_sample(GDEngine *d,const GDProject *p,int32_t *left,int32_t *right){
+  if((d->counter++&31u)==0)gd_prepare(d,p);
+  int32_t L=0,R=0,send=0;
+  for(unsigned slot=0;slot<14;++slot){
+    int sample=gd_render_voice(d,slot);unsigned lane=slot<8?slot:6+(slot-8)/3;
+    GDVoice *v=&d->voices[slot];
+    if(d->solo_mask?!(d->solo_mask&(1u<<lane)):p->track[lane].mute)continue;
+    send+=sample*d->delay_send[lane]/127;L+=sample*(127-v->pan)/127;R+=sample*v->pan/127;
+  }
+  d->delay_input=gd_sat(send/2);*left=gd_sat(L);*right=gd_sat(R);
+}
+#define GD_RENDER_FRAMES 16u
+typedef struct {int32_t left[GD_RENDER_FRAMES],right[GD_RENDER_FRAMES],send[GD_RENDER_FRAMES];} GDRenderBlock;
+/* Returns the frames rendered. Never crosses a meter or 32-frame control
+ * boundary; callers also split at note/ratchet/pattern events. No allocation. */
+static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
+  unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
+  if(!n)return 0;
+  if((d->counter&31u)==0)gd_prepare(d,p);
+  for(unsigned i=0;i<n;++i)b->left[i]=b->right[i]=b->send[i]=0;
+  for(unsigned slot=0;slot<14;++slot){
+    GDVoice *v=&d->voices[slot];unsigned lane=slot<8?slot:6+(slot-8)/3;
+    if(v->env<=1){v->last_sample=0;continue;}
+    unsigned muted=d->solo_mask?!(d->solo_mask&(1u<<lane)):p->track[lane].mute;
+    int pan=v->pan,level=d->delay_send[lane];
+    for(unsigned i=0;i<n;++i){int sample=gd_render_voice(d,slot);if(muted)continue;
+      b->send[i]+=sample*level/127;b->left[i]+=sample*(127-pan)/127;b->right[i]+=sample*pan/127;
+    }
+  }
+  for(unsigned i=0;i<n;++i){b->left[i]=gd_sat(b->left[i]);b->right[i]=gd_sat(b->right[i]);b->send[i]=gd_sat(b->send[i]/2);}
+  d->counter+=n;d->delay_input=b->send[n-1];return n;
+}
+
 #endif
