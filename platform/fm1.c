@@ -89,7 +89,8 @@ static int st_read(uint32_t off, void *dst, uint32_t n) {
 
 static uint8_t recovery_active;
 #define OTA_IDENTITY (recovery_active ? "FM-1_000" : FELUCCA_ID)
-static volatile uint32_t audio_last_ticks,audio_peak_ticks,audio_blocks,audio_late;
+volatile uint32_t audio_last_ticks;
+static volatile uint32_t audio_peak_ticks,audio_blocks,audio_late;
 static void platform_frame(uint32_t cmd, const uint8_t *b, uint32_t n);
 #define OTA_MORE platform_frame
 #include "ota.c"

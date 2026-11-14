@@ -49,3 +49,9 @@ build/native/roll-punch-test
 
 clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined,address -DFOMA_MVAVE=1 -I platform -I src tests/remix.c -o build/native/remix-test
 build/native/remix-test
+
+# Golden output from 0.17.11: preserve PCM while caching synth work.
+clang -O2 -std=c11 -fsanitize=undefined,address -I src tests/render-parity.c -o build/native/render-parity-test
+build/native/render-parity-test > build/native/render-parity.txt
+cmp tests/render-parity.txt build/native/render-parity.txt
+echo "PASS: cached synthesis matches 32 pre-optimization PCM vectors"

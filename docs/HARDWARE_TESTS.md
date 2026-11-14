@@ -107,3 +107,19 @@ These are estimates with per-frame allowances, not runtime high-water marks.
 Hardware performance must be measured after loading; no claim of a resolved
 audio deadline is made before that test.
 Candidate SHA-256: fd02d4a1c9cde3063811e63657fdcd428f63ae9a400de0b79fc28e7e706f511d.
+
+## 0.17.11 playback result and next investigation
+
+Alex reports the same PRC/Glitch/Analog slowdown in 0.17.11. USB MIDI
+enumerates as Felucca but neither identity nor direct performance queries
+answered, even while stopped. Thus no valid native timing values were read.
+
+0.17.12 caches invariant Analog tuning/key tracking and unchanged ladder
+coefficients, skips Glitch noise-material reads when their contribution is
+zero, and uses a proven 32-bit numerator in PRC shaping. The rendered PCM
+matches 32 deterministic baseline vectors from 0.17.11 across quality modes,
+pitch, retriggering, live parameter changes and legal randomized controls/LFOs.
+Global page 2 now displays native audio rendering time as AUDIO/CPU percent
+in its unused fourth cell, refreshed at 5 Hz, without USB access. KN4 is
+read-only there. Native render timing remains distinct from total system CPU.
+No claim of hardware deadline success until measured on the unit.

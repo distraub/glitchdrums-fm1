@@ -121,7 +121,7 @@ static inline int32_t gda_render(GDAcoustic *a,int32_t white){
    tonal=gda_mul(tonal,32768-gda_mul(gda_mul(c[11],28836),32768-(a->env[4]>>15)));
    tonal+=gda_env(gda_mul(gd_kick_tanh(gda_mul(ring,32768+c[11]*8)),gda_mul(c[11],91750)),a->env[4]);
   }
-  if(c[7]){int drive=32768+c[7]*4,den=gd_kick_tanh(drive);int shaped=(int)((int64_t)gd_kick_tanh(gda_mul(tonal,drive))*32768/(den?den:1));tonal+=gda_mul(shaped-tonal,c[7]);}
+  if(c[7]){int drive=32768+c[7]*4,den=gd_kick_tanh(drive);int shaped=(gd_kick_tanh(gda_mul(tonal,drive))*32768/(den?den:1));tonal+=gda_mul(shaped-tonal,c[7]);}
   int balance=c[12],tonalGain=balance>0?32768-balance:32768;
   int noiseAmount=balance>0?c[3]+gda_mul(32768-c[3],balance):gda_mul(c[3],32768+balance);
   signal=gda_env(gda_mul(tonal,tonalGain)+gda_mul(noise,gda_mul(noiseAmount,7209)),a->env[0]);

@@ -225,7 +225,7 @@ def check_stack_frame_limit():
 
 def build_app(cfg):
   FW.mkdir(parents=True, exist_ok=True)
-  flags = [*CFLAGS, *STACK_CFLAGS, *INCLUDES, f'-DAPP_NAME="{cfg["name"]}"', f'-DAPP_VER="{cfg["version"]}"', f'-DFELUCCA_ID="{cfg["product"]}"', *cfg["defines"]]
+  flags = [*CFLAGS, *STACK_CFLAGS, "-DGD_NATIVE_FM1=1", *INCLUDES, f'-DAPP_NAME="{cfg["name"]}"', f'-DAPP_VER="{cfg["version"]}"', f'-DFELUCCA_ID="{cfg["product"]}"', *cfg["defines"]]
   objs, cmds = [], []
   for s in [PLAT / "crt0.S", PLAT / "hal/fm1_vec.S", PLAT / "hal/fm1_isr.S"]:
     objs.append(FW / (s.stem + ".o"))

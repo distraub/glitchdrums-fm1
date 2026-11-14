@@ -20,6 +20,9 @@ _Static_assert(sizeof(GDSave) <= SETTINGS_MAX,
  * RemoteFM1 serializes all entry points; this is not a multi-core queue.
  */
 static volatile uint32_t instrument_ready;
+#if GD_NATIVE_FM1
+extern volatile uint32_t audio_last_ticks;
+#endif
 static GDSave storage;
 static union {GDFullSave current;GDMidiSave four;GDChainSave chain;GDOldSave prefix;GDOldABSave ab;GDOldEightSave eight;GDOldSongSave song;} save_scratch;
 #define chain_save save_scratch.current.base
@@ -723,7 +726,7 @@ static void control_info(unsigned k, GDControl *c, int *value) {
     return;
   }
   if (view == V_GLOBAL) {
-    if(page%2){static const char *const names[4]={"GL QUALITY","GL VOICES","THEME",""};*c=(GDControl){names[k],k==0?2:k==1?4:k==2?37:0,F_NUMBER};*value=k==0?ui.reserved&3:k==1?(ui.reserved>>2?ui.reserved>>2:4):k==2?(int)ui.theme:0;return;}
+    if(page%2){static const char *const names[4]={"GL QUALITY","GL VOICES","THEME","CPU %"};*c=(GDControl){names[k],k==0?2:k==1?4:k==2?37:0,F_NUMBER};*value=k==0?ui.reserved&3:k==1?(ui.reserved>>2?ui.reserved>>2:4):k==2?(int)ui.theme:0;return;}
     static const char *const name[4] = {"SW GRID", "SWING %", "STEPS", "BPM"};
     static const uint8_t max[4] = {1, 100, 16, 240};
     *c = (GDControl){name[k], max[k], k==0?F_SWING_GRID:F_NUMBER};
@@ -1281,7 +1284,13 @@ static void draw_controls(void) {
     if (view == V_GLOBAL && page==1 && k == 2)
       string_copy(value, theme()->name);
     if(view==V_GLOBAL&&page%2&&k==0){static const char *const quality[3]={"BAL 2X","HIGH 4X","ECO 1X"};string_copy(value,quality[v%3]);}
-    if(view==V_GLOBAL&&page%2&&k>2)string_copy(value,"--");
+    if(view==V_GLOBAL&&page%2&&k>2){
+#if GD_NATIVE_FM1
+      format_int(value,(int)((uint64_t)audio_last_ticks*100u/((256u*1000000u/44100u)*24u)));
+#else
+      string_copy(value,"--");
+#endif
+    }
     if (view == V_STEP && k == 0)
       format_int(value, v - 64);
     if (view == V_FX && page % 3 == 0 && k == 1) {
@@ -1552,6 +1561,7 @@ static void edit_control(unsigned k, int delta) {
     return;
   if(view==V_GLOBAL&&page==0&&k==0){if(send(C_GLOBAL,0,5,(unsigned)v))ui.swing=(uint8_t)((ui.swing&127u)|(v?128u:0u));need_header=need_controls=1;return;}
   if(view==V_GLOBAL&&page==1&&k==2){if(send(C_GLOBAL,0,0,(unsigned)v))ui.theme=(uint8_t)v;need_full=1;return;}
+  if(view==V_GLOBAL&&page%2&&k==3)return; /* CPU readout is not editable. */
   if(view==V_GLOBAL&&page%2){unsigned value=k==0?(ui.reserved&12u)|(unsigned)v:(ui.reserved&3u)|((v==4?0u:(unsigned)v)<<2);if(send(C_GLOBAL,0,4,value))ui.reserved=(uint8_t)value;need_header=need_controls=1;return;}
   if((view==V_MIX||view==V_HOME)&&mix_mode!=1){
     unsigned lane=mix_bank*4+k;
@@ -1958,6 +1968,7 @@ void loop(void) {
   }
   if(!fx_surface()&&punch_ui_latched!=punch_latched){punch_ui_latched=punch_latched;need_header=1;}
   display_lane=selected;
+  if(view==V_GLOBAL&&page==1&&(uint32_t)(millis()-last_visual)>=200){last_visual=millis();need_controls=1;}
   if((view==V_LFO||view==V_MIX||view==V_HOME||(view==V_VOICE&&voice_focus))&&(uint32_t)(millis()-last_visual)>=50){last_visual=millis();need_grid=1;}
   if(midi_ui_dirty&&(uint32_t)(millis()-midi_refresh_at)>=33){
     midi_refresh_at=millis();midi_ui_dirty=0;if(midi_header_dirty){midi_header_dirty=0;need_header=1;}

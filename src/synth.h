@@ -19,23 +19,35 @@ static inline int32_t gds_tanh20(int32_t x){
 static inline int32_t gds_ladder(GDSynth *a,int32_t input,unsigned hz,unsigned factor){
  if(hz<20)hz=20;if(hz>19845)hz=19845;unsigned i=hz>>4,f=hz&15;
  const uint32_t *table=factor==4?gd_ladder_g4:factor==2?gd_ladder_g2:gd_ladder_g1;
- uint32_t g=table[i]+(table[i+1]-table[i])*f/16,g2=(uint32_t)((uint64_t)g*g>>24),g3=(uint32_t)((uint64_t)g2*g>>24),g4=(uint32_t)((uint64_t)g3*g>>24);
+ if(a->ladder_hz!=hz||a->ladder_factor!=factor){
+  a->ladder_hz=hz;a->ladder_factor=factor;
+  uint32_t g=table[i]+(table[i+1]-table[i])*f/16;
+  a->ladder_g[0]=g;a->ladder_g[1]=(uint32_t)((uint64_t)g*g>>24);
+  a->ladder_g[2]=(uint32_t)((uint64_t)a->ladder_g[1]*g>>24);
+  a->ladder_g[3]=(uint32_t)((uint64_t)a->ladder_g[2]*g>>24);
+  a->ladder_feedback=(a->kind==7?a->c[10]:a->c[13])*21/5;
+  a->ladder_den=16777216u+(uint32_t)((int64_t)a->ladder_feedback*a->ladder_g[3]>>15);
+ }
+ uint32_t g=a->ladder_g[0],g2=a->ladder_g[1],g3=a->ladder_g[2];
  int32_t *s=a->ladder;int rem=16777216-(int)g;
  int ss[4];for(unsigned n=0;n<4;++n)ss[n]=(int)((int64_t)s[n]*rem>>24);
  int sum=(int)(((int64_t)g3*ss[0]+(int64_t)g2*ss[1]+(int64_t)g*ss[2])>>24)+ss[3];
- int feedback=(a->kind==7?a->c[10]:a->c[13])*21/5;
- int64_t num=(int64_t)input*32-((int64_t)feedback*sum>>15);
- int32_t u=(int32_t)(num*16777216/(16777216+((int64_t)feedback*g4>>15)));
+ int64_t num=(int64_t)input*32-((int64_t)a->ladder_feedback*sum>>15);
+ int32_t u=(int32_t)(num*16777216/(int64_t)a->ladder_den);
  int32_t y=u;
  for(unsigned n=0;n<4;++n){int target=gds_tanh20(y);int v=(int)((int64_t)(target-s[n])*g>>24);y=v+s[n];s[n]=y+v;}
  return y/32;
 }
 static inline void gds_config(GDSynth *a,unsigned kind,const uint8_t *q,int pitch){
  int changed=!a->valid||a->pitch!=pitch;for(unsigned n=0;n<32;++n)if(a->q[n]!=q[n])changed=1;
- if(!changed)return;a->valid=1;a->pitch=pitch;a->kind=kind;
+ if(!changed)return;a->ladder_hz=0;a->valid=1;a->pitch=pitch;a->kind=kind;
  for(unsigned n=0;n<32;++n)a->q[n]=q[n];for(unsigned n=0;n<29;++n)a->c[n]=kind==7?gd_an_units[n][q[n]]:gd_gl_units[n][q[n]];
  if(kind==7){
   for(unsigned n=0;n<2;++n)a->root[n]=gd_note_inc[q[n]];
+  int tune=(int)((int64_t)a->c[24]*32768/1200)+(pitch*32768/12);
+  a->tune_ratio=gds_pow2(tune);
+  a->key_cutoff=(uint32_t)gd_clamp((int)((uint64_t)(unsigned)a->c[9]*gds_pow2(a->c[17]*pitch/12)>>16),20,18000);
+  a->fine_root=(uint32_t)((int64_t)a->root[1]*gd_an_fine[q[16]]>>16);
  }else{
   for(unsigned n=0;n<2;++n)a->root[n]=gd_gl_note_inc[n][q[n?23:3]];
  }
@@ -73,11 +85,11 @@ static inline int32_t gds_analog(GDSynth *a,uint32_t *rng){
   else a->env[n]=gda_env(a->env[n],(int)a->coef[n]);
  }
  int scale=gd_clamp(32768+gda_env(c[7]*14,a->env[0]),655,491520);
- int tune=(int)((int64_t)c[24]*32768/1200)+(a->pitch*32768/12);uint32_t ratio=gds_pow2(tune);
+ uint32_t ratio=a->tune_ratio;
  int64_t inc1=(int64_t)a->root[0]*scale/32768;inc1=inc1*ratio>>16;a->phase[0]+=(uint32_t)inc1;
  uint32_t dt=(uint32_t)(inc1>2147483647?2147483647:inc1<4295?4295:inc1);
  int vco1=q[2]?gds_square(a->phase[0],dt):gds_triangle(a->phase[0]);
- int64_t inc2=(int64_t)a->root[1]*gd_an_fine[q[16]]>>16;inc2=inc2*scale>>15;inc2=inc2*ratio>>16;inc2=inc2*(32768+gda_mul(c[4],vco1)*3)>>15;
+ int64_t inc2=a->fine_root;inc2=inc2*scale>>15;inc2=inc2*ratio>>16;inc2=inc2*(32768+gda_mul(c[4],vco1)*3)>>15;
  a->phase[1]+=(uint32_t)inc2;uint64_t mag=(uint64_t)(inc2<0?-inc2:inc2);dt=(uint32_t)(mag>2147483647?2147483647:mag<4295?4295:mag);
  int vco2=q[3]?gds_square(a->phase[1],dt):gds_triangle(a->phase[1]);
  int noise=(int32_t)gd_random(rng)>>16;
@@ -85,7 +97,7 @@ static inline int32_t gds_analog(GDSynth *a,uint32_t *rng){
  int noise_amount=gd_clamp(c[6]+gda_env(c[28],a->env[0]),0,32768);
  int mixed=gda_mul(vco1,32768-c[5])+gda_mul(vco2,c[5])+gda_mul(noise,noise_amount);
  int driven=c[18]==32768?mixed:gda_mul(gd_kick_tanh(gda_mul(mixed,c[18])),(int)gd_an_drive_norm[q[18]]);
- int routed=(int)((uint64_t)(unsigned)c[9]*gds_pow2(c[17]*a->pitch/12)>>16);routed=gd_clamp(routed,20,18000);
+ int routed=(int)a->key_cutoff;
  int cutoff=(int)((int64_t)routed*(32768+gda_env(c[11]*16,a->env[1]))>>15);if(cutoff<20)cutoff=20;
  int source=c[13]>=0?vco2:noise,depth=c[13]<0?-c[13]:c[13];cutoff=(int)((int64_t)cutoff*(32768+gda_mul(source,depth)*3/2)>>15);
  int sample=gds_ladder(a,driven,(unsigned)(cutoff<20?20:cutoff),1);sample=gda_env(sample,a->env[2])*9/10;
@@ -97,7 +109,9 @@ static inline int32_t gds_analog(GDSynth *a,uint32_t *rng){
 static inline int32_t gds_read(unsigned table,uint32_t position){unsigned i=position>>20,frac=(position>>4)&65535;return gd_gl_material[table][i]+(int)((int64_t)(gd_gl_material[table][(i+1)&4095]-gd_gl_material[table][i])*frac>>16);}
 static inline int32_t gds_color(int noise,int low,int color){int target=color<0?low*8/5:(noise-low)*4/5;return noise+gda_mul(target-noise,color<0?-color:color);}
 static inline int32_t gds_material(unsigned table,uint32_t position,int frozen,int color){
- int n=gds_read(8,position),low=(gds_read(8,position-8589935u)+2*n+gds_read(8,position+8589935u))/4;
+ if(!frozen)return gds_read(table,position);
+ int n=gds_read(8,position),low=0;
+ if(color)low=(gds_read(8,position-8589935u)+2*n+gds_read(8,position+8589935u))/4;
  return gda_mul(gds_read(table,position),32768-frozen)+gda_mul(gds_color(n,low,color),frozen);
 }
 static inline int32_t gds_loop(unsigned table,uint32_t phase,uint32_t position,uint32_t span,int edge,int frozen,int color){
