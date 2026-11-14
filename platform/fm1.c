@@ -550,7 +550,7 @@ void fm1_cstart(void) {
     *d = *s;
   }
   for(s=_dsp_load,d=_dsp_start;d<_dsp_end;s++,d++)*d=*s;
-  __asm__ volatile("csync" ::: "memory");
+  fm1_code_sync();
   fm1_mailbox_clear();
   fm1_guard_enable(FM1_GUARD_STACK | FM1_GUARD_WRITE | FM1_GUARD_BUS | FM1_GUARD_PC);
   fm1_boot.p3_rst = (uint8_t)p3;
