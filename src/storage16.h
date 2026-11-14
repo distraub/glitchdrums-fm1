@@ -35,14 +35,14 @@ static inline GDStoredScene gd_store_scene(const GDScene *s){
  GDStoredScene d={0};for(unsigned i=0;i<12;++i)d.fx[i]=s->fx[i];
  for(unsigned k=0;k<4;++k){d.punch[k]=s->punch[k];d.slot[k]=s->slot[k];for(unsigned j=0;j<4;++j)d.param[k][j]=s->effect[s->slot[k]][j];}return d;
 }
-static inline GDScene gd_restore_scene(const GDStoredScene *s){
+static __attribute__((noinline,unused)) GDScene gd_restore_scene(const GDStoredScene *s){
  GDProject p;gd_defaults(&p);GDScene d=gd_get_scene(&p);
  for(unsigned i=0;i<12;++i)d.fx[i]=s->fx[i];
  for(unsigned k=0;k<4;++k){d.punch[k]=s->punch[k];d.slot[k]=s->slot[k];if(s->slot[k]<30)for(unsigned j=0;j<4;++j)d.effect[s->slot[k]][j]=s->param[k][j];}return d;
 }
 static inline GDStoredKit gd_store_kit(const GDKit *s){GDStoredKit d;for(unsigned l=0;l<8;++l){d.sound[l]=s->sound[l];d.mute[l]=s->mute[l];}d.scene=gd_store_scene(&s->scene);return d;}
 static inline GDKit gd_restore_kit(const GDStoredKit *s){GDKit d;for(unsigned l=0;l<8;++l){d.sound[l]=s->sound[l];d.mute[l]=s->mute[l];}d.scene=gd_restore_scene(&s->scene);return d;}
-static inline void gd_import_scene(GDScene *d,const GDOldScene *s){
+static __attribute__((noinline,unused)) void gd_import_scene(GDScene *d,const GDOldScene *s){
  GDProject p;gd_defaults(&p);*d=gd_get_scene(&p);for(unsigned i=0;i<12;++i)d->fx[i]=s->fx[i];
  for(unsigned e=0;e<30;++e)for(unsigned k=0;k<4;++k)d->effect[e][k]=s->effect[e][k];for(unsigned k=0;k<4;++k)d->punch[k]=s->punch[k];
 }

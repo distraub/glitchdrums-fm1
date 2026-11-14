@@ -45,7 +45,7 @@ static inline void gd_apply_preset(GDProject *p,const GDKit *k,unsigned type,uns
  else gd_put_scene(p,&k->scene);
 }
 /* F1 is always the exact startup INIT; F2-F8 are the first seven app sounds. */
-static inline GDSound gd_init_sound(unsigned lane){
+static __attribute__((noinline,unused)) GDSound gd_init_sound(unsigned lane){
  GDProject p;gd_defaults(&p);return gd_get_sound(&p,lane%8);
 }
 static inline GDSound gd_factory_sound(unsigned lane,unsigned preset){
@@ -53,7 +53,7 @@ static inline GDSound gd_factory_sound(unsigned lane,unsigned preset){
  for(unsigned j=0;j<30;++j)s.param[j]=gd_factory_voice_bytes[lane][preset-1][j];
  return s;
 }
-static inline GDScene gd_factory_scene(unsigned preset){
+static __attribute__((noinline,unused)) GDScene gd_factory_scene(unsigned preset){
  GDProject p;gd_defaults(&p);GDScene s=gd_get_scene(&p);
  s.fx[0]=s.fx[4]=s.fx[5]=s.fx[6]=s.fx[8]=s.fx[9]=0;s.fx[10]=127;s.fx[7]=127;s.fx[11]=64;
  if(preset==1){s.slot[0]=12;s.slot[1]=19;s.slot[2]=28;s.slot[3]=14;s.fx[0]=24;s.fx[2]=28;s.fx[4]=10;s.fx[5]=4;s.fx[7]=105;}
@@ -67,7 +67,7 @@ static inline void gd_factory_delay_sends(unsigned preset,const GDKit *kit,uint8
  for(unsigned lane=0;lane<8;++lane)sends[lane]=profile[(preset-1)%3][lane];
  if(kit&&kit->sound[5].param[0]<40)sends[5]=0;
 }
-static inline GDKit gd_factory_kit(unsigned preset){
+static __attribute__((noinline,unused)) GDKit gd_factory_kit(unsigned preset){
  GDKit k={0};for(unsigned l=0;l<8;++l)k.sound[l]=preset?gd_factory_sound(l,((preset*2+l)%7)+1):gd_init_sound(l);
  k.scene=gd_factory_scene(preset);return k;
 }

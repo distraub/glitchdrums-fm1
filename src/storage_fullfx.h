@@ -32,7 +32,7 @@ static inline GDFullScene gd_pack_full_scene(const GDScene *s){
  GDFullScene d={{0}};unsigned at=0;for(unsigned n=0;n<12;++n)gd_bits_write(d.bytes,&at,s->fx[n],7);for(unsigned n=0;n<4;++n)gd_bits_write(d.bytes,&at,s->punch[n],7);
  for(unsigned key=0;key<27;++key)for(unsigned p=0;p<4;++p)gd_bits_write(d.bytes,&at,s->effect[gd_keyboard_effect(key)][p],7);return d;
 }
-static inline GDScene gd_unpack_full_scene(const GDFullScene *s){
+static __attribute__((noinline,unused)) GDScene gd_unpack_full_scene(const GDFullScene *s){
  GDProject p;gd_defaults(&p);GDScene d=gd_get_scene(&p);unsigned at=0;for(unsigned n=0;n<12;++n)d.fx[n]=(uint8_t)gd_bits_read(s->bytes,&at,7);for(unsigned n=0;n<4;++n)d.punch[n]=(uint8_t)gd_bits_read(s->bytes,&at,7);
  for(unsigned key=0;key<27;++key)for(unsigned p=0;p<4;++p)d.effect[gd_keyboard_effect(key)][p]=(uint8_t)gd_bits_read(s->bytes,&at,7);return d;
 }

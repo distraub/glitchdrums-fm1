@@ -43,7 +43,7 @@ APP_XIP = 0x02000120  # app.bin offset 0 in the XIP map; the SPL jumps here
 APP_SLOT = fm1pkg_make.APP_SLOT
 LOADER_LOAD = 0x01C0A800
 LOADER_NAME = b"usb_hid_ota.bin"  # the file name the SPL looks for
-STACK_CFLAGS = ["-Wframe-larger-than=8192", "-Werror=frame-larger-than"]
+STACK_CFLAGS = ["-Wframe-larger-than=8192", "-Werror=frame-larger-than="]
 CFLAGS = ["-Os", "-ffunction-sections", "-fno-builtin", "-Wall", "-Wno-unused-function"]
 INCLUDES = ["-Iplatform", "-Iplatform/hal", "-Iplatform/src", "-Iplatform/gen"]
 LINE = re.compile(r"^\s*([0-9a-f]+):\s+((?:[0-9a-f]{2} )+)\s*\t(.*)$")
