@@ -501,7 +501,7 @@ static inline void gd_render_sample(GDEngine *d,const GDProject *p,int32_t *left
 typedef struct {int32_t left[GD_RENDER_FRAMES],right[GD_RENDER_FRAMES],send[GD_RENDER_FRAMES];} GDRenderBlock;
 /* Returns the frames rendered. Never crosses a meter or 32-frame control
  * boundary; callers also split at note/ratchet/pattern events. No allocation. */
-static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
+static GD_DSP_CODE unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
   unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
   if(!n)return 0;
   if((d->counter&31u)==0)gd_prepare(d,p);

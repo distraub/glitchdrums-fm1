@@ -206,3 +206,23 @@ below the 7,936-byte supervisor stack; foreground maximum 10,928 bytes.
 The deliberate oversized-frame probe is rejected. Exact-package updater
 fault tests pass. Hardware speedup remains unmeasured. Candidate delivered
 to Alex's iCloud Firmware folder while the unit is available for other firmware.
+
+## Measured 0.17.14 result and executable-RAM trial
+
+Alex reports idle 18%; the stock drum pattern with no PRC or Glitch steps and
+one Analog hit at step 1 still reaches 101% in ECO mode. This is not a solo
+Analog reading. The block renderer improves idle load but does not establish
+adequate musical headroom.
+
+0.17.15 places gd_render_block in .ram_dsp, using the existing reserved
+24 KiB executable-RAM region after the flash-busy driver. The measured
+0.17.14 renderer is approximately 11 KiB and the driver approximately 3 KiB.
+No memory region, stack, pool, flash or bootloader boundary is enlarged.
+Startup copies the new section before guards/audio start; PC protection
+bounds the contiguous driver-plus-DSP code region. The flash-busy driver
+stays in its separate .ram_text section with the no-call check unchanged;
+normal DSP may access XIP while audio interrupts cannot run during flash
+operations. All instructions, including DSP, remain subject to ROM-window
+refusal checks. New tests refuse overlaps, code-RAM overflow and a renderer
+placed outside its copied section. No DSP algorithm or quality setting is
+changed. Hardware performance gain remains unmeasured.

@@ -22,3 +22,11 @@ assert any('RAM (.data + .bss)' in e for e in errors(symbols=syms.replace('01c1e
 assert any('pool' in e for e in errors(symbols=syms.replace('01c73a00','01c74004')))
 assert any('exceeds the app slot' in e for e in errors(image=stub+bytes(build.APP_SLOT)))
 print('PASS: entry, app size, ROM-window constants/calls, RAM-call isolation and RAM/pool refusal gates')
+
+ram_syms=syms+"01c00b20 g .ram_text _rt_end\n01c00b20 g .ram_dsp _dsp_start\n01c03b20 g .ram_dsp _dsp_end\n01c00b20 l .ram_dsp gd_render_block\n"
+assert not errors(symbols=ram_syms)
+assert any('DSP executable RAM' in e for e in errors(symbols=ram_syms.replace('01c03b20','01c06004')))
+assert any('DSP executable RAM' in e for e in errors(symbols=ram_syms.replace('01c00b20 g .ram_dsp _dsp_start','01c00b1c g .ram_dsp _dsp_start')))
+assert any('not inside' in e for e in errors(symbols=ram_syms.replace('01c00b20 l .ram_dsp gd_render_block','02005000 l .text gd_render_block')))
+assert any('.ram_text contains calls' in e for e in errors(symbols=ram_syms,rt='call into_dsp'))
+print('PASS: DSP RAM bounds/placement checks retain flash-busy driver call isolation')
