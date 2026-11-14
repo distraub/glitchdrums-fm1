@@ -25,7 +25,19 @@ jobs:
           curl -fL --retry 3 https://pkgman.jieliapp.com/s/linux-toolchain | tar -xJ -C ~/.jieli
           TC="$(ls -d ~/.jieli/jieli-linux-toolchains-* | sort | tail -1)"
           export JIELI_TOOLCHAIN="$TC"
-          python3 tools/build_native.py
+          python3 -u - <<'PYFRAME' 2>&1 | tee native-stack-diagnostics.log
+          import sys
+          sys.path.insert(0, 'tools')
+          import build
+          # Diagnostics only: report every target frame. No package is uploaded
+          # or released by this workflow; production still enforces its limit.
+          build.CFLAGS.append('-Wframe-larger-than=1')
+          if hasattr(build, 'STACK_CFLAGS'):
+              build.STACK_CFLAGS = []
+          cfg = build.config()
+          build.build_site()
+          print(build.build_fm1(cfg))
+          PYFRAME
           sha256sum build/*.fwsc > build/fm1/package-sha256.txt
           "$TC/common/bin/objdump" -t build/fm1/firmware.elf > build/fm1/symbols.txt
       - uses: actions/upload-artifact@v4
@@ -36,3 +48,4 @@ jobs:
             build/fm1/firmware.dis
             build/fm1/symbols.txt
             build/fm1/package-sha256.txt
+            native-stack-diagnostics.log
