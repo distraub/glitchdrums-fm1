@@ -197,3 +197,12 @@ callback lengths and mid-playback tempo/STOP changes. All PCM bytes match for
 stock, 1/16 swing ratchets, 1/8 swing ratchets, dense chords/locks and punch FX.
 The full RemoteFM1 sequencer/chain/Slice/FX/MIDI/save regression suite passes.
 No sample rate, voice model, oversampling or polyphony reduction is included.
+
+0.17.14 candidate: native CI 43650163892 and diagnostic 43650167407
+pass, with identical package SHA-256 `fe5ee9503cc950cc0c22e0491b62239078cf88a2bae4abf9e54bb2784a0f74dd`. Code 402/567 KiB,
+RAM 90/96 KiB, pool 334/336 KiB. Conservative audio IRQ call-path
+estimate 3,408 bytes plus timer 340 bytes and context allowance remains
+below the 7,936-byte supervisor stack; foreground maximum 10,928 bytes.
+The deliberate oversized-frame probe is rejected. Exact-package updater
+fault tests pass. Hardware speedup remains unmeasured. Candidate delivered
+to Alex's iCloud Firmware folder while the unit is available for other firmware.
