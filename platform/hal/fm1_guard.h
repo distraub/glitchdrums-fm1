@@ -34,7 +34,8 @@
 #define FM1_EMU_USP_H (*(volatile uint32_t *)0x1EEF0E0u)
 #define FM1_EMU_USP_L (*(volatile uint32_t *)0x1EEF0E4u)
 
-extern char _guard0[], _ustack_lo[], _guard1[], _sstack_lo[], _sstack_top[], _etext[], _dsp_end[];
+extern char _guard0[], _ustack_lo[], _guard1[], _sstack_lo[], _sstack_top[], _etext[];
+extern uint32_t _dsp_end[];
 extern uint32_t _rt_start[], _rt_end[];
 
 enum { FM1_GUARD_STACK = 1, FM1_GUARD_WRITE = 2, FM1_GUARD_BUS = 4, FM1_GUARD_PC = 8 };
