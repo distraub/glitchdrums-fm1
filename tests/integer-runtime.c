@@ -21,6 +21,7 @@ int main(void){
     assert(__umoddi3(a,b)==a%b);
     int64_t x=(int64_t)a;
     if(k<63){assert(__divdi3(x,(int64_t)b)==x/(int64_t)b);assert(__divdi3(x,-(int64_t)b)==x/-(int64_t)b);}
+    b=((next()&0xffffu)|1u)<<(k%48);assert(__udivdi3(a,b)==a/b);
     b=(next()&0xffffu)|1u;assert(__udivdi3(a,b)==a/b);
     b=(next()&0xffffffffu)|1u;assert(__udivdi3(a,b)==a/b);
   }

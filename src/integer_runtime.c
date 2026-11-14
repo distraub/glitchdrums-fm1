@@ -20,6 +20,12 @@ static unsigned gd_bits64(uint64_t x) {
 }
 uint64_t __udivdi3(uint64_t n, uint64_t d) {
   if (!d) return 0;
+  /* floor(n/(odd*2^k)) == floor((n>>k)/odd). Fixed-point audio
+   * frequently becomes one native 32-bit divide after cancelling 2^k. */
+  if(!(d&1u)){
+    unsigned shift=gd_bits64(d&((uint64_t)0-d))-1u;
+    n>>=shift;d>>=shift;
+  }
   if ((n >> 32) == 0 && (d >> 32) == 0)
     return (uint32_t)n / (uint32_t)d;
   if (n < d) return 0;
