@@ -90,7 +90,7 @@ static uint32_t step_selected, pending_save, notice_until;
 static const char *notice = "";
 static uint32_t seed = 0x571aa13u;
 static uint8_t need_grid = 1, need_controls = 1, need_header = 1, need_full = 1;
-enum { V_VOICE, V_STEP, V_LFO, V_FX, V_GLOBAL, V_MIX, V_HOME, V_PUNCH, V_FXEDIT, V_PRESETS, V_PATTERNS, V_CHAIN, V_REMIX };
+enum { V_VOICE, V_STEP, V_LFO, V_FX, V_GLOBAL, V_MIX, V_HOME, V_PUNCH, V_FXEDIT, V_PRESETS, V_PATTERNS, V_CHAIN, V_REMIX, V_PROFILE };
 static unsigned fx_return_view=V_PUNCH,master_fx_page,global_page;
 static int fx_surface(void){return view==V_PUNCH||view==V_FXEDIT;}
 enum {
@@ -402,8 +402,10 @@ static void sequence_note(unsigned lane,unsigned velocity,int pitch,int lock,uns
  if(lane==7)for(unsigned slot=0;slot<8;++slot)if(engine.voices[slot+6].trigger_serial==engine.trigger_serial)engine.synth[slot].held=0;
 }
 static void sequence_hit(unsigned lane,unsigned velocity,int pitch,int lock,unsigned value,unsigned step){
+ uint32_t stamp=GD_PROFILE_BEGIN();
  sequence_note(lane,velocity,pitch,lock,value);
  if(lane>=6)for(unsigned n=0;n<live_chord_count[lane-6][step];++n)sequence_note(lane,velocity,live_chord_pitch[lane-6][step][n],lock,value);
+ GD_PROFILE_END(9,stamp);
 }
 void audio(int32_t *out, uint32_t frames) {
  /* Native IRQs run while setup restores state and draws the first screen. */
@@ -479,6 +481,7 @@ render_block:;
     count=gd_render_block(&engine,&live,&block,count);
     if(running)remaining-=count;
     for(unsigned l=0;l<8;++l)if(running&&repeat_left[l])repeat_wait[l]-=count;
+    uint32_t fx_stamp=GD_PROFILE_BEGIN();
     for(unsigned i=0;i<count;++i){
       int32_t left=block.left[i],right=block.right[i];
       gd_fx_send(&effects,&live,&left,&right,block.send[i]);
@@ -487,6 +490,7 @@ render_block:;
       int32_t a=left<0?-left:left,b=right<0?-right:right;
       if(a>peak)peak=a;if(b>peak)peak=b;
     }
+    GD_PROFILE_END(10,fx_stamp);
     if((engine.counter&15u)==0){
       int32_t lane_sample[8]={0};
       for(unsigned slot=0;slot<14;++slot){unsigned lane=slot<8?slot:6+(slot-8)/3;lane_sample[lane]+=engine.voices[slot].last_sample;}
@@ -859,6 +863,7 @@ static void draw_header(void) {
   }
   /* Include the full 16-pixel status line at y=54 when replacing OCT/MUTE/SOLO. */
   rect(0, 25, 240, (view==V_STEP||view==V_REMIX)?20:45, t->bg);
+  if(view==V_PROFILE){text(8,28,"CPU PROFILE",t->accent,FONT_BIG);text(8,54,"PEAK % OF AUDIO DEADLINE",t->chrome,FONT_SMALL);return;}
   if(view==V_STEP){
     if(midi_learn_on){char label[40];if(midi_target.kind==M_INVALID)string_copy(label,"LEARN: TURN A KNOB");else {string_copy(label,midi_pick?"SEND CC: ":"LEARN: ");midi_name(label+string_length(label),midi_target);}label[29]=0;text(6,27,label,t->text,FONT_SMALL);return;}
     static const char *const names[8]={"KICK","SNARE","C HAT","O HAT","CLAP","PRC","GLITCH","ANALOG"};
@@ -1183,7 +1188,19 @@ static void draw_remix(void){
  for(unsigned k=0;k<4;++k){char value[16];unsigned v=k==0?remix_ui.variation:k==3?remix_ui.depth:ui.fx[k==1?9:10];if(k==1)format_glitch_rate(value,v);else format_int(value,k==2||k==3?(int)(v*100/127):(int)v);int x=5+(int)k*59;text(x,183,names[k],t->text,FONT_SMALL);text(x,203,value,k==1?t->alt:t->accent,FONT_SMALL);}
  char hint[40];format_glitch_shift(hint);string_copy(hint+string_length(hint)," ENV+KEY:PRINT");text(8,225,hint,t->chrome,FONT_SMALL);
 }
+static void draw_profile(void){
+ const GDTheme *t=theme();uint32_t ticks[13]={0};
+#if GD_NATIVE_FM1
+ gd_profile_read(ticks);
+#endif
+ rect(0,70,240,170,t->bg);char b[16];
+ text(8,76,"TOTAL",t->text,FONT_SMALL);format_int(b,(int)((uint64_t)ticks[12]*100u/139296u));text(128,72,b,t->alt,FONT_BIG);
+ static const char *const names[12]={"KIK","SNR","CH","OH","CLP","PRC","GLI","ANA","CTRL","HITS","FX","OTHER"};
+ for(unsigned i=0;i<12;++i){int x=6+(int)(i%4)*59,y=104+(int)(i/4)*39;unsigned value=(unsigned)((uint64_t)ticks[i]*100u/139296u);text(x,y,names[i],t->chrome,FONT_SMALL);format_int(b,(int)value);text(x,y+13,b,i<8?t->accent:t->alt,value>999?FONT_SMALL:FONT_BIG);}
+ text(6,228,"REENTER:RESET / PEAKS != SUM",t->chrome,FONT_SMALL);
+}
 static void draw_controls(void) {
+  if(view==V_PROFILE){draw_profile();return;}
   if(view==V_REMIX){draw_remix();return;}
   if(view==V_GLOBAL&&page==2){draw_midi_page();return;}
   if(view==V_CHAIN){
@@ -1317,6 +1334,9 @@ static void draw_controls(void) {
   }
 }
 static void redraw(void) {
+#if GD_NATIVE_FM1
+  gd_profile_requested=view==V_PROFILE;
+#endif
   static unsigned drawn_view = 255;
   static uint32_t remix_draw_at;
   if (drawn_view != view) { drawn_view = view; need_full = 1; }
@@ -1527,6 +1547,7 @@ static void edit_control(unsigned k, int delta) {
     if(delta&&k==1){midi_map_cursor=(unsigned)gd_clamp((int)midi_map_cursor+delta,0,15);midi_target.kind=M_INVALID;midi_pick=0;need_controls=1;}
     return;
   }
+  if(view==V_PROFILE)return;
   if(delta&&midi_learn_on)midi_pick_knob(k);
   if(view==V_CHAIN){edit_chain(k,delta);return;}
   if(view==V_PATTERNS){if(delta&&k==0){pattern_cursor=(unsigned)gd_clamp((int)pattern_cursor+delta,0,15);need_controls=1;}return;}
@@ -1673,7 +1694,9 @@ void loop(void) {
     page = 0;
     need_header = need_controls = need_grid = 1;
   }
-  if (button_pressed(BTN_EDIT)) {
+  unsigned profile_open=button_held(BTN_GLO)&&button_pressed(BTN_EDIT);
+  if(profile_open){view=V_PROFILE;midi_learn_on=midi_pick=0;need_full=1;}
+  if (button_pressed(BTN_EDIT)&&!profile_open) {
     if(fx_surface()){view=view==V_PUNCH?V_FXEDIT:V_PUNCH;page=0;}
     else {
       if(view==V_VOICE){if(lock_edit){lock_edit=0;voice_focus=voice_style[selected];page=voice_row[selected];}else voice_focus=!voice_focus;}
@@ -1703,7 +1726,7 @@ void loop(void) {
     else{view=fx_return_view;page=view==V_FX?master_fx_page:fx_bank;}
     need_header = need_grid = need_controls = 1;
   }
-  if (button_pressed(BTN_GLO)) {
+  if (button_pressed(BTN_GLO)&&!profile_open) {
     if(view!=V_GLOBAL){midi_return_view=view;midi_return_page=page;}
     page=view==V_GLOBAL?(page+1)%3:global_page;
     view = V_GLOBAL;
@@ -1963,7 +1986,7 @@ void loop(void) {
   }
   if(!fx_surface()&&punch_ui_latched!=punch_latched){punch_ui_latched=punch_latched;need_header=1;}
   display_lane=selected;
-  if(view==V_GLOBAL&&page==1&&(uint32_t)(millis()-last_visual)>=200){last_visual=millis();need_controls=1;}
+  if((view==V_PROFILE||(view==V_GLOBAL&&page==1))&&(uint32_t)(millis()-last_visual)>=200){last_visual=millis();need_controls=1;}
   if((view==V_LFO||view==V_MIX||view==V_HOME||(view==V_VOICE&&voice_focus))&&(uint32_t)(millis()-last_visual)>=50){last_visual=millis();need_grid=1;}
   if(midi_ui_dirty&&(uint32_t)(millis()-midi_refresh_at)>=33){
     midi_refresh_at=millis();midi_ui_dirty=0;if(midi_header_dirty){midi_header_dirty=0;need_header=1;}

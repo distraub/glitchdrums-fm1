@@ -10,6 +10,7 @@
  * APP_NAME, APP_VER, FELUCCA_ID come from tools/build.py (firmware.json). */
 #include "fm1.h"
 #include "output.h"
+#include "../src/profile_state.h"
 static GDOutput gd_output_state={65536};
 
 #include <stdint.h>
@@ -90,6 +91,11 @@ static int st_read(uint32_t off, void *dst, uint32_t n) {
 static uint8_t recovery_active;
 #define OTA_IDENTITY (recovery_active ? "FM-1_000" : FELUCCA_ID)
 volatile uint32_t audio_last_ticks;
+volatile uint32_t gd_profile_active,gd_profile_requested;
+static GDProfiler gd_profiler;
+uint32_t gd_profile_now(void){return fm1_ticks();}
+void gd_profile_add(unsigned stage,uint32_t ticks){gd_profiler_add(&gd_profiler,stage,ticks);}
+void gd_profile_read(uint32_t out[13]){uint32_t key=irq_save();for(unsigned i=0;i<13;++i)out[i]=gd_profiler.peak[i];irq_restore(key);}
 static volatile uint32_t audio_peak_ticks,audio_blocks,audio_late;
 static void platform_frame(uint32_t cmd, const uint8_t *b, uint32_t n);
 #define OTA_MORE platform_frame
@@ -420,6 +426,7 @@ void fm1_alnk0_irq(void) { /* via isr_alnk0 (hal/fm1_isr.S) */
   fm1_audio_ack_aux(p);
   if (p & FM1_AUDIO_HALF) {
     uint32_t render_start=fm1_ticks();
+    gd_profile_active=gd_profile_requested;gd_profiler_begin(&gd_profiler,gd_profile_active);
     int32_t *o = &abuf[fm1_audio_free_half() * HALF_WORDS];
     {
       uint32_t m, t;
@@ -444,6 +451,7 @@ void fm1_alnk0_irq(void) { /* via isr_alnk0 (hal/fm1_isr.S) */
       gd_output_frame(&gd_output_state,&o[i],&o[i+1],(uint32_t)master_q12);
     for (i = 0; i < HALF_WORDS; i++) o[i] *= 256; /* PCM16 to Q23 */
     uint32_t elapsed=fm1_ticks()-render_start;
+    gd_profiler_end(&gd_profiler,elapsed);
     audio_last_ticks=elapsed;if(elapsed>audio_peak_ticks)audio_peak_ticks=elapsed;
     ++audio_blocks;if(elapsed>(HALF_FRAMES*1000000u/44100u)*FM1_TICKS_PER_US)++audio_late;
     fm1_audio_ack_half();

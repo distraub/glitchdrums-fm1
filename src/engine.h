@@ -5,6 +5,7 @@
 #define GD_ENGINE_H
 #include "tables.h"
 #include "memory.h"
+#include "profile.h"
 #include "swing.h"
 #include "drum_character.h"
 #include "kick_dsp.h"
@@ -504,16 +505,17 @@ typedef struct {int32_t left[GD_RENDER_FRAMES],right[GD_RENDER_FRAMES],send[GD_R
 static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
   unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
   if(!n)return 0;
-  if((d->counter&31u)==0)gd_prepare(d,p);
+  if((d->counter&31u)==0){uint32_t stamp=GD_PROFILE_BEGIN();gd_prepare(d,p);GD_PROFILE_END(8,stamp);}
   for(unsigned i=0;i<n;++i)b->left[i]=b->right[i]=b->send[i]=0;
   for(unsigned slot=0;slot<14;++slot){
     GDVoice *v=&d->voices[slot];unsigned lane=slot<8?slot:6+(slot-8)/3;
     if(v->env<=1){v->last_sample=0;continue;}
     unsigned muted=d->solo_mask?!(d->solo_mask&(1u<<lane)):p->track[lane].mute;
-    int pan=v->pan,level=d->delay_send[lane];
+    int pan=v->pan,level=d->delay_send[lane];uint32_t stamp=GD_PROFILE_BEGIN();
     for(unsigned i=0;i<n;++i){int sample=gd_render_voice(d,slot);if(muted)continue;
       b->send[i]+=sample*level/127;b->left[i]+=sample*(127-pan)/127;b->right[i]+=sample*pan/127;
     }
+    GD_PROFILE_END(lane,stamp);
   }
   for(unsigned i=0;i<n;++i){b->left[i]=gd_sat(b->left[i]);b->right[i]=gd_sat(b->right[i]);b->send[i]=gd_sat(b->send[i]/2);}
   d->counter+=n;d->delay_input=b->send[n-1];return n;

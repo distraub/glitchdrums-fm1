@@ -63,3 +63,6 @@ echo "PASS: cached global effects preserve PCM across live tempo/control changes
 
 clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -I src tests/block-render.c -o build/native/block-render-test
 build/native/block-render-test
+
+clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined,address tests/profile-state.c -o build/native/profile-state-test
+build/native/profile-state-test

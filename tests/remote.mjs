@@ -358,3 +358,8 @@ const previousContinuous=boot(fixture(baseline,'legacy-glitch6.bin'));assert.equ
 console.log('PASS: previous continuous Glitch rates migrate into the larger range');
 
 const sliceDefaults=boot();remixPage(sliceDefaults);assert.equal(scene(save(sliceDefaults)).fx[10],127);turn(sliceDefaults,4,-37);turn(sliceDefaults,5,-27);const mixEdited=scene(save(sliceDefaults)).fx[10];assert.equal(mixEdited,90);for(let n=0;n<4;++n)button(sliceDefaults,11);assert.equal(scene(save(sliceDefaults)).fx[10],90);screenshot(sliceDefaults,'slice-defaults-edited-0.17.6.rgb565');console.log('PASS: Slice defaults to full mix/depth and preserves deliberate edits on return');
+
+const profileUI=boot();const profileBefore=payload(save(profileUI));combo(profileUI,7,6);
+for(let k=0;k<4;++k)turn(profileUI,2+k,7);assert.deepEqual(payload(save(profileUI)),profileBefore);
+profileUI.tick+=2000;profileUI.x.rfm1_tick(profileUI.tick);screenshot(profileUI,'cpu-profile-0.17.16.rgb565');button(profileUI,7);button(profileUI,12);render(profileUI,128);
+console.log('PASS: GLO+EDIT profile opens, parameter knobs remain read-only and GLO exits');

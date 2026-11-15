@@ -1,16 +1,22 @@
-# GlitchDrums FM1 — 0.17.14
+# GlitchDrums FM1 — 0.17.16 (diagnostic)
+
+**Hardware playback remains over budget. 0.17.15 was withdrawn after a
+measured regression. 0.17.14 is the reference; 0.17.16 adds an opt-in native
+timing screen (hold GLO, tap EDIT) to identify the remaining hot paths.**
 
 By Alex Matheu.
 
-**Hardware blocker:** 0.17.8 fails its startup stack guard on the first real unit.
-USB rescue responds. A fix is under verification; see [hardware test findings](docs/HARDWARE_TESTS.md).
+**Hardware findings:** the startup stack fault was fixed and restoring stock
+was verified. Playback CPU overload remains unresolved; see
+[hardware test findings](docs/HARDWARE_TESTS.md).
 
 An eight-lane drum synthesizer for the M-VAVE FM-1, currently testable as a
 RemoteFM1 `.rfm1` and a local browser build. The same integer instrument code
 targets foma's hardware platform. Version 0.17.9 now builds a native `.fwsc`
 candidate with checked memory bounds and offline update/recovery simulations.
-It has **not been tested on a physical FM-1**; CPU, USB, saving and recovery
-still need device checks. See [pre-hardware verification](docs/PREHARDWARE.md).
+Native builds have been tested on a physical FM-1, exposing playback overload.
+Saving across power cycles and release readiness still need device validation.
+The earlier [pre-hardware checks](docs/PREHARDWARE.md) are simulation evidence.
 
 0.17.9 adds [GlitchStep-style swing](docs/SWING.md): selectable 1/8 or 1/16,
 normalized amount, stable beat anchors and legacy groove preservation.

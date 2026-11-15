@@ -264,3 +264,22 @@ Native DSP placement/startup/PC boundaries/tooling were restored to 0.17.14
 (commit 39dc2ea). That remains a reference build, not a playback-stable release.
 Next work requires per-voice/shared-stage hardware timing before another
 performance optimization. No unverified new optimization package is delivered.
+
+## 0.17.16 opt-in timing diagnostic
+
+This build starts from the restored 0.17.14 code and adds measurements, not
+a performance fix. Hold GLO and tap EDIT to open CPU PROFILE. Instrumentation
+is active only on that screen. The IRQ accumulates each lane's rendering,
+32-frame control preparation (CTRL), sequence note/chord triggers (HITS),
+and shared global/punch processing (FX). OTHER is the remaining callback
+time including output limiting, timer preemption and diagnostic bookkeeping.
+Peaks are per-callback percentages of the 256-frame audio deadline, retained
+after STOP; independent stage peaks must not be added. Leaving and re-entering
+resets peaks. Taking a snapshot briefly masks IRQs to copy 52 bytes. The
+render path performs no allocation, logging or UI work. Timer reads are skipped
+when the screen is closed, but instrumentation has overhead while active.
+
+Normal GLO page cycling remains unchanged. Parameter knobs are read-only on
+the profile screen; GLO exits. No DSP model, sample rate, oversampling, save
+layout, memory region, stack boundary, bootloader or PC-guard change is included.
+The screen is for identifying the next optimization, not claiming lower CPU.
