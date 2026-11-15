@@ -283,3 +283,14 @@ Normal GLO page cycling remains unchanged. Parameter knobs are read-only on
 the profile screen; GLO exits. No DSP model, sample rate, oversampling, save
 layout, memory region, stack boundary, bootloader or PC-guard change is included.
 The screen is for identifying the next optimization, not claiming lower CPU.
+
+0.17.16 final diagnostic verification: native CI 43666184172 and symbols
+43666186689 pass with identical package SHA-256 `1aac757cf10fd440c7d3405d573f4e7390e2d671ca6a7ae658153277553fabeb`.
+Code 401/567 KiB, RAM 90/96 KiB and pool 334/336 KiB. Conservative stack
+estimates: audio IRQ 3,532 bytes plus timer 336 bytes and context allowance
+remain below 7,936 bytes; foreground 10,984 bytes below 24,320. All guards
+remain enabled. Native audio golden vectors, block/state parity, profiler
+accounting/reset tests and exact-package updater fault tests pass. RemoteFM1
+tests verify read-only GLO+EDIT entry/exit; screen render was checked for
+clipping/contrast. Delivered only in the Diagnostics subfolder; no playback
+CPU improvement is claimed. Hardware stage readings are pending.
