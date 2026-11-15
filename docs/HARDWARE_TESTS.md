@@ -370,3 +370,23 @@ match. Local exact-package loader/OTA fault tests pass in addition to CI,
 including unchanged boot area, wrong key/CRC refusal, disconnect and resumed
 power cuts. Copied to iCloud Firmware/Trials after verifying SHA-256. Hardware
 playback and save/switch checks remain for Alex's unit.
+
+## 0.17.18 physical results with C1 ON
+
+Alex confirmed BAL 2X for the first new photo: TOTAL 143%, KIK 17, SNR 12,
+CH 12, OH 12, CLP 10, PRC 17, GLI 74, ANA 47, CTRL 6, HITS 4, FX 8,
+OTHER 5. The follow-up to the ECO 1X request shows TOTAL 101%, KIK 18,
+SNR 12, CH 12, OH 12, CLP 11, PRC 17, GLI 30, ANA 32, CTRL 7, HITS 4,
+FX 8, OTHER 7. Both show C1 ON, so startup/completion did not trigger the
+fallback during these captures. These are retained per-stage peaks, not a
+sum or proof of sustained error-free execution. ECO improved from 138 to
+101 but remains over deadline; BAL from 198 to 143 (different earlier build).
+
+0.17.19 replaces the fixed drums/synth split with bounded greedy assignment
+of whole active lanes using quality-aware approximate weights and the active
+polyphonic voice count. This is load estimation, not measured adaptive
+per-voice timing. Each lane, including all siblings, still has one owner
+through a block, keeping its profiler updates disjoint. Worker mask is
+included in job validation. On failure, only worker-owned lanes are retired;
+partial sums are discarded. Core-0-owned lanes continue once. No sound,
+polyphony, save-format, clock, boot or stack change is included in this pass.

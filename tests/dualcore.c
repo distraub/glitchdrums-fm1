@@ -12,7 +12,7 @@ static unsigned mode,enabled=1,joined,starts,retired;
 static void (*task)(uint32_t);static uint32_t task_arg;
 static void *run(void *unused){(void)unused;
  if(mode==2){/* Model a worker that changes voice state, then stalls. */
-  gd_render_partition(gd_parallel_job.d,gd_parallel_job.p,&gd_parallel_job.sums,gd_parallel_job.n/2+1,6,14);
+  gd_render_lanes(gd_parallel_job.d,gd_parallel_job.p,&gd_parallel_job.sums,gd_parallel_job.n/2+1,gd_parallel_job.lanes);
  }else if(mode==3)task(task_arg^1u);else task(task_arg);
  return 0;
 }
@@ -49,15 +49,30 @@ int main(void){
    assert(!memcmp(&actual,&reference,sizeof actual));
   }
  }
+ /* Sparse combinations and varying boundaries exercise ownership as the
+  * scheduler moves entire lanes, not just the all-voices-active workload. */
+ for(unsigned mask=1;mask<256;++mask){gd_defaults(&p);p.reserved=mask%3;
+  memset(&actual,0,sizeof actual);memset(&reference,0,sizeof reference);enabled=1;mode=0;
+  for(unsigned lane=0;lane<8;++lane)if(mask&(1u<<lane)){
+   gd_hit(&actual,&p,lane,100,0,-1,0);gd_hit(&reference,&p,lane,100,0,-1,0);
+  }
+  for(unsigned block=0;block<3;++block){unsigned want=1+(mask+block)%16;GDRenderBlock sums;
+   unsigned n=gd_render_block(&actual,&p,&sums,want);assert(n&&n<=want);
+   for(unsigned i=0;i<n;++i){int32_t l,r;gd_render_sample(&reference,&p,&l,&r);assert(l==sums.left[i]&&r==sums.right[i]&&reference.delay_input==sums.send[i]);}
+   assert(!memcmp(&actual,&reference,sizeof actual));
+  }
+ }
  /* No worker/start failure: exact reference fallback, not a silent synth. */
  gd_defaults(&p);memset(&actual,0,sizeof actual);memset(&reference,0,sizeof reference);enabled=0;notes();
  GDRenderBlock b;gd_render_block(&actual,&p,&b,16);for(unsigned i=0;i<16;++i){int32_t l,r;gd_render_sample(&reference,&p,&l,&r);assert(b.left[i]==l&&b.right[i]==r);}assert(!memcmp(&actual,&reference,sizeof actual));
  for(mode=2;mode<=3;++mode){gd_defaults(&p);before=p;memset(&actual,0,sizeof actual);memset(&reference,0,sizeof reference);enabled=1;notes();
   gd_render_block(&actual,&p,&b,16);assert(!enabled);assert(!memcmp(&p,&before,sizeof p));
-  gd_prepare(&reference,&p);GDRenderBlock drums;gd_render_partition(&reference,&p,&drums,16,0,6);gd_render_commit(&reference,&drums,0,16);
+  gd_prepare(&reference,&p);GDRenderBlock drums;gd_render_lanes(&reference,&p,&drums,16,255u^gd_parallel_job.lanes);gd_render_commit(&reference,&drums,0,16);
   for(unsigned i=0;i<16;++i)assert(b.left[i]==drums.left[i]&&b.right[i]==drums.right[i]&&b.send[i]==drums.send[i]);
-  for(unsigned i=0;i<6;++i)assert(!memcmp(&actual.voices[i],&reference.voices[i],sizeof(GDVoice)));
-  for(unsigned i=6;i<14;++i)assert(!actual.voices[i].env&&!actual.synth[i-6].active);
+  for(unsigned i=0;i<14;++i){unsigned lane=i<8?i:6+(i-8)/3;
+   if(gd_parallel_job.lanes&(1u<<lane)){assert(!actual.voices[i].env);if(i>=6)assert(!actual.synth[i-6].active);}
+   else assert(!memcmp(&actual.voices[i],&reference.voices[i],sizeof(GDVoice)));
+  }
   unsigned prior=starts;notes();gd_render_block(&actual,&p,&b,16);assert(starts==prior);/* stays disabled */
  }
  assert(retired==1&&joined==starts);

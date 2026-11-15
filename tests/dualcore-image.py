@@ -36,7 +36,7 @@ for name,load in [('.text',None),('.ram_text','_rt_load'),('.c1_text','_c1_load'
 h=sections['.c1_text'];assert h[3]==symbol('_c1_start') and h[3]+h[5]==symbol('_c1_end')
 assert symbol('_rt_end')<=symbol('_c1_start')<symbol('_c1_end')<=0x01c06000
 assert symbol('_c1_start')<=symbol('fm1_c1_main')<symbol('_c1_end')
-assert 0x02000120<=symbol('gd_render_synth_job')<symbol('_etext')
+assert 0x02000120<=symbol('gd_render_lane_job')<symbol('_etext')
 stack=sections['.c1stack'];assert stack[3]==0x01c06000 and stack[5]==0x1f00
 assert symbol('_c1_ustack')==0x01c06000 and symbol('_c1_sstack_top')==0x01c07f00
 assert symbol('_bss_end')<=0x01c20000 and symbol('_pool_end')<=0x01c74000

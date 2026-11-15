@@ -504,11 +504,12 @@ typedef struct {int32_t left[GD_RENDER_FRAMES],right[GD_RENDER_FRAMES],send[GD_R
 /* Partition rendering owns only the selected voice states and its private sums.
  * Prepare controls/events before launching either partition; join both before
  * committing counters, saturation, sends or subsequent note/control events. */
-static inline void gd_render_partition(GDEngine *d,const GDProject *p,GDRenderBlock *b,
-                                        unsigned n,unsigned first,unsigned end){
+static inline void gd_render_slots(GDEngine *d,const GDProject *p,GDRenderBlock *b,
+                                        unsigned n,unsigned first,unsigned end,unsigned lanes){
   for(unsigned i=0;i<n;++i)b->left[i]=b->right[i]=b->send[i]=0;
   for(unsigned slot=first;slot<end;++slot){
     GDVoice *v=&d->voices[slot];unsigned lane=slot<8?slot:6+(slot-8)/3;
+    if(!(lanes&(1u<<lane)))continue;
     if(v->env<=1){v->last_sample=0;continue;}
     unsigned muted=d->solo_mask?!(d->solo_mask&(1u<<lane)):p->track[lane].mute;
     int pan=v->pan,level=d->delay_send[lane];uint32_t stamp=GD_PROFILE_BEGIN();
@@ -517,6 +518,28 @@ static inline void gd_render_partition(GDEngine *d,const GDProject *p,GDRenderBl
     }
     GD_PROFILE_END(lane,stamp);
   }
+}
+static inline void gd_render_partition(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned n,unsigned first,unsigned end){
+ gd_render_slots(d,p,b,n,first,end,255u);
+}
+static inline void gd_render_lanes(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned n,unsigned lanes){
+ gd_render_slots(d,p,b,n,0,14,lanes);
+}
+/* Whole lanes remain owned by one core, including all polyphonic siblings:
+ * this also gives per-lane profiling counters one writer during each job. */
+static inline unsigned gd_worker_lanes(const GDEngine *d){
+ static const unsigned base[6]={18,12,12,12,11,17};unsigned cost[8]={0};
+ for(unsigned i=0;i<14;++i)if(d->voices[i].env>1){unsigned lane=i<8?i:6+(i-8)/3;
+  if(lane<6)cost[lane]=base[lane];
+  else{const GDSynth *s=&d->synth[i-6];cost[lane]+=lane==7?(s->eco?16u:24u):(s->eco?30u:s->factor==4?148u:74u);}
+ }
+ unsigned loads[2]={2,0},mask=0;
+ for(unsigned pick=0;pick<8;++pick){unsigned lane=0;
+  for(unsigned l=1;l<8;++l)if(cost[l]>cost[lane])lane=l;
+  if(!cost[lane])break;unsigned core=loads[1]<loads[0];loads[core]+=cost[lane];
+  if(core)mask|=1u<<lane;cost[lane]=0;
+ }
+ return mask;
 }
 static inline void gd_render_commit(GDEngine *d,GDRenderBlock *b,const GDRenderBlock *other,unsigned n){
   for(unsigned i=0;i<n;++i){
@@ -527,19 +550,23 @@ static inline void gd_render_commit(GDEngine *d,GDRenderBlock *b,const GDRenderB
 }
 #if GD_PARALLEL_ENABLED
 /* Fixed scratch; only the audio owner publishes, and joins before reuse. */
-typedef struct {GDEngine *d;const GDProject *p;GDRenderBlock sums;unsigned n;uint32_t check;volatile uint32_t done;} GDParallelJob;
+typedef struct {GDEngine *d;const GDProject *p;GDRenderBlock sums;unsigned n,lanes;uint32_t check;volatile uint32_t done;} GDParallelJob;
 static GDParallelJob gd_parallel_job;
-static void gd_render_synth_job(uint32_t cookie){
+static void gd_render_lane_job(uint32_t cookie){
  GDParallelJob *j=&gd_parallel_job;
- if(cookie!=GD_PARALLEL_COOKIE||!j->n||j->n>GD_RENDER_FRAMES||
-    j->check!=gd_parallel_check((uintptr_t)j->d,(uintptr_t)j->p,(uintptr_t)&j->sums,j->n))return;
- gd_render_partition(j->d,j->p,&j->sums,j->n,6,14);
+ if(cookie!=GD_PARALLEL_COOKIE||!j->n||j->n>GD_RENDER_FRAMES||!j->lanes||j->lanes>255u||
+    j->check!=(gd_parallel_check((uintptr_t)j->d,(uintptr_t)j->p,(uintptr_t)&j->sums,j->n)^j->lanes*0x45d9f3bu))return;
+ gd_render_lanes(j->d,j->p,&j->sums,j->n,j->lanes);
  j->done=j->check;
 }
 /* Called only after the hardware has held core 1. Preserve LFO phases and
- * parameters, retire possibly half-rendered synth tails; next hit starts clean. */
-static inline void gd_retire_synths(GDEngine *d){
- for(unsigned i=6;i<14;++i){d->voices[i].env=0;d->voices[i].last_sample=0;d->synth[i-6].active=0;d->synth[i-6].held=0;}
+ * parameters, retire possibly half-rendered lane tails; next hit starts clean. */
+static inline void gd_retire_lanes(GDEngine *d,unsigned lanes){
+ for(unsigned i=0;i<14;++i){unsigned lane=i<8?i:6+(i-8)/3;if(!(lanes&(1u<<lane)))continue;
+  d->voices[i].env=0;d->voices[i].last_sample=0;
+  if(i>=6){d->synth[i-6].active=0;d->synth[i-6].held=0;}
+  else if(i)d->acoustic[i].active=0;
+ }
 }
 #endif
 /* Returns the frames rendered. Never crosses a meter or 32-frame control
@@ -549,16 +576,16 @@ static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBl
   if(!n)return 0;
   if((d->counter&31u)==0){uint32_t stamp=GD_PROFILE_BEGIN();gd_prepare(d,p);GD_PROFILE_END(8,stamp);}
 #if GD_PARALLEL_ENABLED
-  unsigned active=0;for(unsigned i=6;i<14;++i)active|=d->voices[i].env>1;
-  if(active){
-    GDParallelJob *j=&gd_parallel_job;j->d=d;j->p=p;j->n=n;
-    j->check=gd_parallel_check((uintptr_t)d,(uintptr_t)p,(uintptr_t)&j->sums,n);j->done=~j->check;
-    if(gd_parallel_begin(gd_render_synth_job,GD_PARALLEL_COOKIE)){
-      gd_render_partition(d,p,b,n,0,6);
+  unsigned lanes=gd_parallel_status()==1?gd_worker_lanes(d):0;
+  if(lanes){
+    GDParallelJob *j=&gd_parallel_job;j->d=d;j->p=p;j->n=n;j->lanes=lanes;
+    j->check=gd_parallel_check((uintptr_t)d,(uintptr_t)p,(uintptr_t)&j->sums,n)^lanes*0x45d9f3bu;j->done=~j->check;
+    if(gd_parallel_begin(gd_render_lane_job,GD_PARALLEL_COOKIE)){
+      gd_render_lanes(d,p,b,n,255u^lanes);
       int failed=gd_parallel_join();
       if(failed||j->done!=j->check){
         if(!failed)gd_parallel_reject();
-        gd_retire_synths(d);gd_render_commit(d,b,0,n);
+        gd_retire_lanes(d,lanes);gd_render_commit(d,b,0,n);
       }else gd_render_commit(d,b,&j->sums,n);
       return n;
     }
