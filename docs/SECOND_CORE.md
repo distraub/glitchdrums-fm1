@@ -1,6 +1,6 @@
 # Second-core investigation
 
-Status: 0.17.18 is a guarded native hardware trial. Host concurrency/fault tests
+Status: 0.17.19 is the latest guarded native hardware trial. Host concurrency/fault tests
 and independent native builds pass; physical CPU improvement is not yet known.
 Installing this trial enables a core-1 startup attempt. Hold OCT+ during power-on
 to keep it off for comparison. OCT- rescue and the bootloader recovery remain.
@@ -111,3 +111,38 @@ Start testing with SYN QUAL = ECO 1X set while stopped, full stock sequence,
 no punch effects. GLO+EDIT should show C1 ON. Record TOTAL and stage peaks
 before comparing BAL 2X. If status reports a failure, stop and report the
 status; repeated flashing cannot establish whether that unit's core is reliable.
+
+
+## Balanced lane trial 0.17.19
+
+0.17.18 physical captures show C1 ON with TOTAL 143% at BAL 2X and 101%
+in the ECO follow-up. The fixed drum/synth split helps but does not establish
+headroom. Version 0.17.19 estimates cost from active voices and their actual
+quality, then greedily assigns whole lanes across cores every render block.
+It uses eight bounded selection passes, fixed scratch and integer weights.
+These are approximate scheduling weights derived from the hardware profiles,
+not continuously measured CPU cost. No voice model or polyphony reduction.
+
+All siblings of a lane stay together so profile accumulation still has one
+writer per lane during each job. The worker lane mask participates in the
+job checksum and is bounded to eight lanes. A failed job retires only its
+assigned lanes after holding the worker, discards their incomplete sums,
+and keeps the other core's completed lanes. This now applies to drum lanes
+as well as synth lanes. No restart is attempted in the audio path. When the
+worker is disabled, no scheduling work is performed.
+
+Tests cover all 255 nonempty active-lane combinations at varying frame
+boundaries, all qualities, chords, exact PCM and complete state, worker/start
+failure and partial-work retirement. ASan/UBSan and ThreadSanitizer pass.
+Full regression and RemoteFM1 import/integration also pass.
+
+Source 762650e. Native CI 43678065692 and independent diagnostic 43678067390
+reproduce SHA-256
+`2ae5c9d7685a6db8e0166ba11a28fedcc0476ed511511a10a9eb0511452f4839`.
+Code 412/567 KiB, RAM 90/96 KiB, pool 334/336 KiB. Conservative stack:
+worker job 932 plus worker loop allowance 128, below 7,424 usable bytes;
+audio IRQ 3,596 plus timer 336 and context allowance 256 below 7,936;
+foreground 10,984 below 24,320. Stack regions, guards, bootstrap, clock and
+save format are unchanged from 0.17.18. Exact-package image and local updater
+fault checks pass. The iCloud copy was SHA-256 verified. Physical improvement over
+the 101% ECO result remains to be measured.

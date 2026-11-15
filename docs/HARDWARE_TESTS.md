@@ -390,3 +390,15 @@ through a block, keeping its profiler updates disjoint. Worker mask is
 included in job validation. On failure, only worker-owned lanes are retired;
 partial sums are discarded. Core-0-owned lanes continue once. No sound,
 polyphony, save-format, clock, boot or stack change is included in this pass.
+
+
+0.17.19 delivery: native CI 43678065692 and diagnostic 43678067390 reproduce
+SHA-256 `2ae5c9d7685a6db8e0166ba11a28fedcc0476ed511511a10a9eb0511452f4839`.
+Source 762650e. Code 412/567 KiB, RAM 90/96 KiB, pool 334/336 KiB.
+Worker job/loop static estimate 932+128 bytes fits 7,424 usable; audio IRQ
+3,596+timer336+context256 fits 7,936. Existing stack/guard bounds unchanged.
+All regression, 255-combination exact PCM/state, ThreadSanitizer, RemoteFM1,
+exact packaged RAM-worker copy audit and local exact-package updater fault
+tests pass. Copied to Firmware/Trials and hash verified. First hardware
+comparison remains the same full stock ECO workload against 101% in 0.17.18;
+no physical performance or stability improvement is claimed yet.
