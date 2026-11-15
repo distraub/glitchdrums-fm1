@@ -23,7 +23,24 @@ typedef struct {
  uint32_t comb_write;
  int32_t comb_low;
  int32_t mix, low250, low2500, sweep[2], held[2],crush_low[2],echo_low[2];
+ uint16_t fade_key,fade_rate;
 } GDPunch;
+#ifndef GD_PUNCH_SIGNATURE_FAST
+#define GD_PUNCH_SIGNATURE_FAST 1
+#endif
+/* Identical sample-rate gate ramp for both paths; controls change without
+ * resetting captures/tails. Cache only the invariant integer fade divisor. */
+static inline void gd_punch_finish(GDPunch *f,const GDProject *p,uint32_t gate,
+ int32_t dryL,int32_t dryR,int32_t l,int32_t r,int32_t *left,int32_t *right){
+ int target=gate?(int)p->punch[0]*258:0;
+ unsigned key=1u+p->punch[2];
+ if(f->fade_key!=key){int fade=90+(int)p->punch[2]*70,rate=32767/fade;if(rate<1)rate=1;f->fade_key=(uint16_t)key;f->fade_rate=(uint16_t)rate;}
+ int rate=f->fade_rate;
+ if(f->mix<target)f->mix=gd_clamp(f->mix+rate,0,target);if(f->mix>target)f->mix=gd_clamp(f->mix-rate,target,32767);
+ *left=gd_sat(dryL+(int32_t)((int64_t)(gd_sat(l)-dryL)*f->mix>>15));
+ *right=gd_sat(dryR+(int32_t)((int64_t)(gd_sat(r)-dryR)*f->mix>>15));
+ if(!gate&&!f->mix)f->previous=0;else if(gate)f->previous=gate;
+}
 static inline int gd_effect_level(int v,unsigned level){return (int)((int64_t)v*level*3/254);}
 static const uint8_t gd_time_mult[8]={1,2,3,4,6,8,12,16};
 static const int16_t gd_pan_gain[129]={0,2896,4096,5016,5792,6476,7094,7663,8192,8689,9159,9606,10033,10442,10837,11217,11585,11941,12288,12624,12952,13272,13584,13890,14189,14481,14768,15049,15325,15597,15863,16125,16384,16638,16888,17134,17377,17617,17854,18087,18317,18545,18770,18992,19211,19428,19643,19855,20066,20274,20479,20683,20885,21085,21283,21479,21673,21866,22057,22246,22434,22620,22805,22988,23170,23350,23529,23707,23883,24058,24232,24404,24575,24745,24914,25082,25249,25414,25579,25742,25905,26066,26226,26386,26544,26702,26858,27014,27169,27323,27476,27628,27780,27930,28080,28229,28377,28524,28671,28817,28962,29107,29250,29393,29536,29677,29818,29959,30098,30237,30376,30514,30651,30787,30923,31059,31193,31327,31461,31594,31727,31858,31990,32121,32251,32381,32510,32639,32767};
@@ -38,9 +55,19 @@ static inline void gd_punch(GDPunch *f,const GDProject *p,uint32_t mask,uint32_t
  /* Park inactive processors, but keep recording history for the next punch. */
  if(!mask&&!f->mix){f->gate_previous=f->previous=0;gd_punch_tape[f->write++&32767]=(int16_t)((*left+*right)/2);*left=gd_sat(*left);*right=gd_sat(*right);return;}
  uint32_t gate=mask;if(!mask&&f->mix)mask=f->previous;
- uint32_t down=gate&~f->gate_previous;f->gate_previous=gate;for(unsigned i=0;i<30;++i){if(down&(1u<<i))f->age[i]=0;if(mask&(1u<<i))++f->age[i];}
- uint32_t quarter=44100u*60u/p->bpm,step=quarter/4u;
+ uint32_t down=gate&~f->gate_previous;f->gate_previous=gate;
  int32_t dryL=*left,dryR=*right,l=dryL,r=dryR,mono=(l+r)/2;
+ /* Signature-only gates need no capture-mode scan, beat divisions or checks
+  * of 27 unrelated processors. Preserve the old capture release transition
+  * by using the general path while its previous capture flag is still set. */
+ if(GD_PUNCH_SIGNATURE_FAST&&!(mask&~0x38000000u)&&!(f->previous&255u)){
+   for(unsigned i=27;i<30;++i){if(down&(1u<<i))f->age[i]=0;if(mask&(1u<<i))++f->age[i];}
+   gd_punch_tape[f->write++&32767]=(int16_t)mono;
+   gd_signature_controls(&f->signature,mask,down,&p->effect[27],&l,&r);
+   gd_punch_finish(f,p,gate,dryL,dryR,l,r,left,right);return;
+ }
+ for(unsigned i=0;i<30;++i){if(down&(1u<<i))f->age[i]=0;if(mask&(1u<<i))++f->age[i];}
+ uint32_t quarter=44100u*60u/p->bpm,step=quarter/4u;
  uint32_t captures=mask&0x00ffu;
  unsigned mode=0;for(unsigned i=0;i<8;++i)if(captures&(1u<<i))mode=i;
 
@@ -165,12 +192,7 @@ static inline void gd_punch(GDPunch *f,const GDProject *p,uint32_t mask,uint32_t
    int in[2]={l,r};for(unsigned k=0;k<2;++k){f->filter[index][k]+=(int)((int64_t)(in[k]-f->filter[index][k])*f->filter_coeff[index]/32768);int wet=(int)((int64_t)(effect==25?in[k]-f->filter[index][k]:f->filter[index][k])*gain/32768);in[k]+=(wet-in[k])*(int)q[3]/127;}l=in[0];r=in[1];
  }
  gd_signature_controls(&f->signature,mask,down,&p->effect[27],&l,&r);
- int target=gate?(int)p->punch[0]*258:0;
- int fade=90+(int)p->punch[2]*70,rate=32767/fade;if(rate<1)rate=1;
- if(f->mix<target)f->mix=gd_clamp(f->mix+rate,0,target);if(f->mix>target)f->mix=gd_clamp(f->mix-rate,target,32767);
- *left=gd_sat(dryL+(int32_t)((int64_t)(gd_sat(l)-dryL)*f->mix>>15));
- *right=gd_sat(dryR+(int32_t)((int64_t)(gd_sat(r)-dryR)*f->mix>>15));
- if(!gate&&!f->mix)f->previous=0;else if(gate)f->previous=gate;
+ gd_punch_finish(f,p,gate,dryL,dryR,l,r,left,right);
 }
 typedef struct {uint32_t last,active,on,off,lockout;} GDPunchGate;
 static inline void gd_gate_input(GDPunchGate *g,uint32_t raw,int quantize){

@@ -91,3 +91,13 @@ build/native/parallel-render-test
 
 clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -pthread -I src -I platform/hal tests/dualcore.c -o build/native/dualcore-test
 build/native/dualcore-test
+
+# Exact 0.17.19 PCM/history vectors: signature-only gates, stacks, controls,
+# capture transitions and release fades must survive dispatch optimization.
+clang -O2 -std=c11 -fsanitize=undefined,address -DFOMA_MVAVE=1 -I platform -I src tests/punch-cache-vectors.c -o build/native/punch-cache-vectors
+build/native/punch-cache-vectors > build/native/punch-cache-vectors.txt
+cmp tests/punch-cache-vectors.txt build/native/punch-cache-vectors.txt
+clang -O2 -std=c11 -fsanitize=undefined,address -DGD_PUNCH_SIGNATURE_FAST=0 -DFOMA_MVAVE=1 -I platform -I src tests/punch-cache-vectors.c -o build/native/punch-general-vectors
+build/native/punch-general-vectors > build/native/punch-general-vectors.txt
+cmp tests/punch-cache-vectors.txt build/native/punch-general-vectors.txt
+echo 'PASS: signature dispatch and cached fades preserve 36 pre-change PCM/history vectors'

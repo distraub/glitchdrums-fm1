@@ -402,3 +402,23 @@ exact packaged RAM-worker copy audit and local exact-package updater fault
 tests pass. Copied to Firmware/Trials and hash verified. First hardware
 comparison remains the same full stock ECO workload against 101% in 0.17.18;
 no physical performance or stability improvement is claimed yet.
+
+## 0.17.19 physical playback and punch effects
+
+Full stock ECO follow-up: TOTAL 82%, KIK 19, SNR 11, CH 11, OH 11, CLP 10,
+PRC 17, GLI 29, ANA 32, CTRL 7, HITS 4, FX 8, OTHER 6; C1 ON. Alex confirms
+clear playback. AntiVerb, Glitchstortion and Grain Cloud individually break
+playback like the earlier overloaded sequence. AntiVerb-only capture:
+TOTAL 113%, KIK 18, SNR 12, CH 12, OH 11, CLP 10, PRC 18, GLI 31, ANA 33,
+CTRL 7, HITS 5, FX 34, OTHER 6; C1 ON. Audio overload is confirmed, with no
+observed worker fallback. FX stage is now the measured target.
+
+0.17.20 adds a dedicated dispatch path when only signature effects are active.
+It skips unrelated punch-effect scans, age checks and capture/tempo divisions,
+but keeps the same signature DSP, tape history, gate ramps, transitions and
+release behavior. The gate fade coefficient is cached across unchanged
+controls; control changes adopt immediately without resetting any tail.
+A previous capture transition stays on the general path until safe. No voice,
+polyphony, gain, mix, effect controls, capture rate, core scheduling, boot,
+clock or saved-state change is included. Four bytes of volatile runtime
+cache are added to GDPunch, not the persisted payload.
