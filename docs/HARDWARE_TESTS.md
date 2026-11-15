@@ -306,3 +306,15 @@ shared FX are not the first target for this pass.
 0.17.17 is an explicit ECO sound/performance trial. BAL/HIGH retain exact
 reference PCM; ECO uses the lower-cost voice paths described in ECO_VOICES.md.
 It is not a measured hardware speedup. No new physical validation is claimed.
+
+0.17.17 final candidate verification: native CI 43672205124 and diagnostic
+43672207448 reproduce SHA-256 `f9311bdc3ffdf999f6c323a1dfc35b013d17eec0012789a0913a3756dffb8c35`.
+Code 410/567 KiB, RAM 90/96 KiB, pool 334/336 KiB. Conservative audio IRQ
+stack 3,564 bytes plus timer 336 and context allowance is within 7,936 bytes;
+foreground 10,984 within 24,320. All guards remain enabled. Golden reference
+PCM, explicit BAL/HIGH equality with ECO enabled, legal-control sanitizer
+stress, pitch/envelope timing, exhaustive exact hat sign, block/state parity
+and profiler tests pass. Exact-package updater fault tests also pass locally.
+RemoteFM1 integration passes. Package delivered under Trials; previews under
+Previews/0.17.17. User must choose ECO 1X before playback; no native CPU
+improvement is claimed until the same device/workload is measured.
