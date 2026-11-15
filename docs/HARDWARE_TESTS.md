@@ -294,3 +294,15 @@ accounting/reset tests and exact-package updater fault tests pass. RemoteFM1
 tests verify read-only GLO+EDIT entry/exit; screen render was checked for
 clipping/contrast. Delivered only in the Diagnostics subfolder; no playback
 CPU improvement is claimed. Hardware stage readings are pending.
+
+## Full stock BAL 2X per-stage baseline
+
+Alex confirmed the 0.17.16 photo used the full stock sequence at BAL 2X:
+TOTAL 198%; KIK 19, SNR 11, CH 15, OH 15, CLP 10, PRC 18, GLI 75,
+ANA 49, CTRL 7, HITS 4, FX 8, OTHER 7 percent. These are independent
+per-callback maxima, not additive simultaneous costs. Synth lanes dominate;
+shared FX are not the first target for this pass.
+
+0.17.17 is an explicit ECO sound/performance trial. BAL/HIGH retain exact
+reference PCM; ECO uses the lower-cost voice paths described in ECO_VOICES.md.
+It is not a measured hardware speedup. No new physical validation is claimed.

@@ -3,11 +3,25 @@
 #pragma once
 #include "synth_tables.h"
 #include "glitch_materials.h"
+#include "eco_tables.h"
+#ifndef GD_ECO_VOICES
+#define GD_ECO_VOICES 1
+#endif
 static inline uint32_t gds_pow2(int exponent){
  int negative=exponent<0;unsigned x=(unsigned)(negative?-exponent:exponent);if(x>196608)x=196608;
  unsigned pos=x*192,index=pos>>15,frac=pos&32767;
  uint32_t value=gd_kick_sweep_ratio[index]+(uint32_t)((uint64_t)(gd_kick_sweep_ratio[index+1]-gd_kick_sweep_ratio[index])*frac>>15);
- return negative?(uint32_t)(4294967296ull/value):value;
+ if(!negative)return value;
+ uint32_t quotient=0xffffffffu/value,remainder=0xffffffffu-quotient*value;
+ return quotient+(remainder==value-1u);
+}
+/* Exact x/(1+abs(x)) in Q15 using one native unsigned 32-bit divide.
+ * 32768*x/(32768+x) = 32768-ceil(2^30/(32768+x)). */
+static inline int32_t gds_softsign(int32_t x){
+ unsigned negative=x<0;uint32_t magnitude=negative?0u-(uint32_t)x:(uint32_t)x;
+ uint32_t denominator=32768u+magnitude;
+ int32_t value=(int32_t)(32768u-(1073741824u+denominator-1u)/denominator);
+ return negative?-value:value;
 }
 static inline int32_t gds_tanh20(int32_t x){
  unsigned sign=x<0,magnitude=sign?0u-(unsigned)x:(unsigned)x;
@@ -16,7 +30,28 @@ static inline int32_t gds_tanh20(int32_t x){
  int value=gd_kick_tanh_table[index]*32+(gd_kick_tanh_table[index+1]-gd_kick_tanh_table[index])*(int)fraction/256;
  return sign?-value:value;
 }
+/* ECO: a bounded nonlinear two-pole TPT filter at the original sample rate.
+ * Its normalization is a native 32-bit divide; the reference four-pole path
+ * and its Q24 arithmetic remain available in BAL/HIGH. */
+static inline int32_t gds_ladder_eco(GDSynth *a,int32_t input,unsigned hz){
+ if(hz>19845)hz=19845;hz=(hz*a->eco_cut_comp)>>15;if(hz<20)hz=20;if(hz>19845)hz=19845;
+ if(a->ladder_hz!=hz){
+  a->ladder_hz=hz;unsigned i=hz>>4,f=hz&15;
+  uint32_t g=(gd_ladder_g1[i]+(gd_ladder_g1[i+1]-gd_ladder_g1[i])*f/16)>>9;
+  a->ladder_g[0]=g;a->ladder_feedback=(a->kind==7?a->c[10]:a->c[13])*21/5;
+  uint32_t g2=g*g>>15,den=32768u+(uint32_t)((int64_t)a->ladder_feedback*g2>>15);
+  a->ladder_g[1]=1073741824u/den;
+ }
+ int g=(int)a->ladder_g[0],rem=32768-g,*state=a->ladder;
+ int ss0=gda_mul(state[0],rem),ss1=gda_mul(state[1],rem);
+ int sum=gda_mul(g,ss0)+ss1;
+ int64_t x=(int64_t)input-((int64_t)a->ladder_feedback*sum>>15);
+ int y=(int)(x*a->ladder_g[1]>>15);
+ for(unsigned n=0;n<2;++n){int v=gda_mul(gd_kick_tanh(y)-state[n],g);y=v+state[n];state[n]=gd_clamp(y+v,-65535,65535);}
+ return y;
+}
 static inline int32_t gds_ladder(GDSynth *a,int32_t input,unsigned hz,unsigned factor){
+ if(a->eco)return gds_ladder_eco(a,input,hz);
  if(hz<20)hz=20;if(hz>19845)hz=19845;unsigned i=hz>>4,f=hz&15;
  const uint32_t *table=factor==4?gd_ladder_g4:factor==2?gd_ladder_g2:gd_ladder_g1;
  if(a->ladder_hz!=hz||a->ladder_factor!=factor){
@@ -40,7 +75,7 @@ static inline int32_t gds_ladder(GDSynth *a,int32_t input,unsigned hz,unsigned f
 }
 static inline void gds_config(GDSynth *a,unsigned kind,const uint8_t *q,int pitch){
  int changed=!a->valid||a->pitch!=pitch;for(unsigned n=0;n<32;++n)if(a->q[n]!=q[n])changed=1;
- if(!changed)return;a->ladder_hz=0;a->valid=1;a->pitch=pitch;a->kind=kind;
+ if(!changed)return;a->eco_dirty=1;a->ladder_hz=0;a->valid=1;a->pitch=pitch;a->kind=kind;
  for(unsigned n=0;n<32;++n)a->q[n]=q[n];for(unsigned n=0;n<29;++n)a->c[n]=kind==7?gd_an_units[n][q[n]]:gd_gl_units[n][q[n]];
  if(kind==7){
   for(unsigned n=0;n<2;++n)a->root[n]=gd_note_inc[q[n]];
@@ -51,9 +86,12 @@ static inline void gds_config(GDSynth *a,unsigned kind,const uint8_t *q,int pitc
  }else{
   for(unsigned n=0;n<2;++n)a->root[n]=gd_gl_note_inc[n][q[n?23:3]];
  }
+ if(a->eco){unsigned feedback=(unsigned)(a->kind==7?a->c[10]:a->c[13])*21u/5u,index=feedback>>11,frac=feedback&2047u;if(index>67)index=67;
+  a->eco_cut_comp=(unsigned)((int)gd_eco_cut_comp[index]+((int)gd_eco_cut_comp[index+1]-gd_eco_cut_comp[index])*(int)frac/2048);
+ }
 }
 static inline void gds_hit(GDSynth *a,unsigned kind,const uint8_t *q,int pitch,unsigned quality){
- *a=(GDSynth){0};gds_config(a,kind,q,pitch);a->factor=quality==1?4:quality==2?1:2;a->active=1;a->release_gain=1073741824;
+ *a=(GDSynth){0};a->eco=GD_ECO_VOICES&&quality==2;gds_config(a,kind,q,pitch);a->factor=quality==1?4:quality==2?1:2;a->active=1;a->release_gain=1073741824;
  if(kind==7){
   a->env[0]=1073741824;a->attack[0]=(unsigned)a->c[20];a->attack[1]=(unsigned)a->c[15];
   a->env[1]=a->attack[0]?0:1073741824;a->env[2]=a->attack[1]?0:1073741824;
@@ -108,39 +146,46 @@ static inline int32_t gds_analog(GDSynth *a,uint32_t *rng){
 }
 static inline int32_t gds_read(unsigned table,uint32_t position){unsigned i=position>>20,frac=(position>>4)&65535;return gd_gl_material[table][i]+(int)((int64_t)(gd_gl_material[table][(i+1)&4095]-gd_gl_material[table][i])*frac>>16);}
 static inline int32_t gds_color(int noise,int low,int color){int target=color<0?low*8/5:(noise-low)*4/5;return noise+gda_mul(target-noise,color<0?-color:color);}
-static inline int32_t gds_material(unsigned table,uint32_t position,int frozen,int color){
+static inline int32_t gds_material(unsigned table,uint32_t position,int frozen,int color,unsigned eco){
  if(!frozen)return gds_read(table,position);
  int n=gds_read(8,position),low=0;
- if(color)low=(gds_read(8,position-8589935u)+2*n+gds_read(8,position+8589935u))/4;
+ if(color){
+  if(eco){unsigned i=position>>20,f=(position>>4)&65535;low=gd_eco_noise_low[i]+(int)((int64_t)(gd_eco_noise_low[(i+1)&4095]-gd_eco_noise_low[i])*f>>16);}
+  else low=(gds_read(8,position-8589935u)+2*n+gds_read(8,position+8589935u))/4;
+ }
  return gda_mul(gds_read(table,position),32768-frozen)+gda_mul(gds_color(n,low,color),frozen);
 }
-static inline int32_t gds_loop(unsigned table,uint32_t phase,uint32_t position,uint32_t span,int edge,int frozen,int color){
+static inline int32_t gds_loop(unsigned table,uint32_t phase,uint32_t position,uint32_t span,int edge,int frozen,int color,unsigned eco){
  uint32_t width=(uint32_t)((uint64_t)(unsigned)edge*1030792151u>>15);
- if(width<42950u||(phase>=width&&phase<=0xffffffffu-width))return gds_material(table,position+(uint32_t)((uint64_t)phase*span>>31),frozen,color);
+ if(width<42950u||(phase>=width&&phase<=0xffffffffu-width))return gds_material(table,position+(uint32_t)((uint64_t)phase*span>>31),frozen,color,eco);
  int64_t u=phase>0x80000000u?(int64_t)phase-4294967296ll:phase;
  int blend=gd_clamp(16384+(int)(u*16384/width),0,32768),smooth=gda_mul(gda_mul(blend,blend),98304-2*blend);
  int64_t offset=u*span>>31;
- int end=gds_material(table,position+(uint32_t)offset+span*2u,frozen,color),start=gds_material(table,position+(uint32_t)offset,frozen,color);
+ int end=gds_material(table,position+(uint32_t)offset+span*2u,frozen,color,eco),start=gds_material(table,position+(uint32_t)offset,frozen,color,eco);
  return gda_mul(end,32768-smooth)+gda_mul(start,smooth);
 }
 static inline int32_t gds_glitch(GDSynth *a,uint32_t *rng){
  int *c=a->c;const uint8_t *q=a->q;int amount=gda_env(c[15],a->env[1]);
  int size_motion=q[14]==1?amount*5:0,pitch_motion=q[14]==0?amount*4:0;
- uint32_t span[2],inc[2],pos[2];
+ uint32_t span[2],inc[2],pos[2];int cutoff;
+ if(!a->eco||a->eco_dirty||!(a->age&7u)){
+ uint32_t size_ratio=gds_pow2(size_motion),pitch_ratio=gds_pow2(pitch_motion+a->pitch*32768/12);
  for(unsigned o=0;o<2;++o){unsigned size=o?24:4,note=o?23:3,position=o?25:5,tuning=o?22:2,source=o?20:0;
-  uint64_t sized=(uint64_t)(unsigned)c[size]*gds_pow2(size_motion)>>16;unsigned ceiling=c[size]>16384?32768:16384;if(sized>ceiling)sized=ceiling;if(sized<256)sized=256;span[o]=(uint32_t)sized<<16;
+  uint64_t sized=(uint64_t)(unsigned)c[size]*size_ratio>>16;unsigned ceiling=c[size]>16384?32768:16384;if(sized>ceiling)sized=ceiling;if(sized<256)sized=256;span[o]=(uint32_t)sized<<16;
   int p=c[position]+(q[14]==2?amount/2:0);pos[o]=(uint32_t)((int64_t)p*131072);
-  int exponent=pitch_motion+a->pitch*32768/12;uint64_t increment=(uint64_t)a->root[o]*(4/a->factor)*gds_pow2(exponent)>>16;
+  uint64_t increment=(uint64_t)a->root[o]*(4/a->factor)*pitch_ratio>>16;
   if(q[source]==0&&q[tuning])increment=increment*4096/(unsigned)sized;
   inc[o]=(uint32_t)(increment>858993456u/a->factor?858993456u/a->factor:increment<486956u/a->factor?486956u/a->factor:increment);
   (void)note;
  }
- int cutoff=c[12];if(q[14]==3)cutoff=(int)((uint64_t)(unsigned)cutoff*gds_pow2(amount*6)>>16);
+ cutoff=c[12];if(q[14]==3)cutoff=(int)((uint64_t)(unsigned)cutoff*gds_pow2(amount*6)>>16);
  if(cutoff<20)cutoff=20;if(cutoff>17640)cutoff=17640;
+ if(a->eco){for(unsigned o=0;o<2;++o){a->eco_span[o]=span[o];a->eco_inc[o]=inc[o];a->eco_pos[o]=pos[o];}a->eco_cutoff=(unsigned)cutoff;a->eco_dirty=0;}
+ }else{for(unsigned o=0;o<2;++o){span[o]=a->eco_span[o];inc[o]=a->eco_inc[o];pos[o]=a->eco_pos[o];}cutoff=(int)a->eco_cutoff;}
  for(unsigned sub=0;sub<a->factor;++sub){int sample=0;
   if(!a->drain){
    int oscillator[2]={0,0};for(unsigned o=0;o<2;++o){unsigned source=o?20:0,material=o?21:1,edge=o?26:6,frozen=o?27:7;
-    oscillator[o]=q[source]==2?gd_sine(a->phase[o]):q[source]==1?(int)(a->phase[o]>>16)-32768-gd_blep(a->phase[o],inc[o]):gds_loop(q[material],a->phase[o],pos[o],span[o],c[edge],c[frozen],c[9]);
+    oscillator[o]=q[source]==2?gd_sine(a->phase[o]):q[source]==1?(int)(a->phase[o]>>16)-32768-gd_blep(a->phase[o],inc[o]):gds_loop(q[material],a->phase[o],pos[o],span[o],c[edge],c[frozen],c[9],a->eco);
    }
    sample=gda_mul(oscillator[0],32768-c[28])+gda_mul(oscillator[1],c[28]);
    int n=(int)(gd_random(rng)>>16)-32768; a->noise_low+=gda_mul(n-a->noise_low,a->factor==4?2035:a->factor==2?3943:7412);
@@ -149,7 +194,7 @@ static inline int32_t gds_glitch(GDSynth *a,uint32_t *rng){
    /* triangleFold: 1 - 4*abs(frac((x+1)/4)-.5), Q15 */
    fold=32768-(int)(fraction>65536?fraction-65536:65536-fraction);
    sample+=gda_mul(fold-sample,c[10]);int driven=gda_mul(sample,32768+c[11]*12);
-   int saturated=(int)((int64_t)driven*32768/(32768+(driven<0?-driven:driven)));sample+=gda_mul(saturated-sample,c[11]);
+   int saturated=gds_softsign(driven);sample+=gda_mul(saturated-sample,c[11]);
    sample=gds_ladder(a,sample,(unsigned)cutoff,a->factor);
    if(a->age<a->attack[0])a->env[0]=(int32_t)((uint64_t)(a->age+1)*1073741824u/a->attack[0]);
    else if(a->hold)--a->hold;else a->env[0]=gda_env(a->env[0],(int)a->coef[0]);
@@ -158,10 +203,18 @@ static inline int32_t gds_glitch(GDSynth *a,uint32_t *rng){
   }
   a->history[a->cursor]=sample*32;a->cursor=(a->cursor+1)&255;
  }
+ int output;
+ if(a->eco){
+  /* At 1X there is no downsampling. Keep the former 16-frame group delay
+   * without its 33-tap convolution; the ECO filter handles the tone. */
+  output=a->history[(a->cursor-17u)&255];
+ }else{
  unsigned half=16*a->factor;const int32_t *fir=a->factor==4?gd_gl_fir:a->factor==2?gd_gl_fir2:gd_gl_fir1;
  int64_t sum=(int64_t)fir[half]*a->history[(a->cursor-1-half)&255];
  for(unsigned i=0;i<half;++i)sum+=(int64_t)fir[i]*(a->history[(a->cursor-1-i)&255]+a->history[(a->cursor-1-2*half+i)&255]);
- int output=(int)(sum>>30),dc=output-a->dcin+(int)((int64_t)a->dcout*32712>>15);a->dcin=output;a->dcout=dc;
+ output=(int)(sum>>30);
+ }
+ int dc=output-a->dcin+(int)((int64_t)a->dcout*32712>>15);a->dcin=output;a->dcout=dc;
  if(a->drain){if(++a->drain>2048||(a->drain>129&&dc<2&&dc>-2))a->active=0;}
  else if(a->age>=a->attack[0]&&!a->hold&&a->env[0]<10737)a->drain=1;
  return dc/32;

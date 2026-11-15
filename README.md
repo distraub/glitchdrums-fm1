@@ -1,8 +1,10 @@
-# GlitchDrums FM1 — 0.17.16 (diagnostic)
+# GlitchDrums FM1 — 0.17.17 (ECO voice trial)
 
 **Hardware playback remains over budget. 0.17.15 was withdrawn after a
 measured regression. 0.17.14 is the reference; 0.17.16 adds an opt-in native
-timing screen (hold GLO, tap EDIT) to identify the remaining hot paths.**
+timing screen (hold GLO, tap EDIT) to identify the remaining hot paths.
+0.17.17 adds an experimental [lighter ECO voice path](docs/ECO_VOICES.md);
+its native CPU reduction remains unmeasured.**
 
 By Alex Matheu.
 

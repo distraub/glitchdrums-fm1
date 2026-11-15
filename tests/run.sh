@@ -51,7 +51,7 @@ clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined,address -DFOMA_MVAVE=1
 build/native/remix-test
 
 # Golden output from 0.17.11: preserve PCM while caching synth work.
-clang -O2 -std=c11 -fsanitize=undefined,address -I src tests/render-parity.c -o build/native/render-parity-test
+clang -O2 -std=c11 -fsanitize=undefined,address -DGD_ECO_VOICES=0 -I src tests/render-parity.c -o build/native/render-parity-test
 build/native/render-parity-test > build/native/render-parity.txt
 cmp tests/render-parity.txt build/native/render-parity.txt
 echo "PASS: cached synthesis matches 32 pre-optimization PCM vectors"
@@ -66,3 +66,18 @@ build/native/block-render-test
 
 clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined,address tests/profile-state.c -o build/native/profile-state-test
 build/native/profile-state-test
+
+clang -O2 -std=c11 -fsanitize=undefined,address -I src tests/render-parity.c -o build/native/quality-parity-test
+build/native/quality-parity-test > build/native/quality-parity.txt
+python3 - <<'PYQUALITY'
+from pathlib import Path
+old=Path('tests/render-parity.txt').read_text().splitlines()
+new=Path('build/native/quality-parity.txt').read_text().splitlines()
+assert len(old)==len(new)==32
+for i,(a,b) in enumerate(zip(old,new)):
+ if i%3!=2:assert a==b,(i,a,b)
+assert any(a!=b for i,(a,b) in enumerate(zip(old,new)) if i%3==2)
+print('PASS: BAL/HIGH retain exact PCM with ECO enabled; ECO changes are explicit')
+PYQUALITY
+clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -I src tests/eco-voices.c -o build/native/eco-voices-test
+build/native/eco-voices-test

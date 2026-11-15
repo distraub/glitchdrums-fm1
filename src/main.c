@@ -725,7 +725,7 @@ static void control_info(unsigned k, GDControl *c, int *value) {
     return;
   }
   if (view == V_GLOBAL) {
-    if(page%2){static const char *const names[4]={"GL QUALITY","GL VOICES","THEME","CPU %"};*c=(GDControl){names[k],k==0?2:k==1?4:k==2?37:0,F_NUMBER};*value=k==0?ui.reserved&3:k==1?(ui.reserved>>2?ui.reserved>>2:4):k==2?(int)ui.theme:0;return;}
+    if(page%2){static const char *const names[4]={"SYN QUAL","GL VOICES","THEME","CPU %"};*c=(GDControl){names[k],k==0?2:k==1?4:k==2?37:0,F_NUMBER};*value=k==0?ui.reserved&3:k==1?(ui.reserved>>2?ui.reserved>>2:4):k==2?(int)ui.theme:0;return;}
     static const char *const name[4] = {"SW GRID", "SWING %", "STEPS", "BPM"};
     static const uint8_t max[4] = {1, 100, 16, 240};
     *c = (GDControl){name[k], max[k], k==0?F_SWING_GRID:F_NUMBER};
@@ -1353,6 +1353,7 @@ static void redraw(void) {
   if (need_grid) {
     if(view==V_LFO)draw_lfo_visual();
     else if(view==V_FXEDIT){const GDTheme *t=theme();rect(0,70,240,58,t->bg);text(8,74,"SELECT / ALG: EFFECT",t->text,FONT_SMALL);text(8,92,punch_latched&(1u<<fx_selected)?"LOCKED / TAP KEY:OFF":"KEY:PUNCH / ENV:LATCH",t->accent,FONT_SMALL);text(8,110,"SEL:CLEAR ALL LATCHES",t->chrome,FONT_SMALL);}
+    else if(view==V_GLOBAL&&page==1){const GDTheme *t=theme();rect(0,70,240,58,t->bg);text(8,76,(ui.reserved&3u)==2?"ECO: LIGHTER SYNTH VOICES":"BAL/HIGH: FULL SYNTH VOICES",t->text,FONT_SMALL);text(8,100,"QUALITY CHANGES NEXT HIT",t->chrome,FONT_SMALL);}
     else if(view==V_VOICE&&voice_focus)draw_voice_scope();
     else if(view==V_MIX||view==V_HOME)draw_mixer();
     else if(view==V_STEP)draw_grid();
@@ -1578,7 +1579,7 @@ static void edit_control(unsigned k, int delta) {
   if(view==V_GLOBAL&&page==0&&k==0){if(send(C_GLOBAL,0,5,(unsigned)v))ui.swing=(uint8_t)((ui.swing&127u)|(v?128u:0u));need_header=need_controls=1;return;}
   if(view==V_GLOBAL&&page==1&&k==2){if(send(C_GLOBAL,0,0,(unsigned)v))ui.theme=(uint8_t)v;need_full=1;return;}
   if(view==V_GLOBAL&&page%2&&k==3)return; /* CPU readout is not editable. */
-  if(view==V_GLOBAL&&page%2){unsigned value=k==0?(ui.reserved&12u)|(unsigned)v:(ui.reserved&3u)|((v==4?0u:(unsigned)v)<<2);if(send(C_GLOBAL,0,4,value))ui.reserved=(uint8_t)value;need_header=need_controls=1;return;}
+  if(view==V_GLOBAL&&page%2){unsigned value=k==0?(ui.reserved&12u)|(unsigned)v:(ui.reserved&3u)|((v==4?0u:(unsigned)v)<<2);if(send(C_GLOBAL,0,4,value))ui.reserved=(uint8_t)value;need_header=need_controls=need_grid=1;return;}
   if((view==V_MIX||view==V_HOME)&&mix_mode!=1){
     unsigned lane=mix_bank*4+k;
     if(mix_mode==2){if(send(C_SEND,lane,0,(unsigned)v))delay_send[lane]=(uint8_t)v;}
