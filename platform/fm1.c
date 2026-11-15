@@ -523,7 +523,6 @@ static void fm1_fault(const fm1_crash_t *c) {
 void fm1_cstart(void) {
   extern uint32_t _data_start[], _data_end[], _data_load[], _bss_start[], _bss_end[];
   extern uint32_t _pool_start[], _pool_end[], _rt_start[], _rt_end[], _rt_load[];
-  extern uint32_t _dsp_start[],_dsp_end[],_dsp_load[];
   uint32_t *s, *d, p3, boot_mode;
   fm1_time_init();
   fm1_reset_reason();
@@ -549,8 +548,6 @@ void fm1_cstart(void) {
   for (s = _rt_load, d = _rt_start; d < _rt_end; s++, d++) {
     *d = *s;
   }
-  for(s=_dsp_load,d=_dsp_start;d<_dsp_end;s++,d++)*d=*s;
-  fm1_code_sync();
   fm1_mailbox_clear();
   fm1_guard_enable(FM1_GUARD_STACK | FM1_GUARD_WRITE | FM1_GUARD_BUS | FM1_GUARD_PC);
   fm1_boot.p3_rst = (uint8_t)p3;

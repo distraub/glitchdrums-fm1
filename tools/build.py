@@ -236,29 +236,27 @@ def build_app(cfg):
   tc_all(*cmds)
   elf = FW / "firmware.elf"
   try:
-    tc("ld", "--gc-sections", "-e", "_start", "-T", PLAT / "app.ld", "-Map", FW / "firmware.map", *objs, "-o", elf)
+    tc("ld", "--gc-sections", "-e", "_start", "-T", PLAT / "app.ld", *objs, "-o", elf)
   except BuildError as e:
     raise BuildError(explain_link(str(e))) from None
-  for sect in ("text.bin", "data.bin", "ramtext.bin", "ramdsp.bin"):
+  for sect in ("text.bin", "data.bin", "ramtext.bin"):
     (FW / sect).unlink(missing_ok=True)
   *_, syms, dis, rt = tc_all(
     ("objcopy", "-O", "binary", "-j", ".text", elf, FW / "text.bin"),
     ("objcopy", "-O", "binary", "-j", ".data", elf, FW / "data.bin"),
-    ("objcopy", "-O", "binary", "-j", ".ram_dsp", elf, FW / "ramdsp.bin"),
     ("objcopy", "-O", "binary", "-j", ".ram_text", elf, FW / "ramtext.bin"),
     ("objdump", "-t", elf),
     ("objdump", "-d", elf),
     ("objdump", "-d", "-j", ".ram_text", elf),
   )
   (FW / "firmware.dis").write_text(dis)
-  (FW / "symbols.txt").write_text(syms)
 
   def symv(name):
     return int(re.search(r"^([0-9a-f]+) .*\s" + name + r"$", syms, re.M).group(1), 16)
 
   img = bytearray((FW / "text.bin").read_bytes())
   # .ram_text and .data follow .text at their load addresses; crt0 copies them by words
-  for sect, lname in (("ramtext.bin", "_rt_load"), ("ramdsp.bin", "_dsp_load"), ("data.bin", "_data_load")):
+  for sect, lname in (("ramtext.bin", "_rt_load"), ("data.bin", "_data_load")):
     load = symv(lname)
     if load % 4:
       raise BuildError(f"{lname} {load:#x} is not word aligned")
@@ -330,14 +328,6 @@ def check(img, syms, dis, rt):
     mm = re.search(r"^([0-9a-f]+) .*\s" + name + r"$", syms, re.M)
     return int(mm.group(1), 16) if mm else 0
 
-  dsp_start,dsp_end,rt_end=sym("_dsp_start"),sym("_dsp_end"),sym("_rt_end")
-  if dsp_start or dsp_end:
-    if dsp_start<rt_end or dsp_start<0x01c00000 or dsp_end<dsp_start or dsp_end>0x01c06000 or (dsp_start|dsp_end)&3:
-      errors.append("DSP executable RAM overlaps flash driver or exceeds the reserved 24 KiB code region")
-    entry=sym("gd_render_block")
-    if not dsp_start<=entry<dsp_end:
-      errors.append("gd_render_block is not inside copied DSP executable RAM")
-    notes.append(f"executable RAM {(dsp_end-0x01c00000)//1024} of 24 KiB")
   ram = sym("_bss_end") - 0x01C08000
   pool = sym("_pool_end") - 0x01C20000
   notes.append(f"code {len(img) // 1024} of {APP_SLOT // 1024} KiB, RAM {ram // 1024} of 96 KiB, pool {pool // 1024} of 336 KiB")

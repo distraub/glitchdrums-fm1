@@ -3,7 +3,7 @@
 /* Felucca memory map.
  * Code + constants execute in place from XIP (app.bin offset 0 = 0x02000120).
  * 0x01C00000..0x01C06000 holds .ram_text (code that must run while the flash
- * is busy: the flash driver, followed by ordinary DSP code in .ram_dsp); 0x01C06000..0x01C08000 stays for RAM-run debug.
+ * is busy: the flash driver); 0x01C06000..0x01C08000 stays for RAM-run debug.
  * RAM  : .data/.bss (96 KiB)
  * POOL : big zero-initialised buffers (FX lines, canvases), section .pool
  * STACKS with 256-byte guard bands; NOINIT survives resets and UBOOT entry.
@@ -18,25 +18,9 @@ MEMORY
 }
 SECTIONS
 {
-    .text : {
-        KEEP(*(.text.crt0))
-        /* RAM DSP direct calls have a 4 MiB reach. Keep its math/control
-         * callees in the first 8 KiB of XIP, opposite DSP at RAM +8 KiB.
-         * New out-of-range calls are linker errors, never unchecked jumps. */
-        *(.text.__udivdi3 .text.__divdi3 .text.__umoddi3 .text.__moddi3)
-        *(.text.gds_material .text.gds_ladder .text.gds_tanh20 .text.gds_attack)
-        *(.text.gds_square .text.gds_triangle .text.gds_loop .text.gds_read .text.gds_color .text.gds_pow2)
-        *(.text.gda_mul .text.gda_env .text.gda_inc .text.gda_osc .text.gda_lp)
-        *(.text.gd_limit .text.gd_sat .text.gd_clamp .text.gd_sine .text.gd_wave .text.gd_blep .text.gd_random)
-        *(.text.gd_kick_* .text.gd_envelope_curve)
-        _dsp_helpers_end = .;
-        *(.text*) *(.rodata*) . = ALIGN(4); _etext = .;
-    } > XIP
-    ASSERT(_dsp_helpers_end <= 0x02002000, "DSP XIP helpers exceed direct-call reach")
+    .text : { KEEP(*(.text.crt0)) *(.text*) *(.rodata*) . = ALIGN(4); _etext = .; } > XIP
     .ram_text : { _rt_start = .; KEEP(*(.ram_text*)) . = ALIGN(4); _rt_end = .; } > RAMTEXT AT > XIP
     _rt_load = LOADADDR(.ram_text);
-    .ram_dsp 0x01C02000 : { . = ALIGN(4); _dsp_start = .; KEEP(*(.ram_dsp*)) . = ALIGN(4); _dsp_end = .; } > RAMTEXT AT > XIP
-    _dsp_load = LOADADDR(.ram_dsp);
     .data : { . = ALIGN(4); _data_start = .; *(.data*) *(.sdata*) . = ALIGN(4); _data_end = .; } > RAM AT > XIP
     _data_load = LOADADDR(.data);
     .bss (NOLOAD) : { _bss_start = .; *(.bss*) *(.sbss*) *(COMMON) . = ALIGN(4); _bss_end = .; } > RAM

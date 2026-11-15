@@ -8,6 +8,3 @@
 #pragma once
 
 #define FM1_INLINE static inline __attribute__((always_inline))
-
-/* Publish newly copied executable RAM before any call into it. */
-FM1_INLINE void fm1_code_sync(void){__asm__ volatile("csync" ::: "memory");}

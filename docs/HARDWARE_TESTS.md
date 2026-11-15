@@ -250,3 +250,17 @@ and updater fault tests pass, including local checks against the downloaded
 package. Delivered to iCloud Firmware for a hardware trial; speedup remains
 unmeasured. Compare ECO 1X with the same stock drums, no PRC/Glitch and one
 Analog note on step 1 (previously 101%, idle 18%).
+
+## 0.17.15 rejected on hardware
+
+Alex reports stock drums without PRC, Glitch or Analog reach 101% in BAL 2X
+and distort; adding one Analog step reaches 127%, or 128% in ECO 1X.
+The comparable 0.17.14 ECO workload was 101%. The executable-RAM experiment
+is a measured regression despite all static/package and PCM checks passing.
+Do not install 0.17.15. It was removed from the main iCloud test folder and
+archived as a failed hardware trial.
+
+Native DSP placement/startup/PC boundaries/tooling were restored to 0.17.14
+(commit 39dc2ea). That remains a reference build, not a playback-stable release.
+Next work requires per-voice/shared-stage hardware timing before another
+performance optimization. No unverified new optimization package is delivered.

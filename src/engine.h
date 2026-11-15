@@ -380,7 +380,7 @@ static inline void gd_prepare(GDEngine *d, const GDProject *p) {
 /* A voice advances independently between control/trigger boundaries. Keep
  * one voice hot across a short block instead of thrashing the XIP cache by
  * switching all models every single sample. */
-static GD_DSP_CODE int32_t gd_render_voice(GDEngine *d,unsigned slot){
+static inline int32_t gd_render_voice(GDEngine *d,unsigned slot){
     unsigned l=slot<8?slot:6+(slot-8)/3;
     GDVoice *v = &d->voices[slot];
     v->last_sample=0;
@@ -487,7 +487,7 @@ static GD_DSP_CODE int32_t gd_render_voice(GDEngine *d,unsigned slot){
     return s;
 }
 static inline void gd_render_sample(GDEngine *d,const GDProject *p,int32_t *left,int32_t *right){
-  if((d->counter++&31u)==0)GD_DSP_INVOKE(gd_prepare)(d,p);
+  if((d->counter++&31u)==0)gd_prepare(d,p);
   int32_t L=0,R=0,send=0;
   for(unsigned slot=0;slot<14;++slot){
     int sample=gd_render_voice(d,slot);unsigned lane=slot<8?slot:6+(slot-8)/3;
@@ -501,10 +501,10 @@ static inline void gd_render_sample(GDEngine *d,const GDProject *p,int32_t *left
 typedef struct {int32_t left[GD_RENDER_FRAMES],right[GD_RENDER_FRAMES],send[GD_RENDER_FRAMES];} GDRenderBlock;
 /* Returns the frames rendered. Never crosses a meter or 32-frame control
  * boundary; callers also split at note/ratchet/pattern events. No allocation. */
-static GD_DSP_CODE unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
+static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
   unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
   if(!n)return 0;
-  if((d->counter&31u)==0)GD_DSP_INVOKE(gd_prepare)(d,p);
+  if((d->counter&31u)==0)gd_prepare(d,p);
   for(unsigned i=0;i<n;++i)b->left[i]=b->right[i]=b->send[i]=0;
   for(unsigned slot=0;slot<14;++slot){
     GDVoice *v=&d->voices[slot];unsigned lane=slot<8?slot:6+(slot-8)/3;

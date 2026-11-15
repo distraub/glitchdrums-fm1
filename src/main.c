@@ -476,7 +476,7 @@ render_block:;
     if(running&&remaining<count)count=remaining;
     for(unsigned l=0;l<8;++l)if(running&&repeat_left[l]&&repeat_wait[l]<count)count=repeat_wait[l];
     GDRenderBlock block;
-    count=GD_DSP_INVOKE(gd_render_block)(&engine,&live,&block,count);
+    count=gd_render_block(&engine,&live,&block,count);
     if(running)remaining-=count;
     for(unsigned l=0;l<8;++l)if(running&&repeat_left[l])repeat_wait[l]-=count;
     for(unsigned i=0;i<count;++i){
