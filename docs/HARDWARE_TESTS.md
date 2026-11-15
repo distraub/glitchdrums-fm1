@@ -342,3 +342,31 @@ against the single-core block renderer, with all qualities, chords, solo,
 mutes, LFO/tempo and send changes. ASan/UBSan and a separate ThreadSanitizer
 run pass. This does not activate core 1 on the FM-1 or establish device CPU
 headroom. See SECOND_CORE.md for the remaining platform gates.
+
+
+## 0.17.18 guarded second-core candidate
+
+Native synth jobs run concurrently with drum rendering. PCM/state parity and
+partial-worker failure retirement are tested; current voices/polyphony and
+sound models are retained. Native CI 43677063177 and independent diagnostic
+43677065467 reproduce SHA-256
+`8de55220aea66480e1e6b7e3e0cc5f7119b82b36f0f021dfdef4ed4b35f1d9e8`.
+Source d8b9ab5; see SECOND_CORE.md for stack, memory and recovery controls.
+The worker has a dedicated stack in previously reserved RAM-run debug space;
+main/audio stacks and guards are not reduced. No clock/voltage change or
+bootloader write is included. Hold OCT+ at boot for core-0-only comparison;
+OCT- still enters rescue. CPU PROFILE footer shows worker status.
+
+Physical CPU headroom, playback, FX, save/power-cycle and firmware switching
+remain pending. First workload: full stock sequence, ECO 1X selected while
+stopped, no punch effects; capture CPU PROFILE and C1 status. The single-core
+138% photo is the matching prior baseline, not the 198% BAL result.
+
+
+Final delivery checks for 0.17.18: exact packaged .text/.data/.ram_text and
+.c1_text match the independently built ELF; worker word-copy extents and its
+single indirect call pass the RAM-idle image audit. Both native build hashes
+match. Local exact-package loader/OTA fault tests pass in addition to CI,
+including unchanged boot area, wrong key/CRC refusal, disconnect and resumed
+power cuts. Copied to iCloud Firmware/Trials after verifying SHA-256. Hardware
+playback and save/switch checks remain for Alex's unit.
