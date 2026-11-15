@@ -84,3 +84,7 @@ build/native/eco-voices-test
 
 clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -I src tests/hat-sign.c -o build/native/hat-sign-test
 build/native/hat-sign-test
+
+# Actual concurrent partitions: sanitizer checks and exact PCM/full-state parity.
+clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -pthread -I src tests/parallel-render.c -o build/native/parallel-render-test
+build/native/parallel-render-test

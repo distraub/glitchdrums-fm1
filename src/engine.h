@@ -500,14 +500,13 @@ static inline void gd_render_sample(GDEngine *d,const GDProject *p,int32_t *left
 }
 #define GD_RENDER_FRAMES 16u
 typedef struct {int32_t left[GD_RENDER_FRAMES],right[GD_RENDER_FRAMES],send[GD_RENDER_FRAMES];} GDRenderBlock;
-/* Returns the frames rendered. Never crosses a meter or 32-frame control
- * boundary; callers also split at note/ratchet/pattern events. No allocation. */
-static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
-  unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
-  if(!n)return 0;
-  if((d->counter&31u)==0){uint32_t stamp=GD_PROFILE_BEGIN();gd_prepare(d,p);GD_PROFILE_END(8,stamp);}
+/* Partition rendering owns only the selected voice states and its private sums.
+ * Prepare controls/events before launching either partition; join both before
+ * committing counters, saturation, sends or subsequent note/control events. */
+static inline void gd_render_partition(GDEngine *d,const GDProject *p,GDRenderBlock *b,
+                                        unsigned n,unsigned first,unsigned end){
   for(unsigned i=0;i<n;++i)b->left[i]=b->right[i]=b->send[i]=0;
-  for(unsigned slot=0;slot<14;++slot){
+  for(unsigned slot=first;slot<end;++slot){
     GDVoice *v=&d->voices[slot];unsigned lane=slot<8?slot:6+(slot-8)/3;
     if(v->env<=1){v->last_sample=0;continue;}
     unsigned muted=d->solo_mask?!(d->solo_mask&(1u<<lane)):p->track[lane].mute;
@@ -517,8 +516,22 @@ static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBl
     }
     GD_PROFILE_END(lane,stamp);
   }
-  for(unsigned i=0;i<n;++i){b->left[i]=gd_sat(b->left[i]);b->right[i]=gd_sat(b->right[i]);b->send[i]=gd_sat(b->send[i]/2);}
-  d->counter+=n;d->delay_input=b->send[n-1];return n;
+}
+static inline void gd_render_commit(GDEngine *d,GDRenderBlock *b,const GDRenderBlock *other,unsigned n){
+  for(unsigned i=0;i<n;++i){
+    if(other){b->left[i]+=other->left[i];b->right[i]+=other->right[i];b->send[i]+=other->send[i];}
+    b->left[i]=gd_sat(b->left[i]);b->right[i]=gd_sat(b->right[i]);b->send[i]=gd_sat(b->send[i]/2);
+  }
+  d->counter+=n;d->delay_input=b->send[n-1];
+}
+/* Returns the frames rendered. Never crosses a meter or 32-frame control
+ * boundary; callers also split at note/ratchet/pattern events. No allocation. */
+static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
+  unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
+  if(!n)return 0;
+  if((d->counter&31u)==0){uint32_t stamp=GD_PROFILE_BEGIN();gd_prepare(d,p);GD_PROFILE_END(8,stamp);}
+  gd_render_partition(d,p,b,n,0,14);
+  gd_render_commit(d,b,0,n);return n;
 }
 
 #endif

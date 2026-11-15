@@ -318,3 +318,27 @@ and profiler tests pass. Exact-package updater fault tests also pass locally.
 RemoteFM1 integration passes. Package delivered under Trials; previews under
 Previews/0.17.17. User must choose ECO 1X before playback; no native CPU
 improvement is claimed until the same device/workload is measured.
+
+
+## 0.17.17 physical ECO 1X stock-sequence result
+
+Alex's new photo explicitly uses the full stock sequence at ECO 1X:
+TOTAL 138%; KIK 18, SNR 12, CH 12, OH 12, CLP 10, PRC 17, GLI 32,
+ANA 35, CTRL 7, HITS 4, FX 8, OTHER 7. Playback remains over deadline;
+this is not a stable hardware candidate. Compare against the earlier ECO
+range 106–174%, not just the 198% BAL profile with a different quality mode.
+Independent per-stage maxima cannot be summed into a simultaneous profile.
+
+A host simulation of stock note spacing at 120 BPM found at most one Glitch
+voice and two Analog voices active. Across 20 seconds, Analog had two active
+voices about 41% of the time; reducing polyphony alone cannot be assumed to
+recover enough headroom, especially for FX. Alex chose investigation of a
+second-core renderer rather than reducing synth voice limits.
+
+The first implementation step separates raw voice sums from final saturation
+and counter/send commit. A real two-thread host test renders slots 0–5 and
+6–13 concurrently and verifies exact PCM plus complete engine-state parity
+against the single-core block renderer, with all qualities, chords, solo,
+mutes, LFO/tempo and send changes. ASan/UBSan and a separate ThreadSanitizer
+run pass. This does not activate core 1 on the FM-1 or establish device CPU
+headroom. See SECOND_CORE.md for the remaining platform gates.
