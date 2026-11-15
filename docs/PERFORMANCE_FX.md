@@ -111,3 +111,28 @@ sizes. KN2 offsets the whole bank; the SHIFT value is shown in the footer/hint.
 Last-pressed held key wins, falling back to the previous held key on release.
 Changing held keys updates the smoothed rate without recapturing audio. Release
 all keys to punch out. No additional audio buffer or persistent storage is used.
+
+
+## Signature-only dispatch trial (0.17.20)
+
+Hardware 0.17.19 at ECO 1X plays the stock sequence clearly at an 82% peak.
+AntiVerb alone raises TOTAL to 113% and FX to 34% (C1 ON), and Alex reports
+similar audible overload for Glitchstortion and Grain Cloud. This pass
+removes common dispatch work before altering the processors' sound models.
+
+When the active/releasing mask contains only signature effects and no prior
+capture transition, the punch renderer bypasses the unrelated effect scans,
+30-entry age loop and unused tempo/capture calculations. It still records
+the same tape history, updates signature ages, runs identical signature DSP
+and applies the identical punch fade. Capture transitions and other stacks
+retain the general path. The fade divisor is cached only until its control
+changes; no tail/capture/filter state resets on edits. Runtime cache is four
+bytes; persistence, gain and mix values remain unchanged.
+
+Thirty-six pre-change golden vectors cover all signature combinations,
+other-effect stacks, capture transitions, release fades, random live control
+and tempo edits, complete output hashes, age/gate state and tape history.
+The dedicated and general paths both match exactly under ASan/UBSan. Full
+regression and RemoteFM1 import/integration also pass. This verifies output
+preservation, not hardware headroom. Physical repeat of AntiVerb with the
+same stock ECO workload and settings is still required.

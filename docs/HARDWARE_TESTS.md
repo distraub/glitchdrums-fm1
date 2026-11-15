@@ -422,3 +422,18 @@ A previous capture transition stays on the general path until safe. No voice,
 polyphony, gain, mix, effect controls, capture rate, core scheduling, boot,
 clock or saved-state change is included. Four bytes of volatile runtime
 cache are added to GDPunch, not the persisted payload.
+
+
+0.17.20 final candidate checks: native CI 43679317084 and diagnostic
+43679319123 reproduce SHA-256
+`90d821256e56309a2ca522b1f8055a3c048a35d292d53cf4d035160359fe0aa2`.
+Source 89a85d2; code 412/567 KiB, RAM 90/96 KiB, pool 334/336 KiB.
+Conservative audio IRQ 3,380+timer336+context256 < 7,936; worker job932+
+loop128 < 7,424; foreground10,984 < 24,320. Existing stack/guard regions
+unchanged. Full local regression and both dedicated/general punch paths
+match 36 exact pre-change PCM/history vectors under ASan/UBSan. RemoteFM1
+import/integration passes after restoring the incomplete local WASI SDK from
+its official release. Exact packaged worker load/copy audit and local
+exact-package updater fault tests pass. Copied to iCloud Trials and hash
+verified. Physical AntiVerb repeat at ECO 1X is pending; no CPU saving or
+stable signature-effect playback is claimed yet.
