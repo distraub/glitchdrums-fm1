@@ -27,6 +27,15 @@
 #define FM1_UPDATA_PARM ((volatile uint8_t *)0x01C7FD88u)
 #define FM1_UPDATA_PARM_LEN 112u
 
+/* Core 1 must stop before reset or any RAM reinitialization. Register-only
+ * and safe before .bss/.data initialization; do not consult mailbox state. */
+#define FM1_C1_CON (*(volatile uint32_t *)0x1EEE004u)
+FM1_INLINE void fm1_cpu1_halt(void){
+    FM1_C1_CON |= 2u;
+    FM1_C1_CON &= ~8u;
+    __asm__ volatile("csync" ::: "memory");
+}
+
 static uint32_t fm1_p33_timeouts;
 
 static uint8_t fm1__p33_xfer(uint8_t b)
@@ -108,6 +117,7 @@ static void fm1_reset_reason(void)
 
 static void fm1_reboot(void)
 {
+    fm1_cpu1_halt();
     __asm__ volatile("cli");
     fm1_p33_or(FM1_P3_PR_PWR, 0x10);
     for (;;)
@@ -116,6 +126,7 @@ static void fm1_reboot(void)
 
 static void fm1_enter_uboot(void)
 {
+    fm1_cpu1_halt();
     static const char k[16] = "usb_update_mode";
     uint32_t i;
     __asm__ volatile("cli");
@@ -132,6 +143,7 @@ static void fm1_enter_uboot(void)
 
 FM1_INLINE void fm1_core_reset(void)
 {
+    fm1_cpu1_halt();
     FM1_PWR_CON |= 0x10u;
     for (;;)
         ;
@@ -139,6 +151,7 @@ FM1_INLINE void fm1_core_reset(void)
 
 FM1_INLINE void fm1_enter_update(const uint8_t *parm)
 {
+    fm1_cpu1_halt();
     uint32_t i;
     __asm__ volatile("cli");
     if (!(*(volatile uint32_t *)0x1EEE240u & 1u))       /* drop CPU0 write limits, as fm1_enter_uboot */

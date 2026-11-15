@@ -6,6 +6,7 @@
 #include "tables.h"
 #include "memory.h"
 #include "profile.h"
+#include "parallel.h"
 #include "swing.h"
 #include "drum_character.h"
 #include "kick_dsp.h"
@@ -524,12 +525,45 @@ static inline void gd_render_commit(GDEngine *d,GDRenderBlock *b,const GDRenderB
   }
   d->counter+=n;d->delay_input=b->send[n-1];
 }
+#if GD_PARALLEL_ENABLED
+/* Fixed scratch; only the audio owner publishes, and joins before reuse. */
+typedef struct {GDEngine *d;const GDProject *p;GDRenderBlock sums;unsigned n;uint32_t check;volatile uint32_t done;} GDParallelJob;
+static GDParallelJob gd_parallel_job;
+static void gd_render_synth_job(uint32_t cookie){
+ GDParallelJob *j=&gd_parallel_job;
+ if(cookie!=GD_PARALLEL_COOKIE||!j->n||j->n>GD_RENDER_FRAMES||
+    j->check!=gd_parallel_check((uintptr_t)j->d,(uintptr_t)j->p,(uintptr_t)&j->sums,j->n))return;
+ gd_render_partition(j->d,j->p,&j->sums,j->n,6,14);
+ j->done=j->check;
+}
+/* Called only after the hardware has held core 1. Preserve LFO phases and
+ * parameters, retire possibly half-rendered synth tails; next hit starts clean. */
+static inline void gd_retire_synths(GDEngine *d){
+ for(unsigned i=6;i<14;++i){d->voices[i].env=0;d->voices[i].last_sample=0;d->synth[i-6].active=0;d->synth[i-6].held=0;}
+}
+#endif
 /* Returns the frames rendered. Never crosses a meter or 32-frame control
  * boundary; callers also split at note/ratchet/pattern events. No allocation. */
 static inline unsigned gd_render_block(GDEngine *d,const GDProject *p,GDRenderBlock *b,unsigned requested){
   unsigned n=GD_RENDER_FRAMES-(d->counter&(GD_RENDER_FRAMES-1u));if(n>requested)n=requested;
   if(!n)return 0;
   if((d->counter&31u)==0){uint32_t stamp=GD_PROFILE_BEGIN();gd_prepare(d,p);GD_PROFILE_END(8,stamp);}
+#if GD_PARALLEL_ENABLED
+  unsigned active=0;for(unsigned i=6;i<14;++i)active|=d->voices[i].env>1;
+  if(active){
+    GDParallelJob *j=&gd_parallel_job;j->d=d;j->p=p;j->n=n;
+    j->check=gd_parallel_check((uintptr_t)d,(uintptr_t)p,(uintptr_t)&j->sums,n);j->done=~j->check;
+    if(gd_parallel_begin(gd_render_synth_job,GD_PARALLEL_COOKIE)){
+      gd_render_partition(d,p,b,n,0,6);
+      int failed=gd_parallel_join();
+      if(failed||j->done!=j->check){
+        if(!failed)gd_parallel_reject();
+        gd_retire_synths(d);gd_render_commit(d,b,0,n);
+      }else gd_render_commit(d,b,&j->sums,n);
+      return n;
+    }
+  }
+#endif
   gd_render_partition(d,p,b,n,0,14);
   gd_render_commit(d,b,0,n);return n;
 }

@@ -35,7 +35,7 @@
 #define FM1_EMU_USP_L (*(volatile uint32_t *)0x1EEF0E4u)
 
 extern char _guard0[], _ustack_lo[], _guard1[], _sstack_lo[], _sstack_top[], _etext[];
-extern uint32_t _rt_start[], _rt_end[];
+extern uint32_t _rt_start[], _rt_end[], _c1_end[];
 
 enum { FM1_GUARD_STACK = 1, FM1_GUARD_WRITE = 2, FM1_GUARD_BUS = 4, FM1_GUARD_PC = 8 };
 
@@ -76,7 +76,7 @@ static void fm1_guard_enable(uint32_t which)
         FM1_PC_LIMIT0_L = 0x02000120u;
         FM1_PC_LIMIT0_H = (uint32_t)(uintptr_t)_etext;
         {   /* RAM code (.ram_text); with none, repeat the XIP window */
-            volatile uint32_t rs = (uint32_t)(uintptr_t)_rt_start, re = (uint32_t)(uintptr_t)_rt_end;
+            volatile uint32_t rs = (uint32_t)(uintptr_t)_rt_start, re = (uint32_t)(uintptr_t)_c1_end;
             FM1_PC_LIMIT1_L = re > rs ? rs : 0x02000120u;
             FM1_PC_LIMIT1_H = re > rs ? re - 1u : (uint32_t)(uintptr_t)_etext;
         }
@@ -103,3 +103,13 @@ static void fm1_guard_unlock_top(void)
     FM1_C0_WR_LIMIT_EN &= ~4u;
     fm1__dbg_lock();
 }
+
+/* Core 1 boots through ROM. Open only around its bounded startup handshake;
+ * restore both exact XIP/RAM windows with fm1_guard_enable immediately after. */
+static void fm1_guard_pc_open(void){
+    fm1__dbg_unlock();
+    FM1_PC_LIMIT0_L = 0; FM1_PC_LIMIT0_H = 0xFFFFFFFFu;
+    FM1_PC_LIMIT1_L = 0; FM1_PC_LIMIT1_H = 0xFFFFFFFFu;
+    fm1__dbg_lock();
+}
+FM1_INLINE void fm1_code_sync(void){__asm__ volatile("csync" ::: "memory");}

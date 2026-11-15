@@ -227,7 +227,7 @@ def build_app(cfg):
   FW.mkdir(parents=True, exist_ok=True)
   flags = [*CFLAGS, *STACK_CFLAGS, "-DGD_NATIVE_FM1=1", *INCLUDES, f'-DAPP_NAME="{cfg["name"]}"', f'-DAPP_VER="{cfg["version"]}"', f'-DFELUCCA_ID="{cfg["product"]}"', *cfg["defines"]]
   objs, cmds = [], []
-  for s in [PLAT / "crt0.S", PLAT / "hal/fm1_vec.S", PLAT / "hal/fm1_isr.S"]:
+  for s in [PLAT / "crt0.S", PLAT / "hal/fm1_vec.S", PLAT / "hal/fm1_isr.S", PLAT / "hal/fm1_cpu1.S"]:
     objs.append(FW / (s.stem + ".o"))
     cmds.append(("cc", "-c", s, "-o", objs[-1]))
   for s in [PLAT / "fm1.c", *sources()]:
@@ -239,12 +239,13 @@ def build_app(cfg):
     tc("ld", "--gc-sections", "-e", "_start", "-T", PLAT / "app.ld", *objs, "-o", elf)
   except BuildError as e:
     raise BuildError(explain_link(str(e))) from None
-  for sect in ("text.bin", "data.bin", "ramtext.bin"):
+  for sect in ("text.bin", "data.bin", "ramtext.bin", "c1text.bin"):
     (FW / sect).unlink(missing_ok=True)
   *_, syms, dis, rt = tc_all(
     ("objcopy", "-O", "binary", "-j", ".text", elf, FW / "text.bin"),
     ("objcopy", "-O", "binary", "-j", ".data", elf, FW / "data.bin"),
     ("objcopy", "-O", "binary", "-j", ".ram_text", elf, FW / "ramtext.bin"),
+    ("objcopy", "-O", "binary", "-j", ".c1_text", elf, FW / "c1text.bin"),
     ("objdump", "-t", elf),
     ("objdump", "-d", elf),
     ("objdump", "-d", "-j", ".ram_text", elf),
@@ -256,7 +257,7 @@ def build_app(cfg):
 
   img = bytearray((FW / "text.bin").read_bytes())
   # .ram_text and .data follow .text at their load addresses; crt0 copies them by words
-  for sect, lname in (("ramtext.bin", "_rt_load"), ("data.bin", "_data_load")):
+  for sect, lname in (("ramtext.bin", "_rt_load"), ("c1text.bin", "_c1_load"), ("data.bin", "_data_load")):
     load = symv(lname)
     if load % 4:
       raise BuildError(f"{lname} {load:#x} is not word aligned")

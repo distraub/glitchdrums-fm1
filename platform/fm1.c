@@ -19,6 +19,7 @@ static GDOutput gd_output_state={65536};
 #include "fm1_sys.h"
 #include "fm1_irq.h"
 #include "fm1_guard.h"
+#include "fm1_cpu1.h"
 #include "fm1_input.h"
 #include "fm1_timer.h"
 #include "fm1_lcd_hw.h"
@@ -35,6 +36,18 @@ static GDOutput gd_output_state={65536};
 #ifndef APP_VER
 #define APP_VER "0.0"
 #endif
+
+/* Dedicated dual-core trial: install is opt-in; any worker failure holds it
+ * until the next boot. No work may survive the audio interrupt. */
+static volatile unsigned gd_c1_status;
+int gd_parallel_begin(void (*fn)(uint32_t),uint32_t arg){return fm1_cpu1_run(fn,arg);}
+int gd_parallel_join(void){
+  int failed=fm1_cpu1_wait();
+  if(failed)gd_c1_status=fm1_c1_gave_up==1?3u:4u;
+  return failed;
+}
+void gd_parallel_reject(void){fm1_cpu1_hold();gd_c1_status=5;}
+unsigned gd_parallel_status(void){return gd_c1_status;}
 
 bootguard_t bootguard __attribute__((section(".noinit")));
 static volatile uint32_t fm1_ms;    /* milliseconds since power-on (TIMER5) */
@@ -531,7 +544,8 @@ static void fm1_fault(const fm1_crash_t *c) {
 void fm1_cstart(void) {
   extern uint32_t _data_start[], _data_end[], _data_load[], _bss_start[], _bss_end[];
   extern uint32_t _pool_start[], _pool_end[], _rt_start[], _rt_end[], _rt_load[];
-  uint32_t *s, *d, p3, boot_mode;
+  uint32_t *s, *d, p3, boot_mode, core_disabled;
+  fm1_cpu1_halt();
   fm1_time_init();
   fm1_reset_reason();
   p3 = fm1_boot.p3_rst;
@@ -556,12 +570,17 @@ void fm1_cstart(void) {
   for (s = _rt_load, d = _rt_start; d < _rt_end; s++, d++) {
     *d = *s;
   }
+  {extern uint32_t _c1_start[],_c1_end[],_c1_load[];
+    for(s=_c1_load,d=_c1_start;d<_c1_end;s++,d++)*d=*s;
+  }
+  fm1_code_sync();
   fm1_mailbox_clear();
   fm1_guard_enable(FM1_GUARD_STACK | FM1_GUARD_WRITE | FM1_GUARD_BUS | FM1_GUARD_PC);
   fm1_boot.p3_rst = (uint8_t)p3;
   if (boot_mode == BOOT_RECOVERY || recovery_key()) {
     recovery_main(); /* OCT- at power-on: the USB rescue */
   }
+  core_disabled=(fm1_in.buttons & (1u<<FM1_BTN_OCT_UP))!=0;
   flash_ok = fl_jedec_known(FL_FAR(fl_jedec_ram)());
   ota_boot_cleanup();
   lcd_init();
@@ -573,6 +592,13 @@ void fm1_cstart(void) {
 #if FOMA_TRS_MIDI
   uart_midi_init();
 #endif
+  /* Audio IRQs are still off; no callback can race startup or its PC window.
+   * All recovery decisions occur above, before core 1 is enabled. */
+  if(!core_disabled){
+    fm1_guard_pc_open();
+    gd_c1_status=fm1_cpu1_start()==0?1u:2u;
+    fm1_guard_enable(FM1_GUARD_PC);
+  }
   fm1_timer5_start(isr_timer5, 4);
   fm1_guard_lock_top();
   fm1_irq_enable_all();

@@ -96,6 +96,7 @@ void fm1_fault_c(uint32_t *f)
     uint32_t i, count = fm1_crash.magic == FM1_CRASH_MAGIC ? fm1_crash.count : 0;
     uint32_t early = fm1_crash.magic == FM1_CRASH_MAGIC ? fm1_crash.early : 0;
     fm1_irq_off();
+    fm1_cpu1_halt();
     if (in_fault++)                           /* fault while reporting: reset at once */
         *(volatile uint32_t *)0x10000u |= 1u << 4;
     fm1_crash.magic = FM1_CRASH_MAGIC;

@@ -3,7 +3,8 @@
 /* Felucca memory map.
  * Code + constants execute in place from XIP (app.bin offset 0 = 0x02000120).
  * 0x01C00000..0x01C06000 holds .ram_text (code that must run while the flash
- * is busy: the flash driver); 0x01C06000..0x01C08000 stays for RAM-run debug.
+ * is busy: the flash driver); 0x01C06000..0x01C07F00 is the dedicated core-1 stack;
+ * 0x01C07F00..0x01C08000 remains the boot debug status area.
  * RAM  : .data/.bss (96 KiB)
  * POOL : big zero-initialised buffers (FX lines, canvases), section .pool
  * STACKS with 256-byte guard bands; NOINIT survives resets and UBOOT entry.
@@ -12,6 +13,7 @@ MEMORY
 {
     XIP    (rx)  : ORIGIN = 0x02000120, LENGTH = 0x8DFBC
     RAMTEXT (rwx): ORIGIN = 0x01C00000, LENGTH = 0x6000
+    C1STACK (rw): ORIGIN = 0x01C06000, LENGTH = 0x1F00
     RAM    (rwx) : ORIGIN = 0x01C08000, LENGTH = 96K
     POOL   (rw)  : ORIGIN = 0x01C20000, LENGTH = 0x54000
     NOINIT (rw)  : ORIGIN = 0x01C7C000, LENGTH = 0x3D50
@@ -21,6 +23,11 @@ SECTIONS
     .text : { KEEP(*(.text.crt0)) *(.text*) *(.rodata*) . = ALIGN(4); _etext = .; } > XIP
     .ram_text : { _rt_start = .; KEEP(*(.ram_text*)) . = ALIGN(4); _rt_end = .; } > RAMTEXT AT > XIP
     _rt_load = LOADADDR(.ram_text);
+    .c1_text : { _c1_start = .; KEEP(*(.c1_text*)) . = ALIGN(4); _c1_end = .; } > RAMTEXT AT > XIP
+    _c1_load = LOADADDR(.c1_text);
+    .c1stack (NOLOAD) : { KEEP(*(.c1stack)) } > C1STACK
+    ASSERT(SIZEOF(.c1stack) == 0x1F00, "core 1 stack layout mismatch")
+    ASSERT(_c1_sstack_top <= 0x01C07F00, "core 1 stack overlaps debug status")
     .data : { . = ALIGN(4); _data_start = .; *(.data*) *(.sdata*) . = ALIGN(4); _data_end = .; } > RAM AT > XIP
     _data_load = LOADADDR(.data);
     .bss (NOLOAD) : { _bss_start = .; *(.bss*) *(.sbss*) *(COMMON) . = ALIGN(4); _bss_end = .; } > RAM

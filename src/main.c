@@ -1197,7 +1197,13 @@ static void draw_profile(void){
  text(8,76,"TOTAL",t->text,FONT_SMALL);format_int(b,(int)((uint64_t)ticks[12]*100u/139296u));text(128,72,b,t->alt,FONT_BIG);
  static const char *const names[12]={"KIK","SNR","CH","OH","CLP","PRC","GLI","ANA","CTRL","HITS","FX","OTHER"};
  for(unsigned i=0;i<12;++i){int x=6+(int)(i%4)*59,y=104+(int)(i/4)*39;unsigned value=(unsigned)((uint64_t)ticks[i]*100u/139296u);text(x,y,names[i],t->text,FONT_SMALL);format_int(b,(int)value);text(x,y+13,b,i<8?t->accent:t->alt,value>999?FONT_SMALL:FONT_BIG);}
+#if GD_NATIVE_FM1
+ static const char *const status[]={"C1 OFF","C1 ON","C1 BOOT FAIL","C1 BAD JOB","C1 TIMEOUT","C1 BAD RESULT"};
+ unsigned c1=gd_parallel_status();text(6,222,status[c1<6?c1:5],t->text,FONT_SMALL);
+ text(116,222,"REENTER:RESET",t->text,FONT_SMALL);
+#else
  text(6,222,"REENTER:RESET / PEAKS != SUM",t->text,FONT_SMALL);
+#endif
 }
 static void draw_controls(void) {
   if(view==V_PROFILE){draw_profile();return;}

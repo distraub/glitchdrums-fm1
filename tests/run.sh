@@ -88,3 +88,6 @@ build/native/hat-sign-test
 # Actual concurrent partitions: sanitizer checks and exact PCM/full-state parity.
 clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -pthread -I src tests/parallel-render.c -o build/native/parallel-render-test
 build/native/parallel-render-test
+
+clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -pthread -I src -I platform/hal tests/dualcore.c -o build/native/dualcore-test
+build/native/dualcore-test
