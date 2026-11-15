@@ -13,6 +13,13 @@ static inline uint32_t gda_coeff(unsigned frames,int32_t rate){
 }
 static inline uint32_t gda_inc(uint32_t root,int32_t ratio){uint64_t v=(uint64_t)root*(unsigned)gd_clamp(ratio,0,8388608)>>15;return (uint32_t)(v>1932735283u?1932735283u:v);}
 static inline int32_t gda_osc(GDAcoustic *a,unsigned oscillator,uint32_t inc){a->phase[oscillator]+=inc;return gd_sine(a->phase[oscillator]);}
+/* Hats use sine only for its sign. The interpolated negative half starts
+ * with a tiny zero plateau; include that plateau to preserve exact PCM. */
+static inline int32_t gda_square(GDAcoustic *a,unsigned oscillator,uint32_t inc){
+ a->phase[oscillator]+=inc;
+ uint32_t threshold=0x80000000u+(4095u/(unsigned)(-gd_sines[1025])+1u)*512u;
+ return a->phase[oscillator]<threshold?32768:-32768;
+}
 static inline unsigned gda_lp(unsigned hz){if(hz>19845)hz=19845;unsigned index=hz>>5;return gd_ac_lp[index]+(gd_ac_lp[index+1]-gd_ac_lp[index])*(hz&31)/32;}
 static inline void gda_config(GDAcoustic *a,unsigned lane,const uint8_t *q,int pitch){
  unsigned m=lane-1;int changed=!a->valid||a->pitch!=pitch;
@@ -85,10 +92,10 @@ static inline int32_t gda_render(GDAcoustic *a,int32_t white){
   signal=gda_mul(gda_mul(tonal,32768-gda_mul(c[3],22938)),c[9])+gda_mul(gda_mul(wire,8192+gda_mul(c[3],29491)),c[10]);
   if(a->q[15]!=127){int coef=gd_cutoff_hz[a->q[15]]*32768/(gd_cutoff_hz[a->q[15]]+7019);a->metal_filter+=gda_mul(signal-a->metal_filter,coef);signal=a->metal_filter;}
  }else if(m==1||m==2){
-  int aa=gda_osc(a,0,a->inc[0])>=0?32768:-32768,bb=gda_osc(a,1,a->inc[1])>=0?32768:-32768;
+  int aa=gda_square(a,0,a->inc[0]),bb=gda_square(a,1,a->inc[1]);
   int metal=gda_mul(aa,bb);
   if(a->texture){
-   int bank=aa+bb;for(unsigned n=2;n<6;++n)bank+=gda_osc(a,n,a->inc[n])>=0?32768:-32768;
+   int bank=aa+bb;for(unsigned n=2;n<6;++n)bank+=gda_square(a,n,a->inc[n]);
    bank=gd_limit(bank*33/120,32768);a->metal_filter+=gda_mul(bank-a->metal_filter,(int)a->coef[5]);
    int hashed=gd_clamp((bank-a->metal_filter)*19/10,-32768,32768);metal+=gda_mul(hashed-metal,a->texture);
   }

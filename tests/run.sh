@@ -81,3 +81,6 @@ print('PASS: BAL/HIGH retain exact PCM with ECO enabled; ECO changes are explici
 PYQUALITY
 clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -I src tests/eco-voices.c -o build/native/eco-voices-test
 build/native/eco-voices-test
+
+clang -O2 -std=c11 -Wall -Wextra -Werror -Wno-unused-function -fsanitize=undefined,address -I src tests/hat-sign.c -o build/native/hat-sign-test
+build/native/hat-sign-test

@@ -19,7 +19,10 @@ ECO changes the sound deliberately to reduce the measured synth workload:
   High-frequency/aliasing texture can differ. BAL/HIGH retain their FIR paths.
 
 Output stays at 44.1 kHz. No parameter, polyphony, pattern, p-lock, FX or save
-capacity is removed. Kick, snare, hats, clap and PRC are unchanged. All RAM/code,
+capacity is removed. Kick, snare, hats, clap and PRC retain identical audio. Hat metal oscillators
+now compute the exact interpolated-sine sign directly, removing full sine
+lookup/interpolation when only a square-wave sign was needed. An exhaustive
+test covers all 8,388,608 interpolation inputs and phase wrap. All RAM/code,
 stack, updater and PC guards use the reference layout; the failed RAM-code
 placement experiment remains reverted.
 
